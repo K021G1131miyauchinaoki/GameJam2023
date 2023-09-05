@@ -17,5 +17,7 @@ private:
 	int radius;
 	float speed;
 	float gravity;
+
+	bool isJamp;
 };
 

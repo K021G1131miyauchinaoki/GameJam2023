@@ -5,7 +5,7 @@
 const char TITLE[] = "GameJam2023";
 
 // ウィンドウ横幅
-const int WIN_WIDTH = 450;
+const int WIN_WIDTH = 900;
 
 // ウィンドウ縦幅
 const int WIN_HEIGHT = 600;

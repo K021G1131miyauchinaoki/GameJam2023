@@ -6,6 +6,7 @@ void Player::Initialize()
 	radius = 20;		// 半径
 	speed = 0;			// 速度
 	gravity = 0.0f;		// 重力
+	isJamp = false;		//ジャンプ管理フラグ
 }
 
 void Player::Update(char* keys, char* oldkey)
@@ -31,9 +32,10 @@ void Player::Update(char* keys, char* oldkey)
 	}
 	pos.x += speed;
 	//ジャンプ
-	if (keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE])
+	if (keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE] && !isJamp)
 	{
-		gravity = -8.0f;
+		gravity = -6.0f;
+		isJamp = true;
 	}
 	//重力加速
 	pos.y += gravity;
@@ -44,6 +46,10 @@ void Player::Update(char* keys, char* oldkey)
 	else				//そこについているならば
 	{
 		gravity = 0.0f; //加速しない(止める)
+		if (isJamp)
+		{
+			isJamp = false;
+		}
 	}
 }
 
