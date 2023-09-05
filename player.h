@@ -16,5 +16,6 @@ private:
 	Vector2 pos;
 	int radius;
 	float speed;
+	float gravity;
 };
 
