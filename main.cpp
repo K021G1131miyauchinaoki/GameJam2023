@@ -1,4 +1,5 @@
 #include "DxLib.h"
+#include"Tetris.h"
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "GameJam2023";
@@ -39,7 +40,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	// 画像などのリソースデータの変数宣言と読み込み
-
+	Tetris* t = new Tetris();
+	t->Initialize();
 	// ゲームループで使う変数の宣言
 	//ミヤタ確認用git確認用
 	
@@ -65,7 +67,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//更新
 		
 		//描画---------------
-		
+		t->Draw();
 
 
 		//---------  ここまでにプログラムを記述  ---------//
