@@ -1,4 +1,5 @@
 #include "DxLib.h"
+#include "player.h"
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "GameJam2023";
@@ -15,7 +16,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	SetOutApplicationLogValidFlag(FALSE);
 
 	// ウィンドウモードに設定
-	ChangeWindowMode(TRUE);
+	ChangeWindowMode(true);
 
 	// タイトルを変更
 	SetMainWindowText(TITLE);
@@ -41,7 +42,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// 画像などのリソースデータの変数宣言と読み込み
 
 	// ゲームループで使う変数の宣言
-	//ミヤタ確認用git確認用
+	Player* player = new Player();
+	player->Initialize();
 	
 	// 最新のキーボード情報用
 	char keys[256] = { 0 };
@@ -63,9 +65,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//---------  ここからにプログラムを記述  ---------//
 
 		//更新
-		
+		player->Update(keys,oldkeys);
 		//描画---------------
-		
+		player->Draw();
 
 
 		//---------  ここまでにプログラムを記述  ---------//
