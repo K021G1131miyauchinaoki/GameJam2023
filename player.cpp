@@ -6,7 +6,7 @@ void Player::Initialize()
 	radius = 15;		// 半径
 	speed = 0;			// 速度
 	gravity = 0.0f;		// 重力
-	isJamp = false;		//ジャンプ管理フラグ
+	isJump = false;		//ジャンプ管理フラグ
 	isdir = false;		//方向管理フラグ  false = 右　true = 左
 
 	//煙
@@ -39,9 +39,12 @@ void Player::Update(char* keys, char* oldkey)
 	else				//そこについているならば
 	{
 		gravity = 0.0f; //加速しない(止める)
-		if (isJamp)
+		if (isJump)
 		{
-			isJamp = false;
+			isJump = false;
+			for (int i = 0; i < 5; i++) {
+				jumpParticle[i].isAlive = false;
+			}
 		}
 	}
 }
@@ -50,10 +53,23 @@ void Player::Draw()
 {
 	DrawGraph(pos.x - radius, pos.y - radius, graphHandle, true);
 	DrawBox(pos.x - radius, pos.y - radius, pos.x + radius, pos.y + radius, GetColor(255, 255, 255), false);
-
+	for (int i = 0; i < 5; i++) {
+		if (jumpParticle[i].isAlive == 1) {
+			//各個体のアルファ値によってブレンドモードの値を変えている
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, jumpParticle[i].alpha);
+			DrawGraph(
+				jumpParticle[i].transform.x,
+				jumpParticle[i].transform.y,
+				graphHandle,
+				TRUE
+			);
+		}
+	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "player : %f/%f\n", pos.x, pos.y);
 	DrawFormatString(0, 15, GetColor(255, 255, 255), "speed : %f\n", speed);
 	DrawFormatString(0, 30, GetColor(255, 255, 255), "isdir : %d", isdir);
+	DrawFormatString(0, 45, GetColor(255, 255, 255), "isdir : %d", jumpParticle[0].isAlive);
 }
 
 void Player::Move(char* keys, char* oldkey)
@@ -97,44 +113,38 @@ void Player::Move(char* keys, char* oldkey)
 	pos.x += speed;
 
 	//ジャンプ
-	if (keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE] && !isJamp)
+	if (keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE] && !isJump)
 	{
 		gravity = -8.0f;
-		isJamp = true;
+		isJump = true;
+		for (int i = 0; i < 5; i++) {
+			jumpParticle[i].isAlive = false;
+		}
 	}
+	
 }
 
 void Player::Smoke(char* keys, char* oldkey)
 {
-	if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT])
-	{
-		for (int i = 0; i < 5; i++)
-		{
-			//キーが押されたとき再初期化
-			particle[i].transform.x = pos.x; //座標をプレイヤーに指定
-			particle[i].transform.y = pos.y + radius; //足元を指定する
-			particle[i].radius = 7;
-			particle[i].speed = 20.0f;
-			particle[i].isAlive = false;
-			particle[i].angle = 0;
-			particle[i].alpha = 255;
-			particle[i].color = GetColor(255, 255, 255);
-		}
-	}
+	if (isJump == false) {
+			for (int i = 0; i < 5; i++) {
+				if (jumpParticle[i].isAlive == 0) {
+					jumpParticle[i].isAlive = 1;
+					jumpParticle[i].transform.x = pos.x + rand() % 30-30;
+					jumpParticle[i].transform.y = pos.y + rand() % 10;
+					jumpParticle[i].angle = rand() % 100;	// 角度をランダムで決める
+					jumpParticle[i].speed = rand() % 2;
+					jumpParticle[i].alpha = 250;			// 透明度をリセット
+					jumpParticle[i].color = GetColor(255, 255, 255);
+					break;
+				}
+			}
+			//生存フラグがオンなら
+			for (int i = 0; i < 5; i++) {
+				if (jumpParticle[i].isAlive == 1) {
+					jumpParticle[i].alpha -= 20;
+				}
+			}
 
-	if (keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT])
-	{
-		for (int i = 0; i < 5; i++)
-		{
-			//キーが押されたとき再初期化
-			particle[i].transform.x = pos.x; //座標をプレイヤーに指定
-			particle[i].transform.y = pos.y + radius; //足元を指定する
-			particle[i].radius = 7;
-			particle[i].speed = 20.0f;
-			particle[i].isAlive = false;
-			particle[i].angle = 0;
-			particle[i].alpha = 255;
-			particle[i].color = GetColor(255, 255, 255);
 		}
-	}
 }

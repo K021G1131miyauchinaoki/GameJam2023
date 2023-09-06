@@ -1,6 +1,7 @@
 #pragma once
 #include "DxLib.h"
-
+#include <vector> 
+#include <cmath>  
 typedef struct tagVector2 {
 	float x;
 	float y;
@@ -38,11 +39,12 @@ private:
 	float speed;
 	float gravity;
 
-	bool isJamp;
+	bool isJump;
 	bool isdir;
 
 	int graphHandle;
 
 	Particle particle[5];
+	Particle jumpParticle[5];
 };
 
