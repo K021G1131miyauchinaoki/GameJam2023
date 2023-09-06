@@ -47,8 +47,24 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	char keys[256] = { 0 };
 
 	// 1ループ(フレーム)前のキーボード情報
-	char oldkeys[256] = { 0 };
+	char prev[256] = { 0 };
 
+	//ゲームループ用
+	enum  GameState
+	{
+		title,
+		game,
+		over,
+		pause,
+
+	};
+	GameState gameState = title;
+	GameState pauseState;
+
+	int titleTex = LoadGraph("Resource/GameStates/title.png");
+	int gameTex = LoadGraph("Resource/GameStates/game.png");
+	int overTex = LoadGraph("Resource/GameStates/over.png");
+	int pauseTex = LoadGraph("Resource/GameStates/pause.png");
 	// ゲームループ
 	while (true)
 	{
@@ -56,16 +72,89 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		// 最新のキーボード情報だったものは1フレーム前のキーボード情報として保存
 		for (int i = 0; i < 256; ++i)
 		{
-			oldkeys[i] = keys[i];
+			prev[i] = keys[i];
 		}
 		// 最新のキーボード情報を取得
 		GetHitKeyStateAll(keys);
 		//---------  ここからにプログラムを記述  ---------//
 
 		//更新
+		switch (gameState)
+		{
+
+		case title:
+			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			{
+				gameState = game;
+			}
+			//pause用
+			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			{
+				pauseState = gameState;
+				gameState = pause;
+			}
+
+			break;
+		case game:
+			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			{
+				gameState = over;
+			}
+			//pause用
+			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			{
+				pauseState = gameState;
+				gameState = pause;
+			}
+
+			break;
+		case over:
+			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			{
+				gameState = title;
+			}
+			//pause用
+			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			{
+				pauseState = gameState;
+				gameState = pause;
+			}
+
+			break;
+		case pause:
+			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			{
+				gameState = pauseState;
+			}
+
+			break;
+		default:
+			break;
+		};
 		
 		//描画---------------
-		
+		switch (gameState)
+		{
+
+		case title:
+			DrawGraph(0, 0, titleTex, TRUE);
+
+			break;
+		case game:
+			DrawGraph(0, 0, gameTex, TRUE);
+
+			break;
+		case over:
+			DrawGraph(0, 0, overTex, TRUE);
+
+			break;
+		case pause:
+			DrawGraph(0, 0, pauseTex, TRUE);
+
+			break;
+		default:
+			break;
+		};
 
 
 		//---------  ここまでにプログラムを記述  ---------//
