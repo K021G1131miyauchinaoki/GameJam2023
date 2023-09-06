@@ -8,9 +8,9 @@ void Player::Initialize()
 	gravity = 0.0f;		// 重力
 	isJamp = false;		//ジャンプ管理フラグ
 	isdir = false;		//方向管理フラグ  false = 右　true = 左
-
+	isMove = false;		//移動管理フラグ
 	//煙
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < MAX_PARTICLE; i++)
 	{
 		particle[i].transform.x = 0;
 		particle[i].transform.y = 0;
@@ -50,6 +50,10 @@ void Player::Draw()
 {
 	DrawGraph(pos.x - radius, pos.y - radius, graphHandle, true);
 	DrawBox(pos.x - radius, pos.y - radius, pos.x + radius, pos.y + radius, GetColor(255, 255, 255), false);
+	for (int i = 0; i < MAX_PARTICLE; i++)
+	{
+		DrawCircle(particle[i].transform.x, particle[i].transform.y, particle[i].radius, particle[i].color, false);
+	}
 
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "player : %f/%f\n", pos.x, pos.y);
 	DrawFormatString(0, 15, GetColor(255, 255, 255), "speed : %f\n", speed);
@@ -106,35 +110,42 @@ void Player::Move(char* keys, char* oldkey)
 
 void Player::Smoke(char* keys, char* oldkey)
 {
-	if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT])
+	if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT] ||
+		keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT])
 	{
-		for (int i = 0; i < 5; i++)
-		{
-			//キーが押されたとき再初期化
-			particle[i].transform.x = pos.x; //座標をプレイヤーに指定
-			particle[i].transform.y = pos.y + radius; //足元を指定する
-			particle[i].radius = 7;
-			particle[i].speed = 20.0f;
-			particle[i].isAlive = false;
-			particle[i].angle = 0;
-			particle[i].alpha = 255;
-			particle[i].color = GetColor(255, 255, 255);
+		isMove = true;
+	}
+	else
+	{
+		isMove = false;
+	}
+
+	//画面の中心からParticleを発生させる、処理としては複数弾の処理と似ている
+	if (isMove == true) {
+		for (int i = 0; i < MAX_PARTICLE; i++) {
+			if (particle[i].isAlive == 0) {
+				particle[i].isAlive = 1;
+				particle[i].transform.x = pos.x;
+				particle[i].transform.y = pos.y + radius;
+				particle[i].radius = 7;
+				particle[i].angle = rand() % 100;	// 角度をランダムで決める
+				particle[i].speed = 5.0f;
+				particle[i].alpha = 250;			// 透明度をリセット
+				particle[i].color = GetColor(255, 255, 255);
+				break;
+			}
 		}
 	}
 
-	if (keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT])
-	{
-		for (int i = 0; i < 5; i++)
-		{
-			//キーが押されたとき再初期化
-			particle[i].transform.x = pos.x; //座標をプレイヤーに指定
-			particle[i].transform.y = pos.y + radius; //足元を指定する
-			particle[i].radius = 7;
-			particle[i].speed = 20.0f;
-			particle[i].isAlive = false;
-			particle[i].angle = 0;
-			particle[i].alpha = 255;
-			particle[i].color = GetColor(255, 255, 255);
+	//生存フラグがオンなら
+	for (int i = 0; i < MAX_PARTICLE; i++) {
+		if (particle[i].isAlive == 1) {
+			//角度(angle)によって移動
+			particle[i].transform.x += cos(particle[i].angle) * particle[i].speed;
+			particle[i].transform.y += sin(particle[i].angle) * particle[i].speed;
+			particle[i].transform.y -= 5;
+			particle[i].alpha -= 5;
+			particle[i].speed -= 0.08f;
 		}
 	}
 }

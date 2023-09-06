@@ -1,5 +1,6 @@
 #pragma once
 #include "DxLib.h"
+#include <cmath>
 
 typedef struct tagVector2 {
 	float x;
@@ -40,9 +41,11 @@ private:
 
 	bool isJamp;
 	bool isdir;
+	bool isMove;
 
 	int graphHandle;
 
+	const int MAX_PARTICLE = 5;
 	Particle particle[5];
 };
 
