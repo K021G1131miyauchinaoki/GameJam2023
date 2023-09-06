@@ -2,15 +2,15 @@
 
 void Player::Initialize()
 {
-	pos = { 15,300 };	// ’†SÀ•W
-	radius = 15;		// ”¼Œa
-	speed = 0;			// ‘¬“x
-	gravity = 0.0f;		// d—Í
-	isJump = false;		//ƒWƒƒƒ“ƒvŠÇ—ƒtƒ‰ƒO
-	isdir = false;		//•ûŒüŠÇ—ƒtƒ‰ƒO  false = ‰E@true = ¶
-
-	//‰Œ
-	for (int i = 0; i < 5; i++)
+	pos = { 15,300 };	// ä¸­å¿ƒåº§æ¨™
+	radius = 15;		// åŠå¾„
+	speed = 0;			// é€Ÿåº¦
+	gravity = 0.0f;		// é‡åŠ›
+	isJump = false;		//ã‚¸ãƒ£ãƒ³ãƒ—ç®¡ç†ãƒ•ãƒ©ã‚°
+	isdir = false;		//æ–¹å‘ç®¡ç†ãƒ•ãƒ©ã‚°  false = å³ã€€true = å·¦
+	isMove = false;		//ç§»å‹•ç®¡ç†ãƒ•ãƒ©ã‚°
+	//ç…™
+	for (int i = 0; i < MAX_PARTICLE; i++)
 	{
 		particle[i].transform.x = 0;
 		particle[i].transform.y = 0;
@@ -30,15 +30,15 @@ void Player::Update(char* keys, char* oldkey)
 {
 	Smoke(keys, oldkey);
 	Move(keys, oldkey);
-	//d—Í‰Á‘¬
+	//é‡åŠ›åŠ é€Ÿ
 	pos.y += gravity;
-	if (pos.y <= 400)	//’ê‚É‚Â‚¢‚Ä‚¢‚È‚¯‚ê‚Î
+	if (pos.y <= 400)	//åº•ã«ã¤ã„ã¦ã„ãªã‘ã‚Œã°
 	{
-		gravity += 0.5f;//‰Á‘¬‚·‚é
+		gravity += 0.5f;//åŠ é€Ÿã™ã‚‹
 	}
-	else				//‚»‚±‚É‚Â‚¢‚Ä‚¢‚é‚È‚ç‚Î
+	else				//ãã“ã«ã¤ã„ã¦ã„ã‚‹ãªã‚‰ã°
 	{
-		gravity = 0.0f; //‰Á‘¬‚µ‚È‚¢(~‚ß‚é)
+		gravity = 0.0f; //åŠ é€Ÿã—ãªã„(æ­¢ã‚ã‚‹)
 		if (isJump)
 		{
 			isJump = false;
@@ -55,7 +55,7 @@ void Player::Draw()
 	DrawBox(pos.x - radius, pos.y - radius, pos.x + radius, pos.y + radius, GetColor(255, 255, 255), false);
 	for (int i = 0; i < 5; i++) {
 		if (jumpParticle[i].isAlive == 1) {
-			//ŠeŒÂ‘Ì‚ÌƒAƒ‹ƒtƒ@’l‚É‚æ‚Á‚ÄƒuƒŒƒ“ƒhƒ‚[ƒh‚Ì’l‚ğ•Ï‚¦‚Ä‚¢‚é
+			//å„å€‹ä½“ã®ã‚¢ãƒ«ãƒ•ã‚¡å€¤ã«ã‚ˆã£ã¦ãƒ–ãƒ¬ãƒ³ãƒ‰ãƒ¢ãƒ¼ãƒ‰ã®å€¤ã‚’å¤‰ãˆã¦ã„ã‚‹
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, jumpParticle[i].alpha);
 			DrawGraph(
 				jumpParticle[i].transform.x,
@@ -66,6 +66,7 @@ void Player::Draw()
 		}
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "player : %f/%f\n", pos.x, pos.y);
 	DrawFormatString(0, 15, GetColor(255, 255, 255), "speed : %f\n", speed);
 	DrawFormatString(0, 30, GetColor(255, 255, 255), "isdir : %d", isdir);
@@ -74,7 +75,7 @@ void Player::Draw()
 
 void Player::Move(char* keys, char* oldkey)
 {
-	//ˆÚ“®
+	//ç§»å‹•
 	if (keys[KEY_INPUT_RIGHT] && oldkey[KEY_INPUT_RIGHT])
 	{
 		if (speed <= 5)
@@ -112,7 +113,7 @@ void Player::Move(char* keys, char* oldkey)
 	}
 	pos.x += speed;
 
-	//ƒWƒƒƒ“ƒv
+	//ã‚¸ãƒ£ãƒ³ãƒ—
 	if (keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE] && !isJump)
 	{
 		gravity = -8.0f;
@@ -132,19 +133,18 @@ void Player::Smoke(char* keys, char* oldkey)
 					jumpParticle[i].isAlive = 1;
 					jumpParticle[i].transform.x = pos.x + rand() % 30-30;
 					jumpParticle[i].transform.y = pos.y + rand() % 10;
-					jumpParticle[i].angle = rand() % 100;	// Šp“x‚ğƒ‰ƒ“ƒ_ƒ€‚ÅŒˆ‚ß‚é
+					jumpParticle[i].angle = rand() % 100;	// è§’åº¦ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã§æ±ºã‚ã‚‹
 					jumpParticle[i].speed = rand() % 2;
-					jumpParticle[i].alpha = 250;			// “§–¾“x‚ğƒŠƒZƒbƒg
+					jumpParticle[i].alpha = 250;			// é€æ˜åº¦ã‚’ãƒªã‚»ãƒƒãƒˆ
 					jumpParticle[i].color = GetColor(255, 255, 255);
 					break;
 				}
 			}
-			//¶‘¶ƒtƒ‰ƒO‚ªƒIƒ“‚È‚ç
+			//ç”Ÿå­˜ãƒ•ãƒ©ã‚°ãŒã‚ªãƒ³ãªã‚‰
 			for (int i = 0; i < 5; i++) {
 				if (jumpParticle[i].isAlive == 1) {
 					jumpParticle[i].alpha -= 20;
 				}
 			}
-
 		}
 }
