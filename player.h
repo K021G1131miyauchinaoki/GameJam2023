@@ -6,6 +6,15 @@ typedef struct tagVector2 {
 	float y;
 }Vector2;
 
+typedef struct Particle {
+	Transform transform;	//座標、半径
+	int isAlive = 0;		//生存フラグ
+	float speed = 20.0f;		//速度
+	double angle = 0;			//角度
+	int alpha = 255;		//透明度
+	unsigned int color;		//色
+}Particle;
+
 class Player
 {
 public:
