@@ -23,6 +23,7 @@ private:
 	int display[height][width];
 	int mino[minoH][minoW];
 	int r = 8;
+	int minoType, minoAngle;
 	int minoX = 5, minoY = 0;
 	int time;
 	const int timer=30;
