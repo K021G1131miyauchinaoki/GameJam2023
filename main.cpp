@@ -5,7 +5,7 @@
 const char TITLE[] = "GameJam2023";
 
 // ウィンドウ横幅
-const int WIN_WIDTH = 900;
+const int WIN_WIDTH = 520;
 
 // ウィンドウ縦幅
 const int WIN_HEIGHT = 600;
@@ -69,6 +69,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//描画---------------
 		player->Draw();
 
+		for (int i = 0; i < 20; i++)
+		{
+			DrawLine(0, 1*(i*30), WIN_WIDTH, 1*(i*30), GetColor(255, 0, 0));
+			DrawLine(1 * (i * 30), 0, 1 * (i * 30), WIN_HEIGHT, GetColor(255, 0, 0));
+		}
+		
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面

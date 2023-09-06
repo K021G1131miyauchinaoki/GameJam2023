@@ -2,7 +2,7 @@
 
 void Player::Initialize()
 {
-	pos = { 15,0 };	// 中心座標
+	pos = { 15,300 };	// 中心座標
 	radius = 15;		// 半径
 	speed = 0;			// 速度
 	gravity = 0.0f;		// 重力
@@ -19,7 +19,7 @@ void Player::Update(char* keys, char* oldkey)
 	pos.y += gravity;
 	if (pos.y <= 400)	//底についていなければ
 	{
-		gravity += 0.2f;//加速する
+		gravity += 0.5f;//加速する
 	}
 	else				//そこについているならば
 	{
@@ -48,7 +48,7 @@ void Player::Move(char* keys, char* oldkey)
 	{
 		if (speed <= 5)
 		{
-			speed += 0.2f;
+			speed += 0.4f;
 		}
 		if (speed < 0)
 		{
@@ -64,7 +64,7 @@ void Player::Move(char* keys, char* oldkey)
 	{
 		if (speed >= -5)
 		{
-			speed -= 0.2f;
+			speed -= 0.4f;
 		}
 		if (speed > 0)
 		{
@@ -84,7 +84,7 @@ void Player::Move(char* keys, char* oldkey)
 	//ジャンプ
 	if (keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE] && !isJamp)
 	{
-		gravity = -6.0f;
+		gravity = -8.0f;
 		isJamp = true;
 	}
 }
