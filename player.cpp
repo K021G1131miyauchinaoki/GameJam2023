@@ -121,10 +121,10 @@ void Player::Smoke(char* keys, char* oldkey)
 	}
 
 	//画面の中心からParticleを発生させる、処理としては複数弾の処理と似ている
-	if (isMove == true) {
+	if (isMove && !isJamp) {
 		for (int i = 0; i < MAX_PARTICLE; i++) {
-			if (particle[i].isAlive == 0) {
-				particle[i].isAlive = 1;
+			if (!particle[i].isAlive) {
+				particle[i].isAlive = true;
 				particle[i].transform.x = pos.x;
 				particle[i].transform.y = pos.y + radius;
 				particle[i].radius = 7;
@@ -139,13 +139,18 @@ void Player::Smoke(char* keys, char* oldkey)
 
 	//生存フラグがオンなら
 	for (int i = 0; i < MAX_PARTICLE; i++) {
-		if (particle[i].isAlive == 1) {
+		if (particle[i].isAlive) {
 			//角度(angle)によって移動
 			particle[i].transform.x += cos(particle[i].angle) * particle[i].speed;
 			particle[i].transform.y += sin(particle[i].angle) * particle[i].speed;
 			particle[i].transform.y -= 5;
 			particle[i].alpha -= 5;
 			particle[i].speed -= 0.08f;
+
+			if (particle[i].alpha <= 0)
+			{
+				particle[i].isAlive = false;
+			}
 		}
 	}
 }
