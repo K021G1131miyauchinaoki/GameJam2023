@@ -2,41 +2,19 @@
 
 void Player::Initialize()
 {
-	pos = { 225,300 };	// 中心座標
-	radius = 20;		// 半径
+	pos = { 15,0 };	// 中心座標
+	radius = 15;		// 半径
 	speed = 0;			// 速度
 	gravity = 0.0f;		// 重力
 	isJamp = false;		//ジャンプ管理フラグ
+	isdir = false;		//方向管理フラグ  false = 右　true = 左
+
+	graphHandle = LoadGraph("Resource/jamtest.png");
 }
 
 void Player::Update(char* keys, char* oldkey)
 {
-	//移動
-	if (keys[KEY_INPUT_RIGHT] && oldkey[KEY_INPUT_RIGHT])
-	{
-		if (speed <= 5)
-		{
-			speed += 0.2f;
-		}
-	}
-	else if (keys[KEY_INPUT_LEFT] && oldkey[KEY_INPUT_LEFT])
-	{
-		if (speed >= -5)
-		{
-			speed -= 0.2f;
-		}
-	}
-	else
-	{
-		speed = 0.0f;
-	}
-	pos.x += speed;
-	//ジャンプ
-	if (keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE] && !isJamp)
-	{
-		gravity = -6.0f;
-		isJamp = true;
-	}
+	Move(keys, oldkey);
 	//重力加速
 	pos.y += gravity;
 	if (pos.y <= 400)	//底についていなければ
@@ -55,8 +33,58 @@ void Player::Update(char* keys, char* oldkey)
 
 void Player::Draw()
 {
-	DrawBox(pos.x - radius, pos.y - radius, pos.x + radius, pos.y + radius, GetColor(255, 255, 255), true);
+	DrawGraph(pos.x - radius, pos.y - radius, graphHandle, true);
+	DrawBox(pos.x - radius, pos.y - radius, pos.x + radius, pos.y + radius, GetColor(255, 255, 255), false);
 
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "player : %f/%f\n", pos.x, pos.y);
 	DrawFormatString(0, 15, GetColor(255, 255, 255), "speed : %f\n", speed);
+	DrawFormatString(0, 30, GetColor(255, 255, 255), "isdir : %d", isdir);
+}
+
+void Player::Move(char* keys, char* oldkey)
+{
+	//移動
+	if (keys[KEY_INPUT_RIGHT] && oldkey[KEY_INPUT_RIGHT])
+	{
+		if (speed <= 5)
+		{
+			speed += 0.2f;
+		}
+		if (speed < 0)
+		{
+			speed = 0;
+		}
+
+		if (isdir)
+		{
+			isdir = false;
+		}
+	}
+	else if (keys[KEY_INPUT_LEFT] && oldkey[KEY_INPUT_LEFT])
+	{
+		if (speed >= -5)
+		{
+			speed -= 0.2f;
+		}
+		if (speed > 0)
+		{
+			speed = 0;
+		}
+		if (!isdir)
+		{
+			isdir = true;
+		}
+	}
+	else
+	{
+		speed = 0.0f;
+	}
+	pos.x += speed;
+
+	//ジャンプ
+	if (keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE] && !isJamp)
+	{
+		gravity = -6.0f;
+		isJamp = true;
+	}
 }
