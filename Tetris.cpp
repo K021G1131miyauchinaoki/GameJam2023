@@ -12,9 +12,20 @@ void Tetris::Initialize() {
 			map[y][x] = 0;
 		}
 	}
+	for (size_t i = 0; i < height; i++)
+	{
+		//‰¡‚Ì—¼’[‚ð1‚É‚·‚é
+		map[i][0] = map[i][width - 1] = 10;
+	}
+
+	for (size_t i = 0; i < width; i++)
+	{
+		//ˆê”Ô‰º‚ð1‚É‚·‚é
+		map[height - 1][i] = 10;
+	}
+
 	pos.x = r;
 	pos.y= r;
-	map[0][0] = 1;
 }
 
 void Tetris::Update() {
@@ -28,11 +39,11 @@ void Tetris::Draw() {
 		{
 			if (map[y][x] == 0)
 			{
-				DrawBox((pos.x * x) - r, (pos.y * y) - r-(r/2), (pos.x * x) + r, (pos.y * y) + r - (r / 2), GetColor(255, 255, 255), false);
+				DrawBox(r - r+ (r *2* x), r - r + (r * 2 * y) - (r / 2), r + r + (r * 2 * x), r + r + (r * 2 * y) - (r / 2), GetColor(255, 255, 255), false);
 			}
-			else
+			if(map[y][x] == 10)
 			{
-				DrawBox((pos.x * x) - r, (pos.y * y) - r-(r/2), (pos.x * x) + r, (pos.y * y) + r - (r / 2), GetColor(255, 255, 255), true);
+				DrawBox(r - r+ (r *2* x), r - r + (r * 2 * y) - (r / 2), r + r + (r * 2 * x), r + r + (r * 2 * y) - (r / 2), GetColor(255, 255, 255), true);
 			}
 		}
 	}

@@ -4,8 +4,8 @@
 class Tetris
 {
 public://Ã“Iƒƒ“ƒo•Ï”
-	static const int width = 12;
-	static const int height = 16;
+	static const int width = 14;
+	static const int height = 17;
 
 public:
 	//‰Šú‰»
@@ -18,7 +18,7 @@ public:
 
 private:
 	int map[height][width];
-	int r = 32;
+	int r = 8;
 	Vector2 pos;
 };
 
