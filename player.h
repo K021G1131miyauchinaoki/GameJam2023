@@ -27,6 +27,11 @@ private:
 	/// 移動とジャンプをする為の処理
 	/// </summary>
 	void Move(char* keys, char* oldkey);//移動関数
+
+	/// <summary>
+	/// 移動開始時に煙を出す為の処理
+	/// </summary>
+	void Smoke(char* keys, char* oldkey);//演出用関数
 private:
 	Vector2 pos;
 	int radius;

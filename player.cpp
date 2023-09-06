@@ -12,12 +12,14 @@ void Player::Initialize()
 	//煙
 	for (int i = 0; i < 5; i++)
 	{
-		particle[i].transform = pos;
+		particle[i].transform.x = 0;
+		particle[i].transform.y = 0;
 		particle[i].radius = 7;
 		particle[i].speed = 20.0f;
 		particle[i].isAlive = false;
 		particle[i].angle = 0;
 		particle[i].alpha = 255;
+		particle[i].color = GetColor(255, 255, 255);
 	}
 	
 
@@ -26,6 +28,7 @@ void Player::Initialize()
 
 void Player::Update(char* keys, char* oldkey)
 {
+	Smoke(keys, oldkey);
 	Move(keys, oldkey);
 	//重力加速
 	pos.y += gravity;
@@ -98,5 +101,40 @@ void Player::Move(char* keys, char* oldkey)
 	{
 		gravity = -8.0f;
 		isJamp = true;
+	}
+}
+
+void Player::Smoke(char* keys, char* oldkey)
+{
+	if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT])
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			//キーが押されたとき再初期化
+			particle[i].transform.x = pos.x; //座標をプレイヤーに指定
+			particle[i].transform.y = pos.y + radius; //足元を指定する
+			particle[i].radius = 7;
+			particle[i].speed = 20.0f;
+			particle[i].isAlive = false;
+			particle[i].angle = 0;
+			particle[i].alpha = 255;
+			particle[i].color = GetColor(255, 255, 255);
+		}
+	}
+
+	if (keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT])
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			//キーが押されたとき再初期化
+			particle[i].transform.x = pos.x; //座標をプレイヤーに指定
+			particle[i].transform.y = pos.y + radius; //足元を指定する
+			particle[i].radius = 7;
+			particle[i].speed = 20.0f;
+			particle[i].isAlive = false;
+			particle[i].angle = 0;
+			particle[i].alpha = 255;
+			particle[i].color = GetColor(255, 255, 255);
+		}
 	}
 }
