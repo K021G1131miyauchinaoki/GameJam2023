@@ -6,6 +6,8 @@ class Tetris
 public://Ã“Iƒƒ“ƒo•Ï”
 	static const int width = 14;
 	static const int height = 17;
+	static const int minoW = 1;
+	static const int minoH = 2;
 
 public:
 	//‰Šú‰»
@@ -18,7 +20,11 @@ public:
 
 private:
 	int map[height][width];
+	int display[height][width];
+	int mino[minoH][minoW];
 	int r = 8;
-	Vector2 pos;
+	int minoX = 5, minoY = 0;
+	int time;
+	const int timer=30;
 };
 
