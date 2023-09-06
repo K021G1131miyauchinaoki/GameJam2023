@@ -9,6 +9,18 @@ void Player::Initialize()
 	isJamp = false;		//ジャンプ管理フラグ
 	isdir = false;		//方向管理フラグ  false = 右　true = 左
 
+	//煙
+	for (int i = 0; i < 5; i++)
+	{
+		particle[i].transform = pos;
+		particle[i].radius = 7;
+		particle[i].speed = 20.0f;
+		particle[i].isAlive = false;
+		particle[i].angle = 0;
+		particle[i].alpha = 255;
+	}
+	
+
 	graphHandle = LoadGraph("Resource/jamtest.png");
 }
 

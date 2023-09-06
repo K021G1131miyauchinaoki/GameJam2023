@@ -7,7 +7,8 @@ typedef struct tagVector2 {
 }Vector2;
 
 typedef struct Particle {
-	Transform transform;	//座標、半径
+	Vector2 transform;	//座標
+	int radius=7;			//半径
 	int isAlive = 0;		//生存フラグ
 	float speed = 20.0f;		//速度
 	double angle = 0;			//角度
@@ -36,5 +37,7 @@ private:
 	bool isdir;
 
 	int graphHandle;
+
+	Particle particle[5];
 };
 
