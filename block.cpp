@@ -20,9 +20,19 @@ void Block::Initialize()
 
 void Block::Update(char* keys, char* oldkey)
 {
-	if (keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE])
+	if (keys[KEY_INPUT_1] && !oldkey[KEY_INPUT_1])
 	{
-		gravity = -8.0f;
+		isDamage = true;
+		for (int i = 0; i < MAX_PARTICLE; i++) {
+			
+		}
+	}
+	if (keys[KEY_INPUT_0] && !oldkey[KEY_INPUT_0])
+	{
+		isDamage = false;
+		for (int i = 0; i < MAX_PARTICLE; i++) {
+			particle[i].isAlive = 0;
+		}
 	}
 	//重力加速
 	pos.y += gravity;
@@ -37,17 +47,16 @@ void Block::Update(char* keys, char* oldkey)
 	//particle[MAX_PARTICLE].angle += 1;
 
 	//画面の中心からParticleを発生させる、処理としては複数弾の処理と似ている
+	if(isDamage == true){
 	for (int i = 0; i < MAX_PARTICLE; i++) {
 		if (particle[i].isAlive == 0) {
 			particle[i].isAlive = 1;
-			/*particle[i].transform.x = WIN_WIDTH / 2;
-			particle[i].transform.y = WIN_HEIGHT / 2;*/
 			particle[i].transform.x = pos.x;
 			particle[i].transform.y = pos.y;
 			particle[i].transform.radius = 1;
-			particle[i].angle = rand() % 361;	// 角度をランダムで決める
-			
-			particle[i].alpha = 255;			// 透明度をリセット
+			particle[i].angle = rand() % 100;	// 角度をランダムで決める
+			particle[i].speed = 5.0f;
+			particle[i].alpha = 250;			// 透明度をリセット
 			particle[i].color = GetColor(255, 255, 255);
 			break;
 		}
@@ -57,36 +66,32 @@ void Block::Update(char* keys, char* oldkey)
 	for (int i = 0; i < MAX_PARTICLE; i++) {
 		if (particle[i].isAlive == 1) {
 			//角度(angle)によって移動
-
 			particle[i].transform.x += cos(particle[i].angle) * particle[i].speed;
-			//particle[i].transform.y += sin(particle[i].angle) * particle[i].speed;
-
 			particle[i].transform.y += sin(particle[i].angle) * particle[i].speed;
-			particle[i].transform.radius = 5;		//円のサイズを大きくする
-			particle[i].alpha -= 2;				//だんだん透明にする
-
-			//画面外に出たらもしくはアルファ値が0以下になったら
-			if (particle[i].transform.x + particle[i].transform.radius <= 0 ||
-				particle[i].transform.x - particle[i].transform.radius >= 450 ||
-				particle[i].transform.y + particle[i].transform.radius <= 0 ||
-				particle[i].transform.y - particle[i].transform.radius >= 600 ||
-				particle[i].alpha <= 0) {
-				particle[i].isAlive = 0;
-			}
+			particle[i].transform.y += 5;
+			particle[i].alpha -= 5;
+			particle[i].speed -= 0.08f;
 		}
 	}
-
+	}
 }
 
 void Block::Draw()
 {
-    DrawBox(pos.x - radius, pos.y - radius, pos.x + radius, pos.y + radius, GetColor(0, 255, 0), true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	if (isDamage == false) {
+		DrawGraph(pos.x, pos.y, nodamage, true);
+	}
+	else {
+		DrawGraph(pos.x, pos.y, damage, true);
+	}
+    //DrawBox(pos.x - radius, pos.y - radius, pos.x + radius, pos.y + radius, GetColor(0, 255, 0), true);
     DrawFormatString(0, 15, GetColor(0, 255, 255), "player : %f/%f\n", pos.x, pos.y);
-
+	
 	for (int i = 0; i < MAX_PARTICLE; i++) {
 		if (particle[i].isAlive == 1) {
 			//各個体のアルファ値によってブレンドモードの値を変えている
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 50);
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, particle[i].alpha);
 			DrawGraph(
 				particle[i].transform.x,
 				particle[i].transform.y,
@@ -94,8 +99,6 @@ void Block::Draw()
 				TRUE
 			);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
-			DrawGraph(pos.x - radius, pos.y - radius, nodamage, true);
 		}
 	}
 }

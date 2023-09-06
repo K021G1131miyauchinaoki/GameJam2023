@@ -1,5 +1,4 @@
 #include "DxLib.h"
-#include "player.h"
 #include "block.h"
 
 // ウィンドウのタイトルに表示する文字列
@@ -43,9 +42,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// 画像などのリソースデータの変数宣言と読み込み
 
 	// ゲームループで使う変数の宣言
-	Player* player = new Player();
-	player->Initialize();
-	
 	Block* block = new Block();
 	block->Initialize();
 	// 最新のキーボード情報用
@@ -68,10 +64,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//---------  ここからにプログラムを記述  ---------//
 
 		//更新
-		player->Update(keys,oldkeys);
 		block->Update(keys,oldkeys);
 		//描画---------------
-		player->Draw();
 		block->Draw();
 
 
