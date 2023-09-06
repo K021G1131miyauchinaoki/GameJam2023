@@ -1,6 +1,7 @@
 #pragma once
 #include "DxLib.h"
-#include <cmath>
+#include <vector> 
+#include <cmath>  
 
 typedef struct tagVector2 {
 	float x;
@@ -8,13 +9,13 @@ typedef struct tagVector2 {
 }Vector2;
 
 typedef struct Particle {
-	Vector2 transform;	//À•W
-	int radius=7;			//”¼Œa
-	int isAlive = 0;		//¶‘¶ƒtƒ‰ƒO
-	float speed = 20.0f;		//‘¬“x
-	double angle = 0;			//Šp“x
-	int alpha = 255;		//“§–¾“x
-	unsigned int color;		//F
+	Vector2 transform;	//åº§æ¨™
+	int radius=7;			//åŠå¾„
+	int isAlive = 0;		//ç”Ÿå­˜ãƒ•ãƒ©ã‚°
+	float speed = 20.0f;		//é€Ÿåº¦
+	double angle = 0;			//è§’åº¦
+	int alpha = 255;		//é€æ˜åº¦
+	unsigned int color;		//è‰²
 }Particle;
 
 class Player
@@ -25,21 +26,21 @@ public:
 	void Draw();
 private:
 	/// <summary>
-	/// ˆÚ“®‚ÆƒWƒƒƒ“ƒv‚ğ‚·‚éˆ×‚Ìˆ—
+	/// ç§»å‹•ã¨ã‚¸ãƒ£ãƒ³ãƒ—ã‚’ã™ã‚‹ç‚ºã®å‡¦ç†
 	/// </summary>
-	void Move(char* keys, char* oldkey);//ˆÚ“®ŠÖ”
+	void Move(char* keys, char* oldkey);//ç§»å‹•é–¢æ•°
 
 	/// <summary>
-	/// ˆÚ“®ŠJn‚É‰Œ‚ğo‚·ˆ×‚Ìˆ—
+	/// ç§»å‹•é–‹å§‹æ™‚ã«ç…™ã‚’å‡ºã™ç‚ºã®å‡¦ç†
 	/// </summary>
-	void Smoke(char* keys, char* oldkey);//‰‰o—pŠÖ”
+	void Smoke(char* keys, char* oldkey);//æ¼”å‡ºç”¨é–¢æ•°
 private:
 	Vector2 pos;
 	int radius;
 	float speed;
 	float gravity;
 
-	bool isJamp;
+	bool isJump;
 	bool isdir;
 	bool isMove;
 
@@ -47,5 +48,6 @@ private:
 
 	const int MAX_PARTICLE = 5;
 	Particle particle[5];
+	Particle jumpParticle[5];
 };
 
