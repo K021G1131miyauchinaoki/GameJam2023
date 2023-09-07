@@ -3,13 +3,6 @@
 #include <vector> 
 #include <cmath>  
 
-typedef struct tagVector2 {
-	float x;
-	float y;
-
-	Vector2& operator+=(const	Vector2& v);
-}Vector2;
-
 typedef struct Particle {
 	Vector2 transform;	//座標
 	int radius=7;			//半径
