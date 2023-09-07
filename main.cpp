@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "player.h"
+#include "Count.h"
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "GameJam2023";
@@ -45,6 +46,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	Player* player = new Player();
 	player->Initialize();
 	
+	Count* count = new Count();
+	count->Initialize();
 	// 最新のキーボード情報用
 	char keys[256] = { 0 };
 
@@ -66,9 +69,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		//更新
 		player->Update(keys,oldkeys);
+
+		count->Update(keys, oldkeys);
 		//描画---------------
 		player->Draw();
 
+		count->Draw();
 		for (int i = 0; i < 30; i++)
 		{
 			DrawLine(0, 1 * (i * 55.3), WIN_WIDTH, 1 * (i * 55.3), GetColor(255, 0, 0));
