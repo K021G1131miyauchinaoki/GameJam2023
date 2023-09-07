@@ -4,7 +4,7 @@ void Player::Initialize()
 {
 	pos = { 640,360 };	// 中心座標
 	radius = 30;		// 半径
-	speed = 0;			// 速度
+	speed = { 0 ,0 };			// 速度
 	gravity = 0.0f;		// 重力
 	isJump = false;		//ジャンプ管理フラグ
 	isdir = false;		//方向管理フラグ  false = 右　true = 左
@@ -111,4 +111,5 @@ void Player::Smoke(char* keys, char* oldkey)
 Vector2& tagVector2::operator+=(const Vector2& v)
 {
 	// TODO: return ステートメントをここに挿入します
+	v.x += v.x
 }
