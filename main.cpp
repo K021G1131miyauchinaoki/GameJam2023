@@ -5,10 +5,10 @@
 const char TITLE[] = "GameJam2023";
 
 // ウィンドウ横幅
-const int WIN_WIDTH = 520;
+const int WIN_WIDTH = 1280;
 
 // ウィンドウ縦幅
-const int WIN_HEIGHT = 600;
+const int WIN_HEIGHT = 720;
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
                    _In_ int nCmdShow) {
@@ -69,10 +69,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//描画---------------
 		player->Draw();
 
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 30; i++)
 		{
-			DrawLine(0, 1*(i*30), WIN_WIDTH, 1*(i*30), GetColor(255, 0, 0));
-			DrawLine(1 * (i * 30), 0, 1 * (i * 30), WIN_HEIGHT, GetColor(255, 0, 0));
+			DrawLine(0, 1 * (i * 55.3), WIN_WIDTH, 1 * (i * 55.3), GetColor(255, 0, 0));
+			DrawLine(1 * (i * 55.6), 0, 1 * (i * 55.6), WIN_HEIGHT, GetColor(255, 0, 0));
 		}
 		
 

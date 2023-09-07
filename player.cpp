@@ -2,8 +2,8 @@
 
 void Player::Initialize()
 {
-	pos = { 15,300 };	// 中心座標
-	radius = 15;		// 半径
+	pos = { 640,360 };	// 中心座標
+	radius = 30;		// 半径
 	speed = 0;			// 速度
 	gravity = 0.0f;		// 重力
 	isJump = false;		//ジャンプ管理フラグ
@@ -30,23 +30,7 @@ void Player::Update(char* keys, char* oldkey)
 {
 	Smoke(keys, oldkey);
 	Move(keys, oldkey);
-	//重力加速
-	pos.y += gravity;
-	if (pos.y <= 400)	//底についていなければ
-	{
-		gravity += 0.5f;//加速する
-	}
-	else				//そこについているならば
-	{
-		gravity = 0.0f; //加速しない(止める)
-		if (isJump)
-		{
-			isJump = false;
-			for (int i = 0; i < 5; i++) {
-				jumpParticle[i].isAlive = false;
-			}
-		}
-	}
+
 }
 
 void Player::Draw()
@@ -76,53 +60,28 @@ void Player::Draw()
 void Player::Move(char* keys, char* oldkey)
 {
 	//移動
-	if (keys[KEY_INPUT_RIGHT] && oldkey[KEY_INPUT_RIGHT])
+	if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT])
 	{
-		if (speed <= 5)
-		{
-			speed += 0.4f;
-		}
-		if (speed < 0)
-		{
-			speed = 0;
-		}
-
-		if (isdir)
+		speed.x = 55;
+		if (isdir)//自機の向きを決めている 右
 		{
 			isdir = false;
 		}
 	}
-	else if (keys[KEY_INPUT_LEFT] && oldkey[KEY_INPUT_LEFT])
+	else if (keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT])
 	{
-		if (speed >= -5)
-		{
-			speed -= 0.4f;
-		}
-		if (speed > 0)
-		{
-			speed = 0;
-		}
-		if (!isdir)
+		speed.x = -55;
+		if (!isdir)//自機の向きを決めている 左
 		{
 			isdir = true;
 		}
 	}
+
 	else
 	{
-		speed = 0.0f;
+		speed = { 0 ,0 };
 	}
-	pos.x += speed;
-
-	//ジャンプ
-	if (keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE] && !isJump)
-	{
-		gravity = -8.0f;
-		isJump = true;
-		for (int i = 0; i < 5; i++) {
-			jumpParticle[i].isAlive = false;
-		}
-	}
-	
+	pos += speed;
 }
 
 void Player::Smoke(char* keys, char* oldkey)

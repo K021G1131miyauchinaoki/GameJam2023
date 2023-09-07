@@ -37,7 +37,7 @@ private:
 private:
 	Vector2 pos;
 	int radius;
-	float speed;
+	Vector2 speed;
 	float gravity;
 
 	bool isJump;
