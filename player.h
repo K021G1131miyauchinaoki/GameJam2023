@@ -1,6 +1,6 @@
 #pragma once
 #include "DxLib.h"
-#include <vector> 
+#include "Vector2.h"
 #include <cmath>  
 
 typedef struct Particle {

@@ -4,7 +4,7 @@ void Player::Initialize()
 {
 	pos = { 640,360 };	// 中心座標
 	radius = 30;		// 半径
-	speed = { 0 ,0 };			// 速度
+	speed = { 0,0 };			// 速度
 	gravity = 0.0f;		// 重力
 	isJump = false;		//ジャンプ管理フラグ
 	isdir = false;		//方向管理フラグ  false = 右　true = 左
@@ -52,9 +52,8 @@ void Player::Draw()
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "player : %f/%f\n", pos.x, pos.y);
-	DrawFormatString(0, 15, GetColor(255, 255, 255), "speed : %f\n", speed);
-	DrawFormatString(0, 30, GetColor(255, 255, 255), "isdir : %d", isdir);
-	DrawFormatString(0, 45, GetColor(255, 255, 255), "isdir : %d", jumpParticle[0].isAlive);
+	DrawFormatString(0, 15, GetColor(255, 255, 255), "speed : %f\n", speed.x);
+	DrawFormatString(0, 30, GetColor(255, 255, 255), "speed : %f\n", speed.y);
 }
 
 void Player::Move(char* keys, char* oldkey)
@@ -71,6 +70,24 @@ void Player::Move(char* keys, char* oldkey)
 	else if (keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT])
 	{
 		speed.x = -55;
+		if (!isdir)//自機の向きを決めている 左
+		{
+			isdir = true;
+		}
+	}
+
+	else if (keys[KEY_INPUT_UP] && !oldkey[KEY_INPUT_UP])
+	{
+		speed.y = -55;
+		if (!isdir)//自機の向きを決めている 左
+		{
+			isdir = true;
+		}
+	}
+
+	else if (keys[KEY_INPUT_DOWN] && !oldkey[KEY_INPUT_DOWN])
+	{
+		speed.y = 55;
 		if (!isdir)//自機の向きを決めている 左
 		{
 			isdir = true;
