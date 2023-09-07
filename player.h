@@ -6,6 +6,8 @@
 typedef struct tagVector2 {
 	float x;
 	float y;
+
+	Vector2& operator+=(const	Vector2& v);
 }Vector2;
 
 typedef struct Particle {

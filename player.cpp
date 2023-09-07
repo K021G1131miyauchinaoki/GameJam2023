@@ -107,3 +107,8 @@ void Player::Smoke(char* keys, char* oldkey)
 			}
 		}
 }
+
+Vector2& tagVector2::operator+=(const Vector2& v)
+{
+	// TODO: return ステートメントをここに挿入します
+}
