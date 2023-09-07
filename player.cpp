@@ -61,7 +61,7 @@ void Player::Move(char* keys, char* oldkey)
 	//移動
 	if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT])
 	{
-		speed.x = 55;
+		speed.x = 55; //DrawLineで引いた線に近い値
 		if (isdir)//自機の向きを決めている 右
 		{
 			isdir = false;
@@ -75,7 +75,6 @@ void Player::Move(char* keys, char* oldkey)
 			isdir = true;
 		}
 	}
-
 	else if (keys[KEY_INPUT_UP] && !oldkey[KEY_INPUT_UP])
 	{
 		speed.y = -55;
@@ -88,9 +87,9 @@ void Player::Move(char* keys, char* oldkey)
 
 	else
 	{
-		speed = { 0 ,0 };
+		speed = { 0 ,0 }; //移動を止める
 	}
-	pos += speed;
+	pos += speed; //現在の座標から移動する
 }
 
 void Player::Smoke(char* keys, char* oldkey)

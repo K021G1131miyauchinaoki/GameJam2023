@@ -30,6 +30,7 @@ private:
 	/// </summary>
 	void Smoke(char* keys, char* oldkey);//演出用関数
 private:
+//プレイヤー
 	Vector2 pos;
 	int radius;
 	Vector2 speed;
@@ -40,7 +41,7 @@ private:
 	bool isMove;
 
 	int graphHandle;
-
+//パーティクル
 	const int MAX_PARTICLE = 5;
 	Particle particle[5];
 	Particle jumpParticle[5];
