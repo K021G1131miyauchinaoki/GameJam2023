@@ -4,10 +4,10 @@
 const char TITLE[] = "GameJam2023";
 
 // ウィンドウ横幅
-const int WIN_WIDTH = 450;
+const int WIN_WIDTH = 1280;
 
 // ウィンドウ縦幅
-const int WIN_HEIGHT = 600;
+const int WIN_HEIGHT = 720;
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
                    _In_ int nCmdShow) {
