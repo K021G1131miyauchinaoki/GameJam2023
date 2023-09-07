@@ -79,19 +79,11 @@ void Player::Move(char* keys, char* oldkey)
 	else if (keys[KEY_INPUT_UP] && !oldkey[KEY_INPUT_UP])
 	{
 		speed.y = -55;
-		if (!isdir)//自機の向きを決めている 左
-		{
-			isdir = true;
-		}
 	}
 
 	else if (keys[KEY_INPUT_DOWN] && !oldkey[KEY_INPUT_DOWN])
 	{
 		speed.y = 55;
-		if (!isdir)//自機の向きを決めている 左
-		{
-			isdir = true;
-		}
 	}
 
 	else
