@@ -1,4 +1,5 @@
 #include "DxLib.h"
+#include"map.h"
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "GameJam2023";
@@ -42,7 +43,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// ゲームループで使う変数の宣言
 	//ミヤタ確認用git確認用
-	
+	map* m = new map();
+	m->Initialize();
 	// 最新のキーボード情報用
 	char keys[256] = { 0 };
 
@@ -63,9 +65,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//---------  ここからにプログラムを記述  ---------//
 
 		//更新
-		
+		m->Update();
 		//描画---------------
-		
+		m->Draw();
 
 
 		//---------  ここまでにプログラムを記述  ---------//
