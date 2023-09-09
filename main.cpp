@@ -109,7 +109,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				pauseState = gameState;
 				gameState = pause;
 			}
-        m->Update();
+			m->Update();
 
 			break;
 		case over:
