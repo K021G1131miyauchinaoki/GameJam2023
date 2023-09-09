@@ -5,6 +5,7 @@
 class map
 {
 public:
+	void Reset();
 	void Initialize();
 	void Update();
 	void Draw();
@@ -15,5 +16,6 @@ private:
 	int ground[10][10];
 	int r;
 	int count;
+	int blockTex;
 	bool isClear;
 };

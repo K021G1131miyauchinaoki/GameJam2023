@@ -45,6 +45,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	//ミヤタ確認用git確認用
 	map* m = new map();
 	m->Initialize();
+	m->Reset();
 	// 最新のキーボード情報用
 	char keys[256] = { 0 };
 
