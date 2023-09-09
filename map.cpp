@@ -2,7 +2,7 @@
 #include "map.h"
 
 void map::Initialize() {
-	r = 16;
+	r = 30;
 	blockTex = LoadGraph("block.png");
 }
 
