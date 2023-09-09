@@ -1,98 +1,189 @@
 #include "DxLib.h"
 #include"map.h"
 
-// ƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹‚É•\¦‚·‚é•¶š—ñ
+// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¿ã‚¤ãƒˆãƒ«ã«è¡¨ç¤ºã™ã‚‹æ–‡å­—åˆ—
 const char TITLE[] = "GameJam2023";
 
-// ƒEƒBƒ“ƒhƒE‰¡•
-const int WIN_WIDTH = 450;
+// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ¨ªå¹…
+const int WIN_WIDTH = 1280;
 
-// ƒEƒBƒ“ƒhƒEc•
-const int WIN_HEIGHT = 600;
+// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç¸¦å¹…
+const int WIN_HEIGHT = 720;
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
                    _In_ int nCmdShow) {
-	// Log.tex‚ğÁ‚·ˆ—
+	// Log.texã‚’æ¶ˆã™å‡¦ç†
 	SetOutApplicationLogValidFlag(FALSE);
 
-	// ƒEƒBƒ“ƒhƒEƒ‚[ƒh‚Éİ’è
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰ã«è¨­å®š
 	ChangeWindowMode(TRUE);
 
-	// ƒ^ƒCƒgƒ‹‚ğ•ÏX
+	// ã‚¿ã‚¤ãƒˆãƒ«ã‚’å¤‰æ›´
 	SetMainWindowText(TITLE);
 
-	// ‰æ–ÊƒTƒCƒY‚ÌÅ‘åƒTƒCƒYAƒJƒ‰[ƒrƒbƒg”‚ğİ’è(ƒ‚ƒjƒ^[‚Ì‰ğ‘œ“x‚É‡‚í‚¹‚é)
+	// ç”»é¢ã‚µã‚¤ã‚ºã®æœ€å¤§ã‚µã‚¤ã‚ºã€ã‚«ãƒ©ãƒ¼ãƒ“ãƒƒãƒˆæ•°ã‚’è¨­å®š(ãƒ¢ãƒ‹ã‚¿ãƒ¼ã®è§£åƒåº¦ã«åˆã‚ã›ã‚‹)
 	SetGraphMode(WIN_WIDTH, WIN_HEIGHT, 32);
 
-	// ‰æ–ÊƒTƒCƒY‚ğİ’è(‰ğ‘œ“x‚Æ‚Ì”ä—¦‚Åİ’è)
+	// ç”»é¢ã‚µã‚¤ã‚ºã‚’è¨­å®š(è§£åƒåº¦ã¨ã®æ¯”ç‡ã§è¨­å®š)
 	SetWindowSizeExtendRate(1.0);
 
-	// ‰æ–Ê‚Ì”wŒiF‚ğİ’è‚·‚é
+	// ç”»é¢ã®èƒŒæ™¯è‰²ã‚’è¨­å®šã™ã‚‹
 	SetBackgroundColor(0x00, 0x00, 0x00);
 
-	// DXlib‚Ì‰Šú‰»
+	// DXlibã®åˆæœŸåŒ–
 	if (DxLib_Init() == -1)
 	{
 		return -1;
 	}
 
-	// (ƒ_ƒuƒ‹ƒoƒbƒtƒ@)•`‰ææƒOƒ‰ƒtƒBƒbƒN—Ìˆæ‚Í— –Ê‚ğw’è
+	// (ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡)æç”»å…ˆã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯é ˜åŸŸã¯è£é¢ã‚’æŒ‡å®š
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	// ‰æ‘œ‚È‚Ç‚ÌƒŠƒ\[ƒXƒf[ƒ^‚Ì•Ï”éŒ¾‚Æ“Ç‚İ‚İ
+	// ç”»åƒãªã©ã®ãƒªã‚½ãƒ¼ã‚¹ãƒ‡ãƒ¼ã‚¿ã®å¤‰æ•°å®£è¨€ã¨èª­ã¿è¾¼ã¿
 
-	// ƒQ[ƒ€ƒ‹[ƒv‚Åg‚¤•Ï”‚ÌéŒ¾
-	//ƒ~ƒ„ƒ^Šm”F—pgitŠm”F—p
+	// ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—ã§ä½¿ã†å¤‰æ•°ã®å®£è¨€
+	//ãƒŸãƒ¤ã‚¿ç¢ºèªç”¨gitç¢ºèªç”¨
 	map* m = new map();
 	m->Initialize();
 	m->Reset();
-	// ÅV‚ÌƒL[ƒ{[ƒhî•ñ—p
+	// æœ€æ–°ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±ç”¨
 	char keys[256] = { 0 };
 
-	// 1ƒ‹[ƒv(ƒtƒŒ[ƒ€)‘O‚ÌƒL[ƒ{[ƒhî•ñ
-	char oldkeys[256] = { 0 };
+	// 1ãƒ«ãƒ¼ãƒ—(ãƒ•ãƒ¬ãƒ¼ãƒ )å‰ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±
+	char prev[256] = { 0 };
 
-	// ƒQ[ƒ€ƒ‹[ƒv
+	//ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—ç”¨
+	enum  GameState
+	{
+		title,
+		game,
+		over,
+		pause,
+
+	};
+	GameState gameState = title;
+	GameState pauseState;
+
+	int titleTex = LoadGraph("Resource/GameStates/title.png");
+	int gameTex = LoadGraph("Resource/GameStates/game.png");
+	int overTex = LoadGraph("Resource/GameStates/over.png");
+	int pauseTex = LoadGraph("Resource/GameStates/pause.png");
+	// ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—
 	while (true)
 	{
 		ClearDrawScreen();
-		// ÅV‚ÌƒL[ƒ{[ƒhî•ñ‚¾‚Á‚½‚à‚Ì‚Í1ƒtƒŒ[ƒ€‘O‚ÌƒL[ƒ{[ƒhî•ñ‚Æ‚µ‚Ä•Û‘¶
+		// æœ€æ–°ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±ã ã£ãŸã‚‚ã®ã¯1ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±ã¨ã—ã¦ä¿å­˜
 		for (int i = 0; i < 256; ++i)
 		{
-			oldkeys[i] = keys[i];
+			prev[i] = keys[i];
 		}
-		// ÅV‚ÌƒL[ƒ{[ƒhî•ñ‚ğæ“¾
+		// æœ€æ–°ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±ã‚’å–å¾—
 		GetHitKeyStateAll(keys);
-		//---------  ‚±‚±‚©‚ç‚ÉƒvƒƒOƒ‰ƒ€‚ğ‹Lq  ---------//
+		//---------  ã“ã“ã‹ã‚‰ã«ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’è¨˜è¿°  ---------//
 
-		//XV
-		m->Update();
-		//•`‰æ---------------
-		m->Draw();
+		//æ›´æ–°
+		switch (gameState)
+		{
+
+		case title:
+			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			{
+				gameState = game;
+			}
+			//pauseç”¨
+			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			{
+				pauseState = gameState;
+				gameState = pause;
+			}
+
+			break;
+		case game:
+			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			{
+				gameState = over;
+			}
+			//pauseç”¨
+			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			{
+				pauseState = gameState;
+				gameState = pause;
+			}
+        m->Update();
+
+			break;
+		case over:
+			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			{
+				gameState = title;
+			}
+			//pauseç”¨
+			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			{
+				pauseState = gameState;
+				gameState = pause;
+			}
+
+			break;
+		case pause:
+			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			{
+				gameState = pauseState;
+			}
+
+			break;
+		default:
+			break;
+		};
+		
+		//æç”»---------------
+		switch (gameState)
+		{
+
+		case title:
+			DrawGraph(0, 0, titleTex, TRUE);
+
+			break;
+		case game:
+      m->Draw();
+			DrawGraph(0, 0, gameTex, TRUE);
+
+			break;
+		case over:
+			DrawGraph(0, 0, overTex, TRUE);
+
+			break;
+		case pause:
+			DrawGraph(0, 0, pauseTex, TRUE);
+
+			break;
+		default:
+			break;
+		};
 
 
-		//---------  ‚±‚±‚Ü‚Å‚ÉƒvƒƒOƒ‰ƒ€‚ğ‹Lq  ---------//
-		// (ƒ_ƒuƒ‹ƒoƒbƒtƒ@)— –Ê
+		//---------  ã“ã“ã¾ã§ã«ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’è¨˜è¿°  ---------//
+		// (ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡)è£é¢
 		ScreenFlip();
 
-		// 20ƒ~ƒŠ•b‘Ò‹@(‹^—60FPS)
+		// 20ãƒŸãƒªç§’å¾…æ©Ÿ(ç–‘ä¼¼60FPS)
 		WaitTimer(20);
 
-		// WindowsƒVƒXƒeƒ€‚©‚ç‚­‚éî•ñ‚ğˆ—‚·‚é
+		// Windowsã‚·ã‚¹ãƒ†ãƒ ã‹ã‚‰ãã‚‹æƒ…å ±ã‚’å‡¦ç†ã™ã‚‹
 		if (ProcessMessage() == -1)
 		{
 			break;
 		}
 
-		// ESCƒL[‚ª‰Ÿ‚³‚ê‚½‚çƒ‹[ƒv‚©‚ç”²‚¯‚é
+		// ESCã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸã‚‰ãƒ«ãƒ¼ãƒ—ã‹ã‚‰æŠœã‘ã‚‹
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1)
 		{
 			break;
 		}
 	}
-	// Dxƒ‰ƒCƒuƒ‰ƒŠI—¹ˆ—
+	// Dxãƒ©ã‚¤ãƒ–ãƒ©ãƒªçµ‚äº†å‡¦ç†
 	DxLib_End();
 
-	// ³íI—¹
+	// æ­£å¸¸çµ‚äº†
 	return 0;
 }
