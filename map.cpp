@@ -1,12 +1,12 @@
 #include "DxLib.h"
-#include "map.h"
+#include "Map.h"
 
-void map::Initialize() {
+void Map::Initialize() {
 	r = 30;
-	blockTex = LoadGraph("block.png");
+	blockTex = LoadGraph("Resource/block.png");
 }
 
-void map::Reset() {
+void Map::Reset() {
 	
 	isClear = false;
 	count = 0;
@@ -58,7 +58,7 @@ void map::Reset() {
 	}
 }
 
-void map::Update() {
+void Map::Update() {
 	count = 0;
 	for (size_t i = 0; i < HEIGHT; i++)
 	{
@@ -76,7 +76,7 @@ void map::Update() {
 	}
 }
 
-void map::Draw() {
+void Map::Draw() {
 	for (size_t i = 0; i < HEIGHT; i++)
 	{
 		for (size_t j = 0; j < WIDHT; j++)
