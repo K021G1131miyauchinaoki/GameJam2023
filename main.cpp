@@ -1,13 +1,14 @@
 #include "DxLib.h"
+#include "player.h"
+#include "Count.h"
 #include"map.h"
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "GameJam2023";
 
-// ウィンドウ横幅
-const int WIN_WIDTH = 1280;
 
-// ウィンドウ縦幅
+// �E�B���h�E����
+const int WIN_WIDTH = 1280;
 const int WIN_HEIGHT = 720;
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
@@ -39,14 +40,26 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// (ダブルバッファ)描画先グラフィック領域は裏面を指定
 	SetDrawScreen(DX_SCREEN_BACK);
 
+
+	
 	// 画像などのリソースデータの変数宣言と読み込み
 
 	// ゲームループで使う変数の宣言
-	//ミヤタ確認用git確認用
+	/
 	map* m = new map();
 	m->Initialize();
 	m->Reset();
+  
+	// �摜�Ȃǂ̃��\�[�X�f�[�^�̕ϐ��錾�Ɠǂݍ���
+	
+	// �Q�[�����[�v�Ŏg���ϐ��̐錾
+  Player* player = new Player();
+	player->Initialize();
+	
+	Count* count = new Count();
+	count->Initialize();
 	// 最新のキーボード情報用
+
 	char keys[256] = { 0 };
 
 	// 1ループ(フレーム)前のキーボード情報
@@ -109,6 +122,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				pauseState = gameState;
 				gameState = pause;
 			}
+      player->Update(keys,oldkeys);
+
+		  count->Update(keys, oldkeys);
 			m->Update();
 
 			break;
@@ -147,7 +163,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		case game:
 			DrawGraph(0, 0, gameTex, TRUE);
 			m->Draw();
-
+      player->Draw();
+      count->Draw();
 			break;
 		case over:
 			DrawGraph(0, 0, overTex, TRUE);
@@ -161,6 +178,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		};
 
+		
+
+		for (int i = 0; i < 30; i++)
+		{
+			DrawLine(0, 1 * (i * 55.3), WIN_WIDTH, 1 * (i * 55.3), GetColor(255, 0, 0));
+			DrawLine(1 * (i * 55.6), 0, 1 * (i * 55.6), WIN_HEIGHT, GetColor(255, 0, 0));
+		}
+		
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
