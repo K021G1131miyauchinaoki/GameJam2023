@@ -53,18 +53,38 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	enum  GameState
 	{
 		title,
+		select,
 		game,
 		over,
 		pause,
 
 	};
+	enum Stage
+	{
+		zero,
+		one,
+		two,
+		three,
+		four,
+		five
+	};
+
+	void GameReset();
 	GameState gameState = title;
 	GameState pauseState;
 
 	int titleTex = LoadGraph("Resource/GameStates/title.png");
+	int selectTex = LoadGraph("Resource/GameStates/select.png");
 	int gameTex = LoadGraph("Resource/GameStates/game.png");
 	int overTex = LoadGraph("Resource/GameStates/over.png");
 	int pauseTex = LoadGraph("Resource/GameStates/pause.png");
+
+	//ステージ選択要変数
+	const int STAGE_MIN = 0;
+	const int STAGE_MAX = 5;
+	int selectStage = STAGE_MIN;
+
+	bool isPlay = false;
 	// ゲームループ
 	while (true)
 	{
@@ -79,14 +99,53 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//---------  ここからにプログラムを記述  ---------//
 
 		//更新
+#pragma region
 		switch (gameState)
 		{
 
 		case title:
+			isPlay = false;
+			//次のシーンへ
+			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			{
+				gameState = select;
+			}
+			//pause用
+			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			{
+				pauseState = gameState;
+				gameState = pause;
+			}
+
+			break;
+		case select:
+			//次のシーンへ（決定）
 			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = game;
 			}
+			//ステージ選択する
+			//右に行く
+			if (keys[KEY_INPUT_RIGHT] == 1 && prev[KEY_INPUT_RIGHT] == 0)
+			{
+				selectStage ++;
+				if (selectStage >= STAGE_MAX)
+				{
+					selectStage = STAGE_MAX;
+				}
+			}
+			//左に行く
+			if (keys[KEY_INPUT_LEFT] == 1 && prev[KEY_INPUT_LEFT] == 0)
+			{
+				selectStage--;
+				if (selectStage >= STAGE_MIN)
+				{
+					selectStage = STAGE_MIN;
+				}
+			}
+
+
+
 			//pause用
 			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
 			{
@@ -96,10 +155,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			break;
 		case game:
+			//次のシーンへ
 			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = over;
 			}
+			isPlay = true;
+			//選択されたステージをプレイ
+
+			if(selectStage)
 			//pause用
 			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
 			{
@@ -109,6 +173,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			break;
 		case over:
+			isPlay = false;
+			//次のシーンへ
 			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = title;
@@ -122,6 +188,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			break;
 		case pause:
+			//元に戻る
 			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
 			{
 				gameState = pauseState;
@@ -131,24 +198,62 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		default:
 			break;
 		};
-		
+#pragma endregionゲームループ処理
+#pragma region
+		if (isPlay)
+		{
+			switch (selectStage)//ステージ
+			{
+			case 0:
+				
+
+				break;
+			case 1:
+				
+
+				break;
+			case 2:
+				
+
+				break;
+			case 3:
+				
+
+				break;
+			case 4:
+				
+
+				break;
+			case 5:
+				
+
+				break;
+			default:
+				break;
+			}
+		}
+#pragma endregionステージ処理
 		//描画---------------
 		switch (gameState)
 		{
 
-		case title:
+		case title://タイトル
 			DrawGraph(0, 0, titleTex, TRUE);
 
 			break;
-		case game:
+		case select://ステージ選択画面
+			DrawGraph(0, 0, selectTex, TRUE);
+
+			break;
+		case game://プレイ
 			DrawGraph(0, 0, gameTex, TRUE);
 
 			break;
-		case over:
+		case over://ゲームオーバー
 			DrawGraph(0, 0, overTex, TRUE);
 
 			break;
-		case pause:
+		case pause://ポーズ
 			DrawGraph(0, 0, pauseTex, TRUE);
 
 			break;
@@ -181,4 +286,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// 正常終了
 	return 0;
+
+	void GameReset()
+	{
+		isPlay = false;
+		int selectStage = STAGE_MIN;
+	}
 }
+
+
