@@ -1,10 +1,7 @@
 #include"Vector2.h"
 #include<cmath>//sqrt
 
-Vector2::Vector2()
-{
-
-}
+Vector2::Vector2(){}
 
 Vector2::Vector2(float x, float y)
 {

@@ -21,7 +21,6 @@ void Player::Initialize()
 		particle[i].alpha = 255;
 		particle[i].color = GetColor(255, 255, 255);
 	}
-	
 
 	graphHandle = LoadGraph("Resource/jamtest.png");
 }
