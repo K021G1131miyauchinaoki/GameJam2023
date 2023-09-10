@@ -45,7 +45,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// 画像などのリソースデータの変数宣言と読み込み
 
 	// ゲームループで使う変数の宣言
-	/
 	map* m = new map();
 	m->Initialize();
 	m->Reset();
@@ -53,7 +52,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// �摜�Ȃǂ̃��\�[�X�f�[�^�̕ϐ��錾�Ɠǂݍ���
 	
 	// �Q�[�����[�v�Ŏg���ϐ��̐錾
-  Player* player = new Player();
+	Player* player = new Player();
 	player->Initialize();
 	
 	Count* count = new Count();
@@ -122,9 +121,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				pauseState = gameState;
 				gameState = pause;
 			}
-      player->Update(keys,oldkeys);
+      player->Update(keys,prev);
 
-		  count->Update(keys, oldkeys);
+		  count->Update(keys, prev);
 			m->Update();
 
 			break;
@@ -163,8 +162,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		case game:
 			DrawGraph(0, 0, gameTex, TRUE);
 			m->Draw();
-      player->Draw();
-      count->Draw();
+			player->Draw();
+			count->Draw();
 			break;
 		case over:
 			DrawGraph(0, 0, overTex, TRUE);
