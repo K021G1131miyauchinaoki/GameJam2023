@@ -156,10 +156,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			break;
 		case game:
-			DrawGraph(0, 0, gameTex, TRUE);
+			//DrawGraph(0, 0, gameTex, TRUE);
 			m->Draw();
-      player->Draw();
-      count->Draw();
+			player->Draw();
+			count->Draw();
 			break;
 		case over:
 			DrawGraph(0, 0, overTex, TRUE);
