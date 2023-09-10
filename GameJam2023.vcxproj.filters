@@ -7,7 +7,7 @@
     <ClCompile Include="main.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="map.cpp">
+    <ClCompile Include="Map.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="player.cpp">
@@ -21,7 +21,7 @@
     <ClInclude Include="Count.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="map.h">
+    <ClInclude Include="Map.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="player.h">

@@ -2,7 +2,7 @@
 #define WIDHT 10
 #define HEIGHT 10
 
-class map
+class Map
 {
 public:
 	void Reset();

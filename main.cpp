@@ -1,7 +1,7 @@
 #include "DxLib.h"
 #include "player.h"
 #include "Count.h"
-#include"map.h"
+#include"Map.h"
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "GameJam2023";
@@ -45,7 +45,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// 画像などのリソースデータの変数宣言と読み込み
 
 	// ゲームループで使う変数の宣言
-	map* m = new map();
+	Map* m = new Map();
 	m->Initialize();
 	m->Reset();
 	Player* player = new Player();
