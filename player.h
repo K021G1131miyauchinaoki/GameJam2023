@@ -2,6 +2,7 @@
 #include "DxLib.h"
 #include "Vector2.h"
 #include <cmath>  
+#include"Map.h"	
 
 typedef struct Particle {
 	Vector2 transform;	//座標
@@ -19,6 +20,7 @@ public:
 	void Initialize();
 	void Update(char* keys,char* oldkey);
 	void Draw();
+	void SetMap(Map* map_) { map = map_; }
 private:
 	/// <summary>
 	/// 移動とジャンプをする為の処理
@@ -40,10 +42,8 @@ private:
 	Vector2 playerArray;
 	int radius;
 	Vector2 speed;
-	float gravity;
 
 	int isdir;
-	bool isJump;
 	bool isMove;
 
 	int graphHandle;
@@ -51,4 +51,6 @@ private:
 	const int MAX_PARTICLE = 5;
 	Particle particle[5];
 	Particle jumpParticle[5];
+	//マップ
+	Map* map = nullptr;
 };

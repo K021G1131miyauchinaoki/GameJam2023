@@ -2,12 +2,10 @@
 
 void Player::Initialize()
 {
-	initialPos = { 60,90 };//マップチップの座標に合せる用
-	pos = { initialPos.x,initialPos.y };	// 中心座標
+	initialPos = { 60,90 };//マップチップでいうところの[0][0]の座標
+	pos = { initialPos.x+60,initialPos.y+60 };	// 中心座標
 	radius = 30;		// 半径
-	speed = { 0,0 };			// 速度
-	gravity = 0.0f;		// 重力
-	isJump = false;		//ジャンプ管理フラグ
+	speed = { 0,0 };	// 速度
 	isdir = 0;		//方向管理フラグ  0 = 右　1 = 左　2 = 上　3 = 下
 	isMove = false;		//移動管理フラグ
 	//煙
@@ -59,32 +57,40 @@ void Player::Draw()
 
 void Player::Move(char* keys, char* oldkey)
 {
+	speed = { 0 ,0 }; //移動を止める
 	//移動
 	if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT])
 	{
-		speed.x = 60; //DrawLineで引いた線に近い値
+		if (map->GetNextMap(static_cast<int>(playerArray.y), static_cast<int>(playerArray.x) + 1) == 0)
+		{
+			speed.x = 60; //DrawLineで引いた線に近い値
+		}
 		isdir = 0;
 	}
 	else if (keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT])
 	{
-		speed.x = -60;
+		if (map->GetNextMap(static_cast<int>(playerArray.y), static_cast<int>(playerArray.x) - 1) == 0)
+		{
+			speed.x = -60;
+		}
 		isdir = 1;
 	}
 	else if (keys[KEY_INPUT_UP] && !oldkey[KEY_INPUT_UP])
 	{
-		speed.y = -60;
+		if (map->GetNextMap(static_cast<int>(playerArray.y) - 1, static_cast<int>(playerArray.x)) == 0)
+		{
+			speed.y = -60;
+		}
 		isdir = 2;
 	}
 
 	else if (keys[KEY_INPUT_DOWN] && !oldkey[KEY_INPUT_DOWN])
 	{
-		speed.y = 60;
+		if (map->GetNextMap(static_cast<int>(playerArray.y) + 1, static_cast<int>(playerArray.x)) == 0)
+		{
+			speed.y = 60;
+		}
 		isdir = 3;
-	}
-
-	else
-	{
-		speed = { 0 ,0 }; //移動を止める
 	}
 	pos += speed; //現在の座標から移動する
 }
@@ -115,25 +121,24 @@ void Player::Smoke(char* keys, char* oldkey)
 
 void Player::Kick(char* keys, char* oldkey)
 {
-	if (isdir == 0&& 
-		keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE])//右
+	if (keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE])
 	{
-		
-	}
-	else if (isdir == 1 &&
-		keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE])//左
-	{
-		
-	}
-	else if (isdir == 2 &&
-		keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE])//上
-	{
-		
-	}
+		if (isdir == 0)//右
+		{
 
-	else if (isdir == 3 &&
-		keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE])//下
-	{
-		
+		}
+		else if (isdir == 1)//左
+		{
+
+		}
+		else if (isdir == 2)//上
+		{
+
+		}
+		else if (isdir == 3)//下
+		{
+
+		}
 	}
+	
 }
