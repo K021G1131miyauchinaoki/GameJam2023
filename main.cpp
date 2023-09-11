@@ -52,6 +52,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		title,
 		select,
 		game,
+		clear,
 		over,
 		pause,
 
@@ -66,6 +67,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	int selectTex = LoadGraph("Resource/GameStates/select.png");
 	int gameTex = LoadGraph("Resource/GameStates/game.png");
 	int overTex = LoadGraph("Resource/GameStates/over.png");
+	int clearTex = LoadGraph("Resource/GameStates/clear.png");
 	int pauseTex = LoadGraph("Resource/GameStates/pause.png");
 	int mapTex = LoadGraph("Resource/Map/stage.png");
 	int mapSelectTex = LoadGraph("Resource/Map/select.png");
@@ -250,12 +252,27 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//次のシーンへ
 			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
 			{
-				gameState = over;
+				gameState = clear;
 			}
 			isPlay = true;
 			//選択されたステージをプレイ
 
 			
+			//pause用
+			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			{
+				pauseState = gameState;
+				gameState = pause;
+			}
+
+			break;
+		case clear:
+			isPlay = false;
+			//次のシーンへ
+			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			{
+				gameState = title;
+			}
 			//pause用
 			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
 			{
@@ -321,6 +338,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				
 
 				break;
+			case 6:
+
+
+				break;
+			case 7:
+
+
+				break;
 			default:
 				break;
 			}
@@ -354,6 +379,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		case game://プレイ
 			DrawGraph(0, 0, gameTex, TRUE);
+
+			break;
+		case clear://ゲームクリア
+			DrawGraph(0, 0, clearTex, TRUE);
 
 			break;
 		case over://ゲームオーバー
