@@ -7,6 +7,8 @@ public:
 	void Initialize();
 	void Update(char* keys, char* oldkey);
 	void Draw();
+
+	void AddCount();
 private:
 	int graphHandle[10];
 	char strNum[4];

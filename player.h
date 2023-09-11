@@ -2,6 +2,7 @@
 #include "DxLib.h"
 #include "Vector2.h"
 #include <cmath>  
+#include <math.h>
 #include"Map.h"	
 
 typedef struct Particle {
@@ -47,6 +48,19 @@ private:
 	bool isMove;
 
 	int graphHandle;
+//イージング
+	bool easingflag;
+	int frame;
+	double endframe;
+	double x;
+	double y;
+	double startX;
+	double startY;
+	double endX;
+	double EZ(double x)
+	{
+		return 1 - cos((x * 3.14) / 2);
+	}
 //パーティクル
 	const int MAX_PARTICLE = 5;
 	Particle particle[5];
