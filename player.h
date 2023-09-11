@@ -31,9 +31,13 @@ private:
 	void Smoke(char* keys, char* oldkey);//演出用関数
 
 	void Kick(char* keys, char* oldkey);//回路を動かす関数
+	Vector2 GetPlayerArray() { return playerArray; }
+
 private:
 //プレイヤー
 	Vector2 pos;
+	Vector2	initialPos;
+	Vector2 playerArray;
 	int radius;
 	Vector2 speed;
 	float gravity;

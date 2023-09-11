@@ -7,7 +7,6 @@
 const char TITLE[] = "GameJam2023";
 
 
-// �E�B���h�E����
 const int WIN_WIDTH = 1280;
 const int WIN_HEIGHT = 720;
 
@@ -156,7 +155,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			break;
 		case game:
-			DrawGraph(0, 0, gameTex, TRUE);
+			//DrawGraph(0, 0, gameTex, TRUE);
 			count->Draw();
 			m->Draw();
 			player->Draw();
