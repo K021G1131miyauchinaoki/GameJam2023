@@ -45,7 +45,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// 画像などのリソースデータの変数宣言と読み込み
 
 	// ゲームループで使う変数の宣言
-	/
 	map* m = new map();
 	m->Initialize();
 	m->Reset();
@@ -122,9 +121,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				pauseState = gameState;
 				gameState = pause;
 			}
-      player->Update(keys,oldkeys);
+			player->Update(keys,prev);
 
-		  count->Update(keys, oldkeys);
+			count->Update(keys, prev);
 			m->Update();
 
 			break;
@@ -162,9 +161,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		case game:
 			DrawGraph(0, 0, gameTex, TRUE);
+			count->Draw();
 			m->Draw();
-      player->Draw();
-      count->Draw();
+			player->Draw();
 			break;
 		case over:
 			DrawGraph(0, 0, overTex, TRUE);
@@ -177,15 +176,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		default:
 			break;
 		};
-
-		
-
-		for (int i = 0; i < 30; i++)
-		{
-			DrawLine(0, 1 * (i * 55.3), WIN_WIDTH, 1 * (i * 55.3), GetColor(255, 0, 0));
-			DrawLine(1 * (i * 55.6), 0, 1 * (i * 55.6), WIN_HEIGHT, GetColor(255, 0, 0));
-		}
-		
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面

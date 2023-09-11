@@ -110,3 +110,8 @@ void Player::Smoke(char* keys, char* oldkey)
 			}
 		}
 }
+
+void Player::Kick(char* keys, char* oldkey)
+{
+
+}

@@ -29,6 +29,8 @@ private:
 	/// 移動開始時に煙を出す為の処理
 	/// </summary>
 	void Smoke(char* keys, char* oldkey);//演出用関数
+
+	void Kick(char* keys, char* oldkey);//回路を動かす関数
 private:
 //プレイヤー
 	Vector2 pos;
@@ -46,4 +48,3 @@ private:
 	Particle particle[5];
 	Particle jumpParticle[5];
 };
-
