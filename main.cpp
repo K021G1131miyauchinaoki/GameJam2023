@@ -77,13 +77,25 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	const int STAGE_MAXX = 3;
 	const int STAGE_MINY = 0;
 	const int STAGE_MAXY = 1;
-
-	int oneTtwoMin = 0;
-	int oneTtwoMax = 0;
-
-
 	const int STAGE_MIN = 0;
 	const int STAGE_MAX = 7;
+
+	//評価付けするためのランク
+	const int RANK_A = 5;
+	const int RANK_B = 10;
+	const int RANK_C = 20;
+
+	bool A = false;
+	bool B = false;
+	bool C = false;
+	//比較するための行動変数あとで変更すること
+	int movement = 0;
+
+
+
+	//途中で最大と最小を変更するための変数
+	int oneTtwoMin = 0;
+	int oneTtwoMax = 0;
 
 	int selectStageX = STAGE_MINX;
 	int selectStageY = STAGE_MINY;
@@ -255,15 +267,34 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				gameState = clear;
 			}
 			isPlay = true;
-			//選択されたステージをプレイ
-
-			
+			if (1)//ここにクリアフラグを入れる
+			{
+				//選択されたステージをプレイ
+				if (movement < RANK_A)
+				{
+					A = TRUE;
+				}
+				else if (movement < RANK_B)
+				{
+					B = TRUE;
+				}
+				else if (movement < RANK_C)
+				{
+					C = TRUE;
+				}
+				else
+				{
+					C = TRUE;
+				}
+			}
 			//pause用
 			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
 			{
 				pauseState = gameState;
 				gameState = pause;
 			}
+
+			//ランク確定させる
 
 			break;
 		case clear:
@@ -383,6 +414,24 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		case clear://ゲームクリア
 			DrawGraph(0, 0, clearTex, TRUE);
+			//ここでランクを表示
+
+			if (A)
+			{
+				DrawGraph(0, 0, clearTex, TRUE);
+			}
+			if (B)
+			{
+				DrawGraph(0, 0, clearTex, TRUE);
+			}
+			if (C)
+			{
+				DrawGraph(0, 0, clearTex, TRUE);
+			}
+
+
+
+
 
 			break;
 		case over://ゲームオーバー
