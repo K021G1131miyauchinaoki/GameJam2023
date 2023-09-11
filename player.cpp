@@ -52,7 +52,6 @@ void Player::Draw()
 		}
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
 	DrawFormatString(0, 0, GetColor(255, 0, 0), "player : %f/%f\n", pos.x, pos.y);
 	DrawFormatString(0, 15, GetColor(255, 255, 255), "playerArray : %f\n", playerArray.x);
 	DrawFormatString(0, 30, GetColor(255, 255, 255), "playerArray : %f\n", playerArray.y);
