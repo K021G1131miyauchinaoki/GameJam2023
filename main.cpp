@@ -144,12 +144,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		case title:
 			isPlay = false;
 			//���̃V�[����
-			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = select;
 			}
 			//pause�p
-			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
 			{
 				pauseState = gameState;
 				gameState = pause;
@@ -158,13 +158,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		case select:
 			//���̃V�[���ցi����j
-			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = game;
 			}
 			//�X�e�[�W�I������
 			//�E�ɍs��
-			if (keys[KEY_INPUT_RIGHT] == 1 && prev[KEY_INPUT_RIGHT] == 0)
+			if (keys[KEY_INPUT_RIGHT] == 1 && oldkeys[KEY_INPUT_RIGHT] == 0)
 			{
 				selectStageX ++;
 				//selectStage++;
@@ -175,7 +175,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				}
 			}
 			//���ɍs��
-			if (keys[KEY_INPUT_LEFT] == 1 && prev[KEY_INPUT_LEFT] == 0)
+			if (keys[KEY_INPUT_LEFT] == 1 && oldkeys[KEY_INPUT_LEFT] == 0)
 			{
 				selectStageX--;
 				//selectStage++;
@@ -187,7 +187,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			}
 
 			//��ɍs��
-			if (keys[KEY_INPUT_DOWN] == 1 && prev[KEY_INPUT_DOWN] == 0)
+			if (keys[KEY_INPUT_DOWN] == 1 && oldkeys[KEY_INPUT_DOWN] == 0)
 			{
 				selectStageY++;
 				//selectStage +=4;
@@ -198,7 +198,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				}
 			}
 			//���ɍs��
-			if (keys[KEY_INPUT_UP] == 1 && prev[KEY_INPUT_UP] == 0)
+			if (keys[KEY_INPUT_UP] == 1 && oldkeys[KEY_INPUT_UP] == 0)
 			{
 				selectStageY--;
 				//selectStage -= 4;
@@ -213,7 +213,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			//�X�e�[�W����
 			
-			if (keys[KEY_INPUT_RIGHT] == 1 && prev[KEY_INPUT_RIGHT] == 0)
+			if (keys[KEY_INPUT_RIGHT] == 1 && oldkeys[KEY_INPUT_RIGHT] == 0)
 			{
 				selectStage++;
 				if (selectStage >= oneTtwoMax)
@@ -222,7 +222,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				}
 			}
 
-			if (keys[KEY_INPUT_LEFT] == 1 && prev[KEY_INPUT_LEFT] == 0)
+			if (keys[KEY_INPUT_LEFT] == 1 && oldkeys[KEY_INPUT_LEFT] == 0)
 			{
 				
 				selectStage--;
@@ -232,7 +232,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					selectStage = oneTtwoMin;
 				}
 			}
-			if (keys[KEY_INPUT_DOWN] == 1 && prev[KEY_INPUT_DOWN] == 0)
+			if (keys[KEY_INPUT_DOWN] == 1 && oldkeys[KEY_INPUT_DOWN] == 0)
 			{
 				if (selectStageY)
 				{
@@ -251,7 +251,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					selectStage = oneTtwoMax;
 				}
 			}
-			if (keys[KEY_INPUT_UP] == 1 && prev[KEY_INPUT_UP] == 0)
+			if (keys[KEY_INPUT_UP] == 1 && oldkeys[KEY_INPUT_UP] == 0)
 			{
 				if (selectStageY)
 				{
@@ -283,7 +283,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		case game:
 			//���̃V�[����
-			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = clear;
 			}
@@ -309,19 +309,23 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				}
 			}
 			//pause�p
-			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
 			{
 				pauseState = gameState;
 				gameState = pause;
 			}
 
 			//�����N�m�肳����
+			player->Update(keys, oldkeys);
+
+			count->Update(keys, oldkeys);
+			map->Update();
 
 			break;
 		case clear:
 			isPlay = false;
 			//���̃V�[����
-			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = title;
 			}
@@ -331,11 +335,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				pauseState = gameState;
 				gameState = pause;
 			}
-			player->Update(keys,oldkeys);
-
-			count->Update(keys, oldkeys);
-			map->Update();
-
+			
 			break;
 		case over:
 			isPlay = false;
