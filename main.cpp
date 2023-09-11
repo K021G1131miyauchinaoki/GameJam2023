@@ -1,7 +1,7 @@
 #include "DxLib.h"
 #include "player.h"
 #include "Count.h"
-#include"map.h"
+#include"Map.h"
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "GameJam2023";
@@ -45,14 +45,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// 画像などのリソースデータの変数宣言と読み込み
 
 	// ゲームループで使う変数の宣言
-	map* m = new map();
+	Map* m = new Map();
 	m->Initialize();
 	m->Reset();
-  
-	// �摜�Ȃǂ̃��\�[�X�f�[�^�̕ϐ��錾�Ɠǂݍ���
-	
-	// �Q�[�����[�v�Ŏg���ϐ��̐錾
-  Player* player = new Player();
+	Player* player = new Player();
 	player->Initialize();
 	
 	Count* count = new Count();
@@ -62,7 +58,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	char keys[256] = { 0 };
 
 	// 1ループ(フレーム)前のキーボード情報
-	char prev[256] = { 0 };
+	char oldkeys[256] = { 0 };
 
 	//ゲームループ用
 	enum  GameState
@@ -87,7 +83,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		// 最新のキーボード情報だったものは1フレーム前のキーボード情報として保存
 		for (int i = 0; i < 256; ++i)
 		{
-			prev[i] = keys[i];
+			oldkeys[i] = keys[i];
 		}
 		// 最新のキーボード情報を取得
 		GetHitKeyStateAll(keys);
@@ -98,12 +94,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		{
 
 		case title:
-			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = game;
 			}
 			//pause用
-			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
 			{
 				pauseState = gameState;
 				gameState = pause;
@@ -111,12 +107,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			break;
 		case game:
-			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = over;
 			}
 			//pause用
-			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
 			{
 				pauseState = gameState;
 				gameState = pause;
@@ -128,12 +124,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			break;
 		case over:
-			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = title;
 			}
 			//pause用
-			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
 			{
 				pauseState = gameState;
 				gameState = pause;
@@ -141,7 +137,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			break;
 		case pause:
-			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
 			{
 				gameState = pauseState;
 			}

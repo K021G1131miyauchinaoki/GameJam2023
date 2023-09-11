@@ -1,40 +1,40 @@
 #include "DxLib.h"
-#include "map.h"
+#include "Map.h"
 
-void map::Initialize() {
+void Map::Initialize() {
 	r = 30;
-	blockTex = LoadGraph("block.png");
+	blockTex = LoadGraph("Resource/block.png");
 }
 
-void map::Reset() {
+void Map::Reset() {
 	
 	isClear = false;
 	count = 0;
 	int d[HEIGHT][WIDHT] = {
-		{1,1,1,1,1, 1,1,1,1,1},
-		{1,0,0,0,0, 0,0,0,0,1},
-		{1,0,0,2,3, 4,5,0,0,1},
-		{1,0,0,6,7, 8,9,0,0,1},
-		{1,0,0,10,0, 11,0,0,0,1},
+		{1,1,1,1,1, 1,1,1,1,1,	  1,1,1,1,1},
+		{1,0,0,0,0, 0,0,0,0,0,	  0,0,0,0,0},
+		{1,0,0,2,3, 4,5,0,0,0,	  0,0,0,0,0},
+		{1,0,0,6,7, 8,9,0,0,0,	  0,0,0,0,0},
+		{1,0,0,10,0, 11,0,0,0,0,  0,0,0,0,0},
 
-		{1,0,0,0,0, 0,0,0,0,1},
-		{1,0,0,0,0, 0,0,0,0,1},
-		{1,0,0,0,0, 0,0,0,0,1},
-		{1,0,0,0,0, 0,0,0,0,1},
-		{1,1,1,1,1, 1,1,1,1,1},
+		{1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0},
+		{1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0},
+		{1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0},
+		{1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0},
+		{1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1},
 	};
 	int ANS[HEIGHT][WIDHT] = {
-		{1,1,1,1,1, 1,1,1,1,1},
-		{1,0,0,0,0, 0,0,0,0,1},
-		{1,0,0,2,3, 4,5,0,0,1},
-		{1,0,0,6,7, 8,9,0,0,1},
-		{1,0,0,10,11, 0,0,0,0,1},
+		{1,1,1,1,1, 1,1,1,1,1,	  1,1,1,1,1},
+		{1,0,0,0,0, 0,0,0,0,0,	  0,0,0,0,0},
+		{1,0,0,2,3, 4,5,0,0,0,	  0,0,0,0,0},
+		{1,0,0,6,7, 8,9,0,0,0,	  0,0,0,0,0},
+		{1,0,0,10,11,0, 0,0,0,0,  0,0,0,0,0},
 
-		{1,0,0,0,0, 0,0,0,0,1},
-		{1,0,0,0,0, 0,0,0,0,1},
-		{1,0,0,0,0, 0,0,0,0,1},
-		{1,0,0,0,0, 0,0,0,0,1},
-		{1,1,1,1,1, 1,1,1,1,1},
+		{1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0},
+		{1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0},
+		{1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0},
+		{1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0},
+		{1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1},
 	};
 
 	for (size_t i = 0; i < HEIGHT; i++)
@@ -58,7 +58,7 @@ void map::Reset() {
 	}
 }
 
-void map::Update() {
+void Map::Update() {
 	count = 0;
 	for (size_t i = 0; i < HEIGHT; i++)
 	{
@@ -76,7 +76,7 @@ void map::Update() {
 	}
 }
 
-void map::Draw() {
+void Map::Draw() {
 	for (size_t i = 0; i < HEIGHT; i++)
 	{
 		for (size_t j = 0; j < WIDHT; j++)
@@ -84,75 +84,53 @@ void map::Draw() {
 			//下地
 			if (ground[i][j] == 0)
 			{
-				//DrawBox  (r - r + (r * 2 * j), r - r + (r * 2 * i), r + r + (r * 2 * j), r + r + (r * 2 * i), GetColor(200, 200, 200), true);
-				DrawRectGraph(r * 2 * j, r * 2 * i,r*2* ground[i][j],0,r*2,r*2,blockTex,true, false);
+				DrawRectGraph(space + (r * 2 * j), space*2+(r * 2 * i), r * 2 * ground[i][j], 0, r * 2, r * 2, blockTex, true, false);
 			}
 			else if (ground[i][j] == 1)
 			{
-				//DrawBox  (r - r + (r * 2 * j), r - r + (r * 2 * i), r + r + (r * 2 * j), r + r + (r * 2 * i), GetColor(100, 100, 100), true);
-				DrawRectGraph(r * 2 * j, r * 2 * i, r * 2 * ground[i][j], 0, r * 2, r * 2, blockTex, true, false);
+				DrawRectGraph(space + (r * 2 * j), space*2+(r * 2 * i), r * 2 * ground[i][j], 0, r * 2, r * 2, blockTex, true, false);
 			}
 
 			//オブジェクト
 			if (object[i][j] == 2)
 			{
-				////DrawBox    (r - r + (r * 2 * j), r - r + (r * 2 * i), r + r + (r * 2 * j), r + r + (r * 2 * i), GetColor(50, 0, 0), true);
-				DrawRectGraph(r * 2 * j, r * 2 * i, r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
-
+				DrawRectGraph(space + (r * 2 * j), space*2+(r * 2 * i), r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
 			}
 			else if (object[i][j] == 3)
 			{
-				//DrawBox  (r - r + (r * 2 * j), r - r + (r * 2 * i), r + r + (r * 2 * j), r + r + (r * 2 * i), GetColor(0, 50, 0), true);
-				DrawRectGraph(r * 2 * j, r * 2 * i, r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
-
+				DrawRectGraph(space + (r * 2 * j), space*2+(r * 2 * i), r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
 			}
 			else if (object[i][j] ==4 )
 			{
-				//DrawBox  (r - r + (r * 2 * j), r - r + (r * 2 * i), r + r + (r * 2 * j), r + r + (r * 2 * i), GetColor(0, 0, 50), true);
-				DrawRectGraph(r * 2 * j, r * 2 * i, r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
-
+				DrawRectGraph(space + (r * 2 * j), space*2+(r * 2 * i), r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
 			}
 			else if (object[i][j] == 5)
 			{
-				//DrawBox  (r - r + (r * 2 * j), r - r + (r * 2 * i), r + r + (r * 2 * j), r + r + (r * 2 * i), GetColor(50, 50, 0), true);
-				DrawRectGraph(r * 2 * j, r * 2 * i, r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
-
+				DrawRectGraph(space + (r * 2 * j), space*2+(r * 2 * i), r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
 			}
 			else if (object[i][j] ==6 )
 			{
-				//DrawBox  (r - r + (r * 2 * j), r - r + (r * 2 * i), r + r + (r * 2 * j), r + r + (r * 2 * i), GetColor(50, 0, 50), true);
-				DrawRectGraph(r * 2 * j, r * 2 * i, r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
-
+				DrawRectGraph(space + (r * 2 * j), space*2+(r * 2 * i), r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
 			}
 			else if (object[i][j] == 7)
 			{
-				//DrawBox  (r - r + (r * 2 * j), r - r + (r * 2 * i), r + r + (r * 2 * j), r + r + (r * 2 * i), GetColor(0, 50, 50), true);
-				DrawRectGraph(r * 2 * j, r * 2 * i, r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
-
+				DrawRectGraph(space + (r * 2 * j), space*2+(r * 2 * i), r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
 			}
 			else if (object[i][j] == 8)
 			{
-				//DrawBox  (r - r + (r * 2 * j), r - r + (r * 2 * i), r + r + (r * 2 * j), r + r + (r * 2 * i), GetColor(150, 0, 0), true);
-				DrawRectGraph(r * 2 * j, r * 2 * i, r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
-
+				DrawRectGraph(space + (r * 2 * j), space*2+(r * 2 * i), r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
 			}
 			else if (object[i][j] == 9)
 			{
-				//DrawBox  (r - r + (r * 2 * j), r - r + (r * 2 * i), r + r + (r * 2 * j), r + r + (r * 2 * i), GetColor(0, 150, 0), true);
-				DrawRectGraph(r * 2 * j, r * 2 * i, r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
-
+				DrawRectGraph(space + (r * 2 * j), space*2+(r * 2 * i), r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
 			}
 			else if (object[i][j] == 10)
 			{
-				//DrawBox  (r - r + (r * 2 * j), r - r + (r * 2 * i), r + r + (r * 2 * j), r + r + (r * 2 * i), GetColor(0, 0, 150), true);
-				DrawRectGraph(r * 2 * j, r * 2 * i, r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
-
+				DrawRectGraph(space + (r * 2 * j), space*2+(r * 2 * i), r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
 			}
 			else if (object[i][j] == 11)
 			{
-				//DrawBox  (r - r + (r * 2 * j), r - r + (r * 2 * i), r + r + (r * 2 * j), r + r + (r * 2 * i), GetColor(150, 150, 0), true);
-				DrawRectGraph(r * 2 * j, r * 2 * i, r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
-
+				DrawRectGraph(space + (r * 2 * j), space*2+(r * 2 * i), r * 2 * object[i][j], 0, r * 2, r * 2, blockTex, true, false);
 			}
 
 			

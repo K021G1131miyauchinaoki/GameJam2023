@@ -2,7 +2,7 @@
 
 void Player::Initialize()
 {
-	pos = { 640,360 };	// 中心座標
+	pos = { 60,90 };	// 中心座標
 	radius = 30;		// 半径
 	speed = { 0,0 };			// 速度
 	gravity = 0.0f;		// 重力
@@ -49,6 +49,9 @@ void Player::Draw()
 		}
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	DrawFormatString(0, 0, GetColor(255, 0, 0), "player : %f/%f\n", pos.x, pos.y);
+	DrawFormatString(0, 15, GetColor(255, 255, 255), "speed : %f\n", speed.x);
+	DrawFormatString(0, 30, GetColor(255, 255, 255), "speed : %f\n", speed.y);
 }
 
 void Player::Move(char* keys, char* oldkey)
@@ -56,7 +59,7 @@ void Player::Move(char* keys, char* oldkey)
 	//移動
 	if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT])
 	{
-		speed.x = 55; //DrawLineで引いた線に近い値
+		speed.x = 60; //DrawLineで引いた線に近い値
 		if (isdir)//自機の向きを決めている 右
 		{
 			isdir = false;
@@ -64,7 +67,7 @@ void Player::Move(char* keys, char* oldkey)
 	}
 	else if (keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT])
 	{
-		speed.x = -55;
+		speed.x = -60;
 		if (!isdir)//自機の向きを決めている 左
 		{
 			isdir = true;
@@ -72,12 +75,12 @@ void Player::Move(char* keys, char* oldkey)
 	}
 	else if (keys[KEY_INPUT_UP] && !oldkey[KEY_INPUT_UP])
 	{
-		speed.y = -55;
+		speed.y = -60;
 	}
 
 	else if (keys[KEY_INPUT_DOWN] && !oldkey[KEY_INPUT_DOWN])
 	{
-		speed.y = 55;
+		speed.y = 60;
 	}
 
 	else
