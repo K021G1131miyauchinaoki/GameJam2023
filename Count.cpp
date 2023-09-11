@@ -16,60 +16,19 @@ void Count::Update(char* keys, char* oldkey)
 	{
 		if (keys[KEY_INPUT_UP] && !oldkey[KEY_INPUT_UP])
 		{
-			count[0] += 1;//1‚Ì‚­‚ç‚¢‚É+1‚·‚é
-			if (count[0] >= 10)//10‚É‚È‚Á‚½‚È‚ç
-			{
-				count[0] = 0;//null‚©‚ç0‚É–ß‚·
-				count[1] += 1;//10‚ÌˆÊ‚É+1
-			}
-			if (count[1] >= 10)//100‚É‚È‚Á‚½‚ç
-			{
-				count[1] = 0;//10‚ÌˆÊ‚ð0‚É–ß‚·
-				count[2] += 1;//100‚ÌˆÊ‚É+1
-			}
-
+			AddCount();
 		}
 		if (keys[KEY_INPUT_DOWN] && !oldkey[KEY_INPUT_DOWN])
 		{
-			count[0] += 1;
-			if (count[0] >= 10)
-			{
-				count[0] = 0;
-				count[1] += 1;
-			}
-			if (count[1] >= 10)
-			{
-				count[1] = 0;
-				count[2] += 1;
-			}
+			AddCount();
 		}
 		if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT])
 		{
-			count[0] += 1;
-			if (count[0] >= 10)
-			{
-				count[0] = 0;
-				count[1] += 1;
-			}
-			if (count[1] >= 10)
-			{
-				count[1] = 0;
-				count[2] += 1;
-			}
+			AddCount();
 		}
 		if (keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT])
 		{
-			count[0] += 1;
-			if (count[0] >= 10)
-			{
-				count[0] = 0;
-				count[1] += 1;
-			}
-			if (count[1] >= 10)
-			{
-				count[1] = 0;
-				count[2] += 1;
-			}
+			AddCount();
 		}
 	}
 	else//‚à‚µ999‚É‚È‚Á‚½Žž
@@ -91,4 +50,19 @@ void Count::Draw()
 	
 	//DrawFormatString(900, 0, GetColor(255, 255, 255), "Count ; %d", count);
 
+}
+
+void Count::AddCount()
+{
+	count[0] += 1;//1‚Ì‚­‚ç‚¢‚É+1‚·‚é
+	if (count[0] >= 10)//10‚É‚È‚Á‚½‚È‚ç
+	{
+		count[0] = 0;//null‚©‚ç0‚É–ß‚·
+		count[1] += 1;//10‚ÌˆÊ‚É+1
+	}
+	if (count[1] >= 10)//100‚É‚È‚Á‚½‚ç
+	{
+		count[1] = 0;//10‚ÌˆÊ‚ð0‚É–ß‚·
+		count[2] += 1;//100‚ÌˆÊ‚É+1
+	}
 }
