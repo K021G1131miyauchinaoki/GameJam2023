@@ -1,5 +1,5 @@
 #pragma once
-#define WIDHT 10
+#define WIDHT 15
 #define HEIGHT 10
 
 class Map
@@ -11,11 +11,12 @@ public:
 	void Draw();
 	bool IsClear() { return isClear; }			
 private:
-	int answer[10][10];
-	int object[10][10];
-	int ground[10][10];
+	int answer[HEIGHT][WIDHT];
+	int object[HEIGHT][WIDHT];
+	int ground[HEIGHT][WIDHT];
 	int r;
 	int count;
 	int blockTex;
 	bool isClear;
+	const int space = 30;
 };

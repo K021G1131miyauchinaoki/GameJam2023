@@ -2,7 +2,7 @@
 
 void Player::Initialize()
 {
-	pos = { 30,30 };	// 中心座標
+	pos = { 60,90 };	// 中心座標
 	radius = 30;		// 半径
 	speed = { 0,0 };			// 速度
 	gravity = 0.0f;		// 重力
