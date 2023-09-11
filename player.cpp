@@ -2,7 +2,8 @@
 
 void Player::Initialize()
 {
-	pos = { 60,90 };	// 中心座標
+	initialPos = { 60,90 };//マップチップの座標に合せる用
+	pos = { initialPos.x,initialPos.y };	// 中心座標
 	radius = 30;		// 半径
 	speed = { 0,0 };			// 速度
 	gravity = 0.0f;		// 重力
@@ -29,6 +30,8 @@ void Player::Update(char* keys, char* oldkey)
 {
 	Smoke(keys, oldkey);
 	Move(keys, oldkey);
+	playerArray.x = static_cast<int>((pos.x - initialPos.x) / 60);
+	playerArray.y = static_cast<int>((pos.y - initialPos.y) / 60);
 
 }
 
@@ -51,8 +54,8 @@ void Player::Draw()
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	DrawFormatString(0, 0, GetColor(255, 0, 0), "player : %f/%f\n", pos.x, pos.y);
-	DrawFormatString(0, 15, GetColor(255, 255, 255), "speed : %f\n", speed.x);
-	DrawFormatString(0, 30, GetColor(255, 255, 255), "speed : %f\n", speed.y);
+	DrawFormatString(0, 15, GetColor(255, 255, 255), "playerArray : %f\n", playerArray.x);
+	DrawFormatString(0, 30, GetColor(255, 255, 255), "playerArray : %f\n", playerArray.y);
 }
 
 void Player::Move(char* keys, char* oldkey)

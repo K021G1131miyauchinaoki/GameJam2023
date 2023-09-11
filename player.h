@@ -29,9 +29,14 @@ private:
 	/// 移動開始時に煙を出す為の処理
 	/// </summary>
 	void Smoke(char* keys, char* oldkey);//演出用関数
+
+	Vector2 GetPlayerArray(){}
+
 private:
 //プレイヤー
 	Vector2 pos;
+	Vector2	initialPos;
+	Vector2 playerArray;
 	int radius;
 	Vector2 speed;
 	float gravity;
