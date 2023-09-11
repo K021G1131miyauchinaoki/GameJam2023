@@ -8,6 +8,8 @@ public:
 	void Update(char* keys, char* oldkey);
 	void Draw();
 private:
-	int count;
+	int graphHandle[10];
+	char strNum[4];
+	int count[3];
 };
 
