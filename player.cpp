@@ -10,6 +10,10 @@ void Player::Initialize()
 	isJump = false;		//ジャンプ管理フラグ
 	isdir = 0;		//方向管理フラグ  0 = 右　1 = 左　2 = 上　3 = 下
 	isMove = false;		//移動管理フラグ
+	//イージング
+	easingflag = false;
+	frame = 0;
+	endframe = 50.0f;
 	//煙
 	for (int i = 0; i < MAX_PARTICLE; i++)
 	{
@@ -55,38 +59,83 @@ void Player::Draw()
 	DrawFormatString(0, 0, GetColor(255, 0, 0), "player : %f/%f\n", pos.x, pos.y);
 	DrawFormatString(0, 15, GetColor(255, 255, 255), "playerArray : %f\n", playerArray.x);
 	DrawFormatString(0, 30, GetColor(255, 255, 255), "playerArray : %f\n", playerArray.y);
+	DrawFormatString(0, 45, GetColor(0, 0, 0), "EZ : %d\n", easingflag);
+	DrawFormatString(0, 60, GetColor(0, 0, 0), "EZframe : %d\n", frame);
+	DrawFormatString(0, 75, GetColor(0, 0, 0), "EZendframe : %d\n", endframe);
 }
 
 void Player::Move(char* keys, char* oldkey)
 {
 	//移動
-	if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT])
+	if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT] && easingflag == false)
 	{
 		speed.x = 60; //DrawLineで引いた線に近い値
 		isdir = 0;
+		//イージング
+		frame = 0;
+		easingflag = true;
+		startX = pos.x;
+		endX = pos.x+= 60;
 	}
-	else if (keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT])
+	else if (keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT] && easingflag == false)
 	{
 		speed.x = -60;
 		isdir = 1;
+		//イージング
+		frame = 0;
+		easingflag = true;
+		startX = pos.x;
+		endX = pos.x -= 60;
 	}
-	else if (keys[KEY_INPUT_UP] && !oldkey[KEY_INPUT_UP])
+	else if (keys[KEY_INPUT_UP] && !oldkey[KEY_INPUT_UP] && easingflag == false)
 	{
 		speed.y = -60;
 		isdir = 2;
+		//イージング
+		frame = 0;
+		easingflag = true;
+		startY = pos.y;
+		endX = pos.y -= 60;
 	}
 
-	else if (keys[KEY_INPUT_DOWN] && !oldkey[KEY_INPUT_DOWN])
+	else if (keys[KEY_INPUT_DOWN] && !oldkey[KEY_INPUT_DOWN] && easingflag == false)
 	{
 		speed.y = 60;
 		isdir = 3;
+		//イージング
+		frame = 0;
+		easingflag = true;
+		startY = pos.y;
+		endX = pos.y += 60;
 	}
 
 	else
 	{
 		speed = { 0 ,0 }; //移動を止める
+		startX = pos.x;
+		startY = pos.y;
 	}
 	pos += speed; //現在の座標から移動する
+
+	if (easingflag == 1)
+	{
+		frame++;
+	}
+	if (frame == endframe)
+	{
+		easingflag = 0;
+	}
+
+	x = frame / endframe;
+	y = frame / endframe;
+	if (isdir == 0 || isdir == 1)
+	{
+		pos.x = startX + (endX - startX) * (EZ(x));
+	}
+	else
+	{
+		pos.y = startY + (endX - startY) * (EZ2(y));
+	}
 }
 
 void Player::Smoke(char* keys, char* oldkey)
