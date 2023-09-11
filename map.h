@@ -20,7 +20,7 @@ public:
 	//次々のマップ
 	int GetAfterNextMap(int height, int widht) { return object[height][widht]; }
 	//次のマップに値をセット
-	int SetNextMap(int height, int widht, int num) { return object[height][widht] = num; }
+	int SetNextMap(int height, int widht) { return object[height][widht] = 0; }
 	//次々のマップに値をセット
 	int SetAfterNextMap(int height, int widht, int num) { return object[height][widht] = num; }
 private:
