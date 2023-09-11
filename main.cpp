@@ -400,13 +400,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					DrawGraph(graphX+graphSize*j, graphY+graphSize*i, mapTex, TRUE);
 				}
 			}
-
+			//今選択してるステージの枠
+			DrawGraph(graphX + selectStageX * graphSize, graphY + selectStageY * graphSize, mapSelectTex, TRUE);
 			
-
-			
-				DrawGraph(graphX + selectStageX * graphSize, graphY + selectStageY * graphSize, mapSelectTex, TRUE);
-			
-
 			break;
 		case game://プレイ
 			DrawGraph(0, 0, gameTex, TRUE);
