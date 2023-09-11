@@ -42,7 +42,6 @@ private:
 	Vector2	initialPos;
 	Vector2 playerArray;
 	int radius;
-	Vector2 speed;
 
 	int isdir;
 	bool isMove;
