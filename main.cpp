@@ -44,12 +44,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// 画像などのリソースデータの変数宣言と読み込み
 
 	// ゲームループで使う変数の宣言
-	Map* m = new Map();
-	m->Initialize();
-	m->Reset();
+	//マップ
+	Map* map = new Map();
+	map->Initialize();
+	map->Reset();
+	//プレイヤー
 	Player* player = new Player();
 	player->Initialize();
-	
+	player->SetMap(map);
+	//カウント
 	Count* count = new Count();
 	count->Initialize();
 	// 最新のキーボード情報用
@@ -119,7 +122,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			player->Update(keys,oldkeys);
 
 			count->Update(keys, oldkeys);
-			m->Update();
+			map->Update();
 
 			break;
 		case over:
@@ -157,7 +160,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		case game:
 			//DrawGraph(0, 0, gameTex, TRUE);
 			count->Draw();
-			m->Draw();
+			map->Draw();
 			player->Draw();
 			break;
 		case over:
