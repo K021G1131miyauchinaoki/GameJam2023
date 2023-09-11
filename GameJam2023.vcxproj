@@ -133,7 +133,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Count.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="Vector2.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Count.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="Vector2.h" />
+    <ClCompile Include="Map.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Map.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

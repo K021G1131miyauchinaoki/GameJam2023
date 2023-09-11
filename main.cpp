@@ -1,6 +1,9 @@
 #include "DxLib.h"
+#include "player.h"
+#include "Count.h"
+#include"Map.h"
 
-// ƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹‚É•\¦‚·‚é•¶š—ñ
+// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¿ã‚¤ãƒˆãƒ«ã«è¡¨ç¤ºã™ã‚‹æ–‡å­—åˆ—
 const char TITLE[] = "GameJam2023";
 
 const int WIN_WIDTH = 1280;
@@ -8,45 +11,58 @@ const int WIN_HEIGHT = 720;
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
                    _In_ int nCmdShow) {
-	// Log.tex‚ğÁ‚·ˆ—
+	// Log.texã‚’æ¶ˆã™å‡¦ç†
 	SetOutApplicationLogValidFlag(FALSE);
 
-	// ƒEƒBƒ“ƒhƒEƒ‚[ƒh‚Éİ’è
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰ã«è¨­å®š
 	ChangeWindowMode(TRUE);
 
-	// ƒ^ƒCƒgƒ‹‚ğ•ÏX
+	// ã‚¿ã‚¤ãƒˆãƒ«ã‚’å¤‰æ›´
 	SetMainWindowText(TITLE);
 
-	// ‰æ–ÊƒTƒCƒY‚ÌÅ‘åƒTƒCƒYAƒJƒ‰[ƒrƒbƒg”‚ğİ’è(ƒ‚ƒjƒ^[‚Ì‰ğ‘œ“x‚É‡‚í‚¹‚é)
+	// ç”»é¢ã‚µã‚¤ã‚ºã®æœ€å¤§ã‚µã‚¤ã‚ºã€ã‚«ãƒ©ãƒ¼ãƒ“ãƒƒãƒˆæ•°ã‚’è¨­å®š(ãƒ¢ãƒ‹ã‚¿ãƒ¼ã®è§£åƒåº¦ã«åˆã‚ã›ã‚‹)
 	SetGraphMode(WIN_WIDTH, WIN_HEIGHT, 32);
 
-	// ‰æ–ÊƒTƒCƒY‚ğİ’è(‰ğ‘œ“x‚Æ‚Ì”ä—¦‚Åİ’è)
+	// ç”»é¢ã‚µã‚¤ã‚ºã‚’è¨­å®š(è§£åƒåº¦ã¨ã®æ¯”ç‡ã§è¨­å®š)
 	SetWindowSizeExtendRate(1.0);
 
-	// ‰æ–Ê‚Ì”wŒiF‚ğİ’è‚·‚é
+
+	// ç”»é¢ã®èƒŒæ™¯è‰²ã‚’è¨­å®šã™ã‚‹
 	SetBackgroundColor(0x00, 0xFF, 0x00);
 
-	// DXlib‚Ì‰Šú‰»
+	// DXlibã®åˆæœŸåŒ–
 	if (DxLib_Init() == -1)
 	{
 		return -1;
 	}
 
-	// (ƒ_ƒuƒ‹ƒoƒbƒtƒ@)•`‰ææƒOƒ‰ƒtƒBƒbƒN—Ìˆæ‚Í— –Ê‚ğw’è
+	// (ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡)æç”»å…ˆã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯é ˜åŸŸã¯è£é¢ã‚’æŒ‡å®š
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	// ‰æ‘œ‚È‚Ç‚ÌƒŠƒ\[ƒXƒf[ƒ^‚Ì•Ï”éŒ¾‚Æ“Ç‚İ‚İ
 
-	// ƒQ[ƒ€ƒ‹[ƒv‚Åg‚¤•Ï”‚ÌéŒ¾
-	//ƒ~ƒ„ƒ^Šm”F—pgitŠm”F—p
 	
-	// ÅV‚ÌƒL[ƒ{[ƒhî•ñ—p
+	// ç”»åƒãªã©ã®ãƒªã‚½ãƒ¼ã‚¹ãƒ‡ãƒ¼ã‚¿ã®å¤‰æ•°å®£è¨€ã¨èª­ã¿è¾¼ã¿
+
+	// ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—ã§ä½¿ã†å¤‰æ•°ã®å®£è¨€
+	//ãƒãƒƒãƒ—
+	Map* map = new Map();
+	map->Initialize();
+	map->Reset();
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+	Player* player = new Player();
+	player->Initialize();
+	player->SetMap(map);
+	//ã‚«ã‚¦ãƒ³ãƒˆ
+	Count* count = new Count();
+	count->Initialize();
+	// æœ€æ–°ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±ç”¨
+
 	char keys[256] = { 0 };
 
-	// 1ƒ‹[ƒv(ƒtƒŒ[ƒ€)‘O‚ÌƒL[ƒ{[ƒhî•ñ
-	char prev[256] = { 0 };
+	// 1ãƒ«ãƒ¼ãƒ—(ãƒ•ãƒ¬ãƒ¼ãƒ )å‰ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±
+	char oldkeys[256] = { 0 };
 
-	//ƒQ[ƒ€ƒ‹[ƒv—p
+	//ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—ç”¨
 	enum  GameState
 	{
 		title,
@@ -72,7 +88,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	int mapTex = LoadGraph("Resource/Map/stage.png");
 	int mapSelectTex = LoadGraph("Resource/Map/select.png");
 
-	//ƒXƒe[ƒW‘I‘ğ—v•Ï”
+	//ï¿½Xï¿½eï¿½[ï¿½Wï¿½Iï¿½ï¿½vï¿½Ïï¿½
 	const int STAGE_MINX = 0;
 	const int STAGE_MAXX = 3;
 	const int STAGE_MINY = 0;
@@ -80,7 +96,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	const int STAGE_MIN = 0;
 	const int STAGE_MAX = 7;
 
-	//•]‰¿•t‚¯‚·‚é‚½‚ß‚Ìƒ‰ƒ“ƒN
+	//ï¿½]ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½ï¿½ï¿½é‚½ï¿½ß‚Ìƒï¿½ï¿½ï¿½ï¿½N
 	const int RANK_A = 5;
 	const int RANK_B = 10;
 	const int RANK_C = 20;
@@ -88,12 +104,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	bool A = false;
 	bool B = false;
 	bool C = false;
-	//”äŠr‚·‚é‚½‚ß‚Ìs“®•Ï”‚ ‚Æ‚Å•ÏX‚·‚é‚±‚Æ
+	//ï¿½ï¿½rï¿½ï¿½ï¿½é‚½ï¿½ß‚Ìsï¿½ï¿½ï¿½Ïï¿½ï¿½ï¿½ï¿½Æ‚Å•ÏXï¿½ï¿½ï¿½é‚±ï¿½ï¿½
 	int movement = 0;
 
 
 
-	//“r’†‚ÅÅ‘å‚ÆÅ¬‚ğ•ÏX‚·‚é‚½‚ß‚Ì•Ï”
+	//ï¿½rï¿½ï¿½ï¿½ÅÅ‘ï¿½ÆÅï¿½ï¿½ï¿½ÏXï¿½ï¿½ï¿½é‚½ï¿½ß‚Ì•Ïï¿½
 	int oneTtwoMin = 0;
 	int oneTtwoMax = 0;
 
@@ -106,32 +122,33 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	int graphY = 128;
 
 	bool isPlay = false;
-	// ƒQ[ƒ€ƒ‹[ƒv
+
+	// ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—
 	while (true)
 	{
 		ClearDrawScreen();
-		// ÅV‚ÌƒL[ƒ{[ƒhî•ñ‚¾‚Á‚½‚à‚Ì‚Í1ƒtƒŒ[ƒ€‘O‚ÌƒL[ƒ{[ƒhî•ñ‚Æ‚µ‚Ä•Û‘¶
+		// æœ€æ–°ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±ã ã£ãŸã‚‚ã®ã¯1ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±ã¨ã—ã¦ä¿å­˜
 		for (int i = 0; i < 256; ++i)
 		{
-			prev[i] = keys[i];
+			oldkeys[i] = keys[i];
 		}
-		// ÅV‚ÌƒL[ƒ{[ƒhî•ñ‚ğæ“¾
+		// æœ€æ–°ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±ã‚’å–å¾—
 		GetHitKeyStateAll(keys);
-		//---------  ‚±‚±‚©‚ç‚ÉƒvƒƒOƒ‰ƒ€‚ğ‹Lq  ---------//
+		//---------  ã“ã“ã‹ã‚‰ã«ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’è¨˜è¿°  ---------//
 
-		//XV
 #pragma region
+		//æ›´æ–°
 		switch (gameState)
 		{
 
 		case title:
 			isPlay = false;
-			//Ÿ‚ÌƒV[ƒ“‚Ö
+			//ï¿½ï¿½ï¿½ÌƒVï¿½[ï¿½ï¿½ï¿½ï¿½
 			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = select;
 			}
-			//pause—p
+			//pauseï¿½p
 			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
 			{
 				pauseState = gameState;
@@ -140,13 +157,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			break;
 		case select:
-			//Ÿ‚ÌƒV[ƒ“‚ÖiŒˆ’èj
+			//ï¿½ï¿½ï¿½ÌƒVï¿½[ï¿½ï¿½ï¿½Öiï¿½ï¿½ï¿½ï¿½j
 			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = game;
 			}
-			//ƒXƒe[ƒW‘I‘ğ‚·‚é
-			//‰E‚És‚­
+			//ï¿½Xï¿½eï¿½[ï¿½Wï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			//ï¿½Eï¿½Ésï¿½ï¿½
 			if (keys[KEY_INPUT_RIGHT] == 1 && prev[KEY_INPUT_RIGHT] == 0)
 			{
 				selectStageX ++;
@@ -157,7 +174,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					//selectStage = STAGE_MAXX;
 				}
 			}
-			//¶‚És‚­
+			//ï¿½ï¿½ï¿½Ésï¿½ï¿½
 			if (keys[KEY_INPUT_LEFT] == 1 && prev[KEY_INPUT_LEFT] == 0)
 			{
 				selectStageX--;
@@ -169,7 +186,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				}
 			}
 
-			//ã‚És‚­
+			//ï¿½ï¿½Ésï¿½ï¿½
 			if (keys[KEY_INPUT_DOWN] == 1 && prev[KEY_INPUT_DOWN] == 0)
 			{
 				selectStageY++;
@@ -180,7 +197,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					//selectStage = STAGE_MAXY;
 				}
 			}
-			//‰º‚És‚­
+			//ï¿½ï¿½ï¿½Ésï¿½ï¿½
 			if (keys[KEY_INPUT_UP] == 1 && prev[KEY_INPUT_UP] == 0)
 			{
 				selectStageY--;
@@ -194,7 +211,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			}
 
 
-			//ƒXƒe[ƒW”»’è
+			//ï¿½Xï¿½eï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½
 			
 			if (keys[KEY_INPUT_RIGHT] == 1 && prev[KEY_INPUT_RIGHT] == 0)
 			{
@@ -252,8 +269,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					selectStage = oneTtwoMin;
 				}
 			}
-			//pause—p
-			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
+			{
+				gameState = game;
+			}
+			//pauseç”¨
+			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
 			{
 				pauseState = gameState;
 				gameState = pause;
@@ -261,15 +282,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			break;
 		case game:
-			//Ÿ‚ÌƒV[ƒ“‚Ö
+			//ï¿½ï¿½ï¿½ÌƒVï¿½[ï¿½ï¿½ï¿½ï¿½
 			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = clear;
 			}
 			isPlay = true;
-			if (1)//‚±‚±‚ÉƒNƒŠƒAƒtƒ‰ƒO‚ğ“ü‚ê‚é
+			if (1)//ï¿½ï¿½ï¿½ï¿½ï¿½ÉƒNï¿½ï¿½ï¿½Aï¿½tï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			{
-				//‘I‘ğ‚³‚ê‚½ƒXƒe[ƒW‚ğƒvƒŒƒC
+				//ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½Xï¿½eï¿½[ï¿½Wï¿½ï¿½ï¿½vï¿½ï¿½ï¿½C
 				if (movement < RANK_A)
 				{
 					A = TRUE;
@@ -287,40 +308,43 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					C = TRUE;
 				}
 			}
-			//pause—p
+			//pauseï¿½p
 			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
 			{
 				pauseState = gameState;
 				gameState = pause;
 			}
 
-			//ƒ‰ƒ“ƒNŠm’è‚³‚¹‚é
+			//ï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½mï¿½è‚³ï¿½ï¿½ï¿½ï¿½
 
 			break;
 		case clear:
 			isPlay = false;
-			//Ÿ‚ÌƒV[ƒ“‚Ö
+			//ï¿½ï¿½ï¿½ÌƒVï¿½[ï¿½ï¿½ï¿½ï¿½
 			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = title;
 			}
-			//pause—p
-			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			//pauseç”¨
+			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
 			{
 				pauseState = gameState;
 				gameState = pause;
 			}
+			player->Update(keys,oldkeys);
+
+			count->Update(keys, oldkeys);
+			map->Update();
 
 			break;
 		case over:
 			isPlay = false;
-			//Ÿ‚ÌƒV[ƒ“‚Ö
-			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = title;
 			}
-			//pause—p
-			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			//pauseç”¨
+			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
 			{
 				pauseState = gameState;
 				gameState = pause;
@@ -328,8 +352,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			break;
 		case pause:
-			//Œ³‚É–ß‚é
-			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
 			{
 				gameState = pauseState;
 			}
@@ -338,12 +361,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		default:
 			break;
 		};
-#pragma endregionƒQ[ƒ€ƒ‹[ƒvˆ—
+#pragma endregionï¿½Qï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½vï¿½ï¿½ï¿½ï¿½
 
 #pragma region
 		if (isPlay)
 		{
-			switch (selectStage)//ƒXƒe[ƒW
+			switch (selectStage)//ï¿½Xï¿½eï¿½[ï¿½W
 			{
 			case 0:
 				
@@ -381,36 +404,41 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				break;
 			}
 		}
-#pragma endregionƒXƒe[ƒWˆ—
-		//•`‰æ---------------
+#pragma endregionï¿½Xï¿½eï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½
+		//æç”»---------------
 		switch (gameState)
 		{
 
-		case title://ƒ^ƒCƒgƒ‹
+		case title://ï¿½^ï¿½Cï¿½gï¿½ï¿½
 			DrawGraph(0, 0, titleTex, TRUE);
 
 			break;
-		case select://ƒXƒe[ƒW‘I‘ğ‰æ–Ê
+
+		case select://ï¿½Xï¿½eï¿½[ï¿½Wï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½
 			DrawGraph(0, 0, selectTex, TRUE);
 
-			for (int i = 0; i < 2; i++)//ƒXƒe[ƒW•\¦‚Ìc—ñ
+			for (int i = 0; i < 2; i++)//ï¿½Xï¿½eï¿½[ï¿½Wï¿½\ï¿½ï¿½ï¿½Ìcï¿½ï¿½
 			{
-				for (int j = 0; j < 4; j++)//ƒXƒe[ƒW•\‹L‚Ì‰¡—ñ
+				for (int j = 0; j < 4; j++)//ï¿½Xï¿½eï¿½[ï¿½Wï¿½\ï¿½Lï¿½Ì‰ï¿½ï¿½ï¿½
 				{
 					DrawGraph(graphX+graphSize*j, graphY+graphSize*i, mapTex, TRUE);
 				}
 			}
-			//¡‘I‘ğ‚µ‚Ä‚éƒXƒe[ƒW‚Ì˜g
+			//ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½Xï¿½eï¿½[ï¿½Wï¿½Ì˜g
 			DrawGraph(graphX + selectStageX * graphSize, graphY + selectStageY * graphSize, mapSelectTex, TRUE);
 			
 			break;
-		case game://ƒvƒŒƒC
-			DrawGraph(0, 0, gameTex, TRUE);
-
+        
+		case game:
+			//DrawGraph(0, 0, gameTex, TRUE);
+			count->Draw();
+			map->Draw();
+			player->Draw();
 			break;
-		case clear://ƒQ[ƒ€ƒNƒŠƒA
+        
+		case clear://ï¿½Qï¿½[ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½A
 			DrawGraph(0, 0, clearTex, TRUE);
-			//‚±‚±‚Åƒ‰ƒ“ƒN‚ğ•\¦
+			//ï¿½ï¿½ï¿½ï¿½ï¿½Åƒï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½\ï¿½ï¿½
 
 			if (A)
 			{
@@ -430,11 +458,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 
 			break;
-		case over://ƒQ[ƒ€ƒI[ƒo[
+		case over://ï¿½Qï¿½[ï¿½ï¿½ï¿½Iï¿½[ï¿½oï¿½[
 			DrawGraph(0, 0, overTex, TRUE);
 
 			break;
-		case pause://ƒ|[ƒY
+		case pause://ï¿½|ï¿½[ï¿½Y
 			DrawGraph(0, 0, pauseTex, TRUE);
 
 			break;
@@ -442,30 +470,29 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		};
 
-
-		//---------  ‚±‚±‚Ü‚Å‚ÉƒvƒƒOƒ‰ƒ€‚ğ‹Lq  ---------//
-		// (ƒ_ƒuƒ‹ƒoƒbƒtƒ@)— –Ê
+		//---------  ã“ã“ã¾ã§ã«ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’è¨˜è¿°  ---------//
+		// (ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡)è£é¢
 		ScreenFlip();
 
-		// 20ƒ~ƒŠ•b‘Ò‹@(‹^—60FPS)
+		// 20ãƒŸãƒªç§’å¾…æ©Ÿ(ç–‘ä¼¼60FPS)
 		WaitTimer(20);
 
-		// WindowsƒVƒXƒeƒ€‚©‚ç‚­‚éî•ñ‚ğˆ—‚·‚é
+		// Windowsã‚·ã‚¹ãƒ†ãƒ ã‹ã‚‰ãã‚‹æƒ…å ±ã‚’å‡¦ç†ã™ã‚‹
 		if (ProcessMessage() == -1)
 		{
 			break;
 		}
 
-		// ESCƒL[‚ª‰Ÿ‚³‚ê‚½‚çƒ‹[ƒv‚©‚ç”²‚¯‚é
+		// ESCã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸã‚‰ãƒ«ãƒ¼ãƒ—ã‹ã‚‰æŠœã‘ã‚‹
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1)
 		{
 			break;
 		}
 	}
-	// Dxƒ‰ƒCƒuƒ‰ƒŠI—¹ˆ—
+	// Dxãƒ©ã‚¤ãƒ–ãƒ©ãƒªçµ‚äº†å‡¦ç†
 	DxLib_End();
 
-	// ³íI—¹
+	// æ­£å¸¸çµ‚äº†
 	return 0;
 
 	
