@@ -117,9 +117,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				pauseState = gameState;
 				gameState = pause;
 			}
-			player->Update(keys,prev);
+			player->Update(keys,oldkeys);
 
-			count->Update(keys, prev);
+			count->Update(keys, oldkeys);
 			m->Update();
 
 			break;

@@ -38,8 +38,8 @@ private:
 	Vector2 speed;
 	float gravity;
 
+	int isdir;
 	bool isJump;
-	bool isdir;
 	bool isMove;
 
 	int graphHandle;
