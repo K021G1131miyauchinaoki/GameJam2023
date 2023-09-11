@@ -30,7 +30,7 @@ private:
 	/// </summary>
 	void Smoke(char* keys, char* oldkey);//演出用関数
 
-	Vector2 GetPlayerArray(){}
+	Vector2 GetPlayerArray() { return playerArray; }
 
 private:
 //プレイヤー
