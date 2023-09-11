@@ -61,10 +61,6 @@ private:
 	{
 		return 1 - cos((x * 3.14) / 2);
 	}
-	double EZ2(double y)
-	{
-		return sin((y * 3.14) / 2);
-	}
 //パーティクル
 	const int MAX_PARTICLE = 5;
 	Particle particle[5];

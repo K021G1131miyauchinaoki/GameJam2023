@@ -145,7 +145,7 @@ void Player::Move(char* keys, char* oldkey)
 	}
 	else
 	{
-		pos.y = startY + (endX - startY) * (EZ2(y));
+		pos.y = startY + (endX - startY) * (EZ(y));
 	}
 }
 
