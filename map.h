@@ -5,11 +5,23 @@
 class Map
 {
 public:
+	//リセット
 	void Reset();
+	//初期化
 	void Initialize();
+	//更新
 	void Update();
+	//描画
 	void Draw();
-	bool IsClear() { return isClear; }			
+	//クリア判定
+	bool IsClear() { return isClear; }
+	//次のマップ番号取得
+	int GetNextMap(int height, int widht) { return object[height][widht]; }
+	//次々のマップ
+	int GetAfterNextMap(int height, int widht) { return object[height][widht]; }
+
+	int SetNextMap(int height, int widht) { return object[height][widht]; }
+	int SetAfterNextMap(int height, int widht) { return object[height][widht]; }
 private:
 	int answer[HEIGHT][WIDHT];
 	int object[HEIGHT][WIDHT];
