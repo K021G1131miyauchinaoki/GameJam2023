@@ -30,6 +30,7 @@ private:
 	/// </summary>
 	void Smoke(char* keys, char* oldkey);//演出用関数
 
+	void Kick(char* keys, char* oldkey);//回路を動かす関数
 	Vector2 GetPlayerArray() { return playerArray; }
 
 private:
@@ -41,8 +42,8 @@ private:
 	Vector2 speed;
 	float gravity;
 
+	int isdir;
 	bool isJump;
-	bool isdir;
 	bool isMove;
 
 	int graphHandle;
@@ -51,4 +52,3 @@ private:
 	Particle particle[5];
 	Particle jumpParticle[5];
 };
-

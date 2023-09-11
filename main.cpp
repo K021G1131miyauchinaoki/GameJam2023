@@ -7,7 +7,6 @@
 const char TITLE[] = "GameJam2023";
 
 
-// �E�B���h�E����
 const int WIN_WIDTH = 1280;
 const int WIN_HEIGHT = 720;
 
@@ -117,9 +116,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				pauseState = gameState;
 				gameState = pause;
 			}
-      player->Update(keys,oldkeys);
+			player->Update(keys,oldkeys);
 
-		  count->Update(keys, oldkeys);
+			count->Update(keys, oldkeys);
 			m->Update();
 
 			break;
@@ -172,15 +171,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		default:
 			break;
 		};
-
-		
-
-		for (int i = 0; i < 30; i++)
-		{
-			//DrawLine(0, 1 * (i * 55.3), WIN_WIDTH, 1 * (i * 55.3), GetColor(255, 0, 0));
-			//DrawLine(1 * (i * 55.6), 0, 1 * (i * 55.6), WIN_HEIGHT, GetColor(255, 0, 0));
-		}
-		
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
