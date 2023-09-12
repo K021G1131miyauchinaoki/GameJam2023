@@ -7,6 +7,7 @@ public:
 	void Initialize();
 	void Update(char* keys, char* oldkey);
 	void Draw();
+	void Reset();
 
 	void AddCount();
 private:

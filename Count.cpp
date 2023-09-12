@@ -53,6 +53,14 @@ void Count::Draw()
 
 }
 
+void Count::Reset()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		count[i] = 0;
+	}
+}
+
 void Count::AddCount()
 {
 	count[0] += 1;//1‚Ì‚­‚ç‚¢‚É+1‚·‚é
