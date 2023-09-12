@@ -3,13 +3,7 @@
 void Player::Initialize()
 {
 	initialPos = { 60,90 };//マップチップでいうところの[0][0]の座標
-	pos = { initialPos.x+60,initialPos.y+60 };	// 中心座標
 	radius = 30;		// 半径
-	isdir = 0;		//方向管理フラグ  0 = 右　1 = 左　2 = 上　3 = 下
-	isMove = false;		//移動管理フラグ
-	//イージング
-	easingflag = false;
-	frame = 0;
 	endframe = 10.0f;
 	//煙
 	for (int i = 0; i < MAX_PARTICLE; i++)
@@ -25,6 +19,15 @@ void Player::Initialize()
 	}
 
 	graphHandle = LoadGraph("Resource/jamtest.png");
+}
+
+void Player::Reset() {
+	pos = { initialPos.x + 60,initialPos.y + 60 };	// 中心座標
+	//イージング
+	easingflag = false;
+	frame = 0;
+	isdir = 0;		//方向管理フラグ  0 = 右　1 = 左　2 = 上　3 = 下
+	isMove = false;		//移動管理フラグ
 }
 
 void Player::Update(char* keys, char* oldkey)

@@ -272,6 +272,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = game;
+				player->Reset();
+				map->Reset();
 			}
 			//pause用
 			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
@@ -286,6 +288,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			if (map->IsClear())
 			{
 				gameState = clear;
+			}
+			//selectに戻る用
+			if (keys[KEY_INPUT_T] == 1 && oldkeys[KEY_INPUT_T] == 0)
+			{
+				pauseState = gameState;
+				gameState = select;
+			}
+			if (keys[KEY_INPUT_R] == 1 && oldkeys[KEY_INPUT_R] == 0)
+			{
+				player->Reset();
+				map->Reset();
 			}
 			isPlay = true;
 			if (1)//�����ɃN���A�t���O������
@@ -317,7 +330,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			//�����N�m�肳����
 			player->Update(keys, oldkeys);
-
 			count->Update(keys, oldkeys);
 			map->Update();
 			break;
