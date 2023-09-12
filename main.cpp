@@ -2,12 +2,16 @@
 #include "player.h"
 #include "Count.h"
 #include"Map.h"
+#include "Easing.h"
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "GameJam2023";
 
 const int WIN_WIDTH = 1280;
 const int WIN_HEIGHT = 720;
+
+
+bool In(int x, int y, int sizex, int sizey, int time, int maxtime, bool flag, bool secflag, bool nextflag);
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
                    _In_ int nCmdShow) {
@@ -87,6 +91,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	int pauseTex = LoadGraph("Resource/GameStates/pause.png");
 	int mapTex = LoadGraph("Resource/Map/stage.png");
 	int mapSelectTex = LoadGraph("Resource/Map/select.png");
+	int sceneTex = LoadGraph("Resource/Scene/TitleName.png");
+	int backTex = LoadGraph("Resource/Scene/back.png");
 
 	//�X�e�[�W�I��v�ϐ�
 	const int STAGE_MINX = 0;
@@ -122,6 +128,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	int graphY = 128;
 
 	bool isPlay = false;
+	//シーン移行用
+	int time = 0;
+	int MaxTime = 60;
+	float TexX;
+	float TexY;
+	
+	int timeS = 0;
+	float TexXS;
+	float TexYS;
 
 	// ゲームループ
 	while (true)
@@ -135,6 +150,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		// 最新のキーボード情報を取得
 		GetHitKeyStateAll(keys);
 		//---------  ここからにプログラムを記述  ---------//
+		//シーン移行用
+
 
 #pragma region
 		//更新
@@ -144,12 +161,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		case title:
 			isPlay = false;
 			//���̃V�[����
-			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = select;
 			}
 			//pause�p
-			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
 			{
 				pauseState = gameState;
 				gameState = pause;
@@ -158,13 +175,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		case select:
 			//���̃V�[���ցi����j
-			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = game;
 			}
 			//�X�e�[�W�I������
 			//�E�ɍs��
-			if (keys[KEY_INPUT_RIGHT] == 1 && prev[KEY_INPUT_RIGHT] == 0)
+			if (keys[KEY_INPUT_RIGHT] == 1 && oldkeys[KEY_INPUT_RIGHT] == 0)
 			{
 				selectStageX ++;
 				//selectStage++;
@@ -175,7 +192,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				}
 			}
 			//���ɍs��
-			if (keys[KEY_INPUT_LEFT] == 1 && prev[KEY_INPUT_LEFT] == 0)
+			if (keys[KEY_INPUT_LEFT] == 1 && oldkeys[KEY_INPUT_LEFT] == 0)
 			{
 				selectStageX--;
 				//selectStage++;
@@ -187,7 +204,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			}
 
 			//��ɍs��
-			if (keys[KEY_INPUT_DOWN] == 1 && prev[KEY_INPUT_DOWN] == 0)
+			if (keys[KEY_INPUT_DOWN] == 1 && oldkeys[KEY_INPUT_DOWN] == 0)
 			{
 				selectStageY++;
 				//selectStage +=4;
@@ -198,7 +215,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				}
 			}
 			//���ɍs��
-			if (keys[KEY_INPUT_UP] == 1 && prev[KEY_INPUT_UP] == 0)
+			if (keys[KEY_INPUT_UP] == 1 && oldkeys[KEY_INPUT_UP] == 0)
 			{
 				selectStageY--;
 				//selectStage -= 4;
@@ -213,7 +230,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			//�X�e�[�W����
 			
-			if (keys[KEY_INPUT_RIGHT] == 1 && prev[KEY_INPUT_RIGHT] == 0)
+			if (keys[KEY_INPUT_RIGHT] == 1 && oldkeys[KEY_INPUT_RIGHT] == 0)
 			{
 				selectStage++;
 				if (selectStage >= oneTtwoMax)
@@ -222,7 +239,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				}
 			}
 
-			if (keys[KEY_INPUT_LEFT] == 1 && prev[KEY_INPUT_LEFT] == 0)
+			if (keys[KEY_INPUT_LEFT] == 1 && oldkeys[KEY_INPUT_LEFT] == 0)
 			{
 				
 				selectStage--;
@@ -232,7 +249,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					selectStage = oneTtwoMin;
 				}
 			}
-			if (keys[KEY_INPUT_DOWN] == 1 && prev[KEY_INPUT_DOWN] == 0)
+			if (keys[KEY_INPUT_DOWN] == 1 && oldkeys[KEY_INPUT_DOWN] == 0)
 			{
 				if (selectStageY)
 				{
@@ -251,7 +268,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					selectStage = oneTtwoMax;
 				}
 			}
-			if (keys[KEY_INPUT_UP] == 1 && prev[KEY_INPUT_UP] == 0)
+			if (keys[KEY_INPUT_UP] == 1 && oldkeys[KEY_INPUT_UP] == 0)
 			{
 				if (selectStageY)
 				{
@@ -283,7 +300,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		case game:
 			//���̃V�[����
-			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = clear;
 			}
@@ -309,7 +326,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				}
 			}
 			//pause�p
-			if (keys[KEY_INPUT_P] == 1 && prev[KEY_INPUT_P] == 0)
+			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
 			{
 				pauseState = gameState;
 				gameState = pause;
@@ -321,7 +338,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		case clear:
 			isPlay = false;
 			//���̃V�[����
-			if (keys[KEY_INPUT_RETURN] == 1 && prev[KEY_INPUT_RETURN] == 0)
+			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = title;
 			}
@@ -498,4 +515,47 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	
 }
 
+
+bool In(int x, int y, int sizex,int sizey,int time, int maxtime, bool flag,bool secflag,bool nextflag)
+{
+	if (flag)
+	{
+		if (time <= maxtime)
+		{
+			time = maxtime;
+		}
+		else
+		{
+			time++;
+		}
+		x = Easing::In(x-sizex, x, time, maxtime);
+		y = Easing::In(y - sizey, y, time, maxtime);
+		secflag = true;
+		flag = false;
+	}
+	else
+	{
+		time = 0;
+	}
+
+	if (secflag)
+	{
+		if (time <= maxtime)
+		{
+			time = maxtime;
+		}
+		else
+		{
+			time++;
+		}
+		x = Easing::In(x , x +sizex, time, maxtime);
+		y = Easing::In(y , y + sizey, time, maxtime);
+		return nextflag = true;
+	}
+	else
+	{
+		time = 0;
+	}
+
+}
 
