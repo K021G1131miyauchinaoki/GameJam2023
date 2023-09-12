@@ -10,7 +10,7 @@ void Player::Initialize()
 	//イージング
 	easingflag = false;
 	frame = 0;
-	endframe = 50.0f;
+	endframe = 10.0f;
 	//煙
 	for (int i = 0; i < MAX_PARTICLE; i++)
 	{
@@ -63,15 +63,15 @@ void Player::Draw()
 
 void Player::Move(char* keys, char* oldkey)
 {
+	startX = pos.x;
+	startY = pos.y;
 	//移動
 	if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT] && easingflag == false)
 	{
 		if (map->GetNextMap(static_cast<int>(playerArray.y), static_cast<int>(playerArray.x) + 1) == 0)
 		{
 			//イージング
-			frame = 0;
 			easingflag = true;
-			startX = pos.x;
 			endX = pos.x += 60;
 		}
 		isdir = 0;
@@ -82,9 +82,7 @@ void Player::Move(char* keys, char* oldkey)
 		if (map->GetNextMap(static_cast<int>(playerArray.y), static_cast<int>(playerArray.x) - 1) == 0)
 		{
 			//イージング
-			frame = 0;
 			easingflag = true;
-			startX = pos.x;
 			endX = pos.x -= 60;
 		}
 		isdir = 1;
@@ -95,9 +93,7 @@ void Player::Move(char* keys, char* oldkey)
 		if (map->GetNextMap(static_cast<int>(playerArray.y) - 1, static_cast<int>(playerArray.x)) == 0)
 		{
 			//イージング
-			frame = 0;
 			easingflag = true;
-			startY = pos.y;
 			endX = pos.y -= 60;
 		}
 		isdir = 2;
@@ -109,9 +105,7 @@ void Player::Move(char* keys, char* oldkey)
 		if (map->GetNextMap(static_cast<int>(playerArray.y) + 1, static_cast<int>(playerArray.x)) == 0)
 		{
 			//イージング
-			frame = 0;
 			easingflag = true;
-			startY = pos.y;
 			endX = pos.y += 60;
 		}
 		isdir = 3;
@@ -120,29 +114,32 @@ void Player::Move(char* keys, char* oldkey)
 
 	else
 	{
-		startX = pos.x;
-		startY = pos.y;
 	}
 
 	if (easingflag == 1)
 	{
 		frame++;
+		x = frame / endframe;
+		y = frame / endframe;
+		if (isdir == 0 || isdir == 1)
+		{
+			pos.x = startX + (endX - startX) * (EZ(x));
+		}
+		else
+		{
+			pos.y = startY + (endX - startY) * (EZ(y));
+		}
+		if (frame > endframe)
+		{
+			easingflag = 0;
+			frame = 0;
+		}
 	}
-	if (frame == endframe)
-	{
-		easingflag = 0;
-	}
+	
 
-	x = frame / endframe;
-	y = frame / endframe;
-	if (isdir == 0 || isdir == 1)
-	{
-		pos.x = startX + (endX - startX) * (EZ(x));
-	}
-	else
-	{
-		pos.y = startY + (endX - startY) * (EZ(y));
-	}
+
+	
+	
 }
 
 void Player::Smoke(char* keys, char* oldkey)
@@ -172,51 +169,53 @@ void Player::Smoke(char* keys, char* oldkey)
 void Player::Kick(char* keys, char* oldkey)
 {
 	int num = 0;
-	if (keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE])
+	if (easingflag == false)
 	{
-		if (isdir == 0)//右
+		if (keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE])
 		{
-			if (map->GetNextMap(playerArray.y, playerArray.x + 1) >= 2
-				&& map->GetAfterNextMap(playerArray.y, playerArray.x + 2) == 0)
+			if (isdir == 0)//右
 			{
-				//コードが長くなるのでGetNextMapを変数に格納
-				num = map->GetNextMap(playerArray.y, playerArray.x + 1);
-				//次々マップチップに次のマップチップを代入
-				map->SetAfterNextMap(playerArray.y, playerArray.x + 2,num);
-				//次のマップチップに0を代入
-				map->SetNextMap(playerArray.y, playerArray.x + 1);
+				if (map->GetNextMap(playerArray.y, playerArray.x + 1) >= 2
+					&& map->GetAfterNextMap(playerArray.y, playerArray.x + 2) == 0)
+				{
+					//コードが長くなるのでGetNextMapを変数に格納
+					num = map->GetNextMap(playerArray.y, playerArray.x + 1);
+					//次々マップチップに次のマップチップを代入
+					map->SetAfterNextMap(playerArray.y, playerArray.x + 2, num);
+					//次のマップチップに0を代入
+					map->SetNextMap(playerArray.y, playerArray.x + 1);
+				}
 			}
-		}
-		else if (isdir == 1)//左
-		{
-			if (map->GetNextMap(playerArray.y, playerArray.x - 1) >= 2
-				&& map->GetAfterNextMap(playerArray.y, playerArray.x - 2) == 0)
+			else if (isdir == 1)//左
 			{
-				num = map->GetNextMap(playerArray.y, playerArray.x - 1);
-				map->SetAfterNextMap(playerArray.y, playerArray.x - 2, num);
-				map->SetNextMap(playerArray.y, playerArray.x - 1);
+				if (map->GetNextMap(playerArray.y, playerArray.x - 1) >= 2
+					&& map->GetAfterNextMap(playerArray.y, playerArray.x - 2) == 0)
+				{
+					num = map->GetNextMap(playerArray.y, playerArray.x - 1);
+					map->SetAfterNextMap(playerArray.y, playerArray.x - 2, num);
+					map->SetNextMap(playerArray.y, playerArray.x - 1);
+				}
 			}
-		}
-		else if (isdir == 2)//上
-		{
-			if (map->GetNextMap(playerArray.y - 1, playerArray.x) >= 2
-				&& map->GetAfterNextMap(playerArray.y - 2, playerArray.x) == 0)
+			else if (isdir == 2)//上
 			{
-				num = map->GetNextMap(playerArray.y - 1, playerArray.x);
-				map->SetAfterNextMap(playerArray.y - 2, playerArray.x, num);
-				map->SetNextMap(playerArray.y - 1, playerArray.x);
+				if (map->GetNextMap(playerArray.y - 1, playerArray.x) >= 2
+					&& map->GetAfterNextMap(playerArray.y - 2, playerArray.x) == 0)
+				{
+					num = map->GetNextMap(playerArray.y - 1, playerArray.x);
+					map->SetAfterNextMap(playerArray.y - 2, playerArray.x, num);
+					map->SetNextMap(playerArray.y - 1, playerArray.x);
+				}
 			}
-		}
-		else if (isdir == 3)//下
-		{
-			if (map->GetNextMap(playerArray.y + 1, playerArray.x) >= 2
-				&& map->GetAfterNextMap(playerArray.y+2, playerArray.x) == 0)
+			else if (isdir == 3)//下
 			{
-				num = map->GetNextMap(playerArray.y + 1, playerArray.x);
-				map->SetAfterNextMap(playerArray.y + 2, playerArray.x, num);
-				map->SetNextMap(playerArray.y + 1, playerArray.x);
+				if (map->GetNextMap(playerArray.y + 1, playerArray.x) >= 2
+					&& map->GetAfterNextMap(playerArray.y + 2, playerArray.x) == 0)
+				{
+					num = map->GetNextMap(playerArray.y + 1, playerArray.x);
+					map->SetAfterNextMap(playerArray.y + 2, playerArray.x, num);
+					map->SetNextMap(playerArray.y + 1, playerArray.x);
+				}
 			}
 		}
 	}
-	
 }
