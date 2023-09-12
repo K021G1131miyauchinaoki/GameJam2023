@@ -31,7 +31,6 @@ void Player::Update(char* keys, char* oldkey)
 {
 	Smoke(keys, oldkey);
 	Move(keys, oldkey);
-	Kick(keys, oldkey);
 	playerArray.x = static_cast<int>((pos.x - initialPos.x) / 60);
 	playerArray.y = static_cast<int>((pos.y - initialPos.y) / 60);
 
@@ -63,6 +62,7 @@ void Player::Draw()
 
 void Player::Move(char* keys, char* oldkey)
 {
+	int num = 0;
 	startX = pos.x;
 	startY = pos.y;
 	//移動
@@ -73,6 +73,17 @@ void Player::Move(char* keys, char* oldkey)
 			//イージング
 			easingflag = true;
 			endX = pos.x += 60;
+		}
+		else if (map->GetNextMap(playerArray.y, playerArray.x + 1) >= 2
+			&& map->GetAfterNextMap(playerArray.y, playerArray.x + 2) == 0
+			&& map->GetNextMap(playerArray.y, playerArray.x + 1) < 10)
+		{
+			//コードが長くなるのでGetNextMapを変数に格納
+			num = map->GetNextMap(playerArray.y, playerArray.x + 1);
+			//次々マップチップに次のマップチップを代入
+			map->SetAfterNextMap(playerArray.y, playerArray.x + 2, num);
+			//次のマップチップに0を代入
+			map->SetNextMap(playerArray.y, playerArray.x + 1);
 		}
 		isdir = 0;
 		
@@ -85,6 +96,14 @@ void Player::Move(char* keys, char* oldkey)
 			easingflag = true;
 			endX = pos.x -= 60;
 		}
+		else if (map->GetNextMap(playerArray.y, playerArray.x - 1) >= 2
+			&& map->GetAfterNextMap(playerArray.y, playerArray.x - 2) == 0
+			&&map->GetNextMap(playerArray.y, playerArray.x - 1)<10)
+		{
+			num = map->GetNextMap(playerArray.y, playerArray.x - 1);
+			map->SetAfterNextMap(playerArray.y, playerArray.x - 2, num);
+			map->SetNextMap(playerArray.y, playerArray.x - 1);
+		}
 		isdir = 1;
 		
 	}
@@ -95,6 +114,14 @@ void Player::Move(char* keys, char* oldkey)
 			//イージング
 			easingflag = true;
 			endX = pos.y -= 60;
+		}
+		else if (map->GetNextMap(playerArray.y - 1, playerArray.x) >= 2
+			&& map->GetAfterNextMap(playerArray.y - 2, playerArray.x) == 0
+			&& map->GetNextMap(playerArray.y - 1, playerArray.x)<10)
+		{
+			num = map->GetNextMap(playerArray.y - 1, playerArray.x);
+			map->SetAfterNextMap(playerArray.y - 2, playerArray.x, num);
+			map->SetNextMap(playerArray.y - 1, playerArray.x);
 		}
 		isdir = 2;
 		
@@ -108,12 +135,16 @@ void Player::Move(char* keys, char* oldkey)
 			easingflag = true;
 			endX = pos.y += 60;
 		}
+		else if (map->GetNextMap(playerArray.y + 1, playerArray.x) >= 2
+			&& map->GetAfterNextMap(playerArray.y + 2, playerArray.x) == 0
+			&& map->GetNextMap(playerArray.y + 1, playerArray.x)<10)
+		{
+			num = map->GetNextMap(playerArray.y + 1, playerArray.x);
+			map->SetAfterNextMap(playerArray.y + 2, playerArray.x, num);
+			map->SetNextMap(playerArray.y + 1, playerArray.x);
+		}
 		isdir = 3;
 		
-	}
-
-	else
-	{
 	}
 
 	if (easingflag == 1)
@@ -135,11 +166,6 @@ void Player::Move(char* keys, char* oldkey)
 			frame = 0;
 		}
 	}
-	
-
-
-	
-	
 }
 
 void Player::Smoke(char* keys, char* oldkey)
@@ -164,58 +190,4 @@ void Player::Smoke(char* keys, char* oldkey)
 				}
 			}
 		}
-}
-
-void Player::Kick(char* keys, char* oldkey)
-{
-	int num = 0;
-	if (easingflag == false)
-	{
-		if (keys[KEY_INPUT_SPACE] && !oldkey[KEY_INPUT_SPACE])
-		{
-			if (isdir == 0)//右
-			{
-				if (map->GetNextMap(playerArray.y, playerArray.x + 1) >= 2
-					&& map->GetAfterNextMap(playerArray.y, playerArray.x + 2) == 0)
-				{
-					//コードが長くなるのでGetNextMapを変数に格納
-					num = map->GetNextMap(playerArray.y, playerArray.x + 1);
-					//次々マップチップに次のマップチップを代入
-					map->SetAfterNextMap(playerArray.y, playerArray.x + 2, num);
-					//次のマップチップに0を代入
-					map->SetNextMap(playerArray.y, playerArray.x + 1);
-				}
-			}
-			else if (isdir == 1)//左
-			{
-				if (map->GetNextMap(playerArray.y, playerArray.x - 1) >= 2
-					&& map->GetAfterNextMap(playerArray.y, playerArray.x - 2) == 0)
-				{
-					num = map->GetNextMap(playerArray.y, playerArray.x - 1);
-					map->SetAfterNextMap(playerArray.y, playerArray.x - 2, num);
-					map->SetNextMap(playerArray.y, playerArray.x - 1);
-				}
-			}
-			else if (isdir == 2)//上
-			{
-				if (map->GetNextMap(playerArray.y - 1, playerArray.x) >= 2
-					&& map->GetAfterNextMap(playerArray.y - 2, playerArray.x) == 0)
-				{
-					num = map->GetNextMap(playerArray.y - 1, playerArray.x);
-					map->SetAfterNextMap(playerArray.y - 2, playerArray.x, num);
-					map->SetNextMap(playerArray.y - 1, playerArray.x);
-				}
-			}
-			else if (isdir == 3)//下
-			{
-				if (map->GetNextMap(playerArray.y + 1, playerArray.x) >= 2
-					&& map->GetAfterNextMap(playerArray.y + 2, playerArray.x) == 0)
-				{
-					num = map->GetNextMap(playerArray.y + 1, playerArray.x);
-					map->SetAfterNextMap(playerArray.y + 2, playerArray.x, num);
-					map->SetNextMap(playerArray.y + 1, playerArray.x);
-				}
-			}
-		}
-	}
 }
