@@ -283,7 +283,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		case game:
 			//���̃V�[����
-			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
+			if (map->IsClear())
 			{
 				gameState = clear;
 			}
@@ -320,7 +320,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			count->Update(keys, oldkeys);
 			map->Update();
-
 			break;
 		case clear:
 			isPlay = false;
