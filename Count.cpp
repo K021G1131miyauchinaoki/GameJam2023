@@ -8,6 +8,7 @@ void Count::Initialize()
 		count[i] = 0;
 	}
 	LoadDivGraph("Resource/number.png", 10, 10, 1, 80, 80, graphHandle);
+	backGround = LoadGraph("Resource/backGroung.png");
 }
 
 void Count::Update(char* keys, char* oldkey)
@@ -42,11 +43,11 @@ void Count::Update(char* keys, char* oldkey)
 
 void Count::Draw()
 {
-	DrawBox(0, 0, 1280, 720, GetColor(122, 0, 0), true);
+	DrawGraph(0, 0, backGround, true);
 
-	DrawGraph(1000, 0, graphHandle[count[0]], true);
-	DrawGraph(960, 0, graphHandle[count[1]], true);
-	DrawGraph(920, 0, graphHandle[count[2]], true);
+	DrawGraph(1120, 570, graphHandle[count[0]], true);
+	DrawGraph(1080, 570, graphHandle[count[1]], true);
+	DrawGraph(1040, 570, graphHandle[count[2]], true);
 	
 	//DrawFormatString(900, 0, GetColor(255, 255, 255), "Count ; %d", count);
 

@@ -11,6 +11,7 @@ public:
 	void AddCount();
 private:
 	int graphHandle[10];
+	int backGround;
 	char strNum[4];
 	int count[3];
 };
