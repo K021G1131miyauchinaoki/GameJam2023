@@ -191,11 +191,13 @@ void Player::Move(char* keys, char* oldkey)
 		y = frame / endframe;
 		if (isdir == 0 || isdir == 1)
 		{
+			ChangeVolumeSoundMem(130, soundHandle[0]);
 			PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
 			pos.x = startX + (endX - startX) * (EZ(x));
 		}
 		else
 		{
+			ChangeVolumeSoundMem(130, soundHandle[0]);
 			PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
 			pos.y = startY + (endX - startY) * (EZ(y));
 		}
@@ -208,6 +210,7 @@ void Player::Move(char* keys, char* oldkey)
 
 	if (isKick)
 	{
+		ChangeVolumeSoundMem(150, soundHandle[1]);
 		PlaySoundMem(soundHandle[1], DX_PLAYTYPE_BACK, true);
 		KickTimer = 10;
 	}

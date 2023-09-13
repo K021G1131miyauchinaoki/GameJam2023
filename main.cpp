@@ -207,6 +207,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
+				ChangeVolumeSoundMem(120, soundHandle[3]);
 				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				next = select;
 				sceneTitle.flag = true;
@@ -218,6 +219,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
+				ChangeVolumeSoundMem(120, soundHandle[3]);
 				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				next = game;
 				sceneTitle.flag = true;
@@ -226,6 +228,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			
 			if (keys[KEY_INPUT_RIGHT] == 1 && oldkeys[KEY_INPUT_RIGHT] == 0)
 			{
+				ChangeVolumeSoundMem(120, soundHandle[3]);
 				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				selectStageX ++;
 				//selectStage++;
@@ -238,6 +241,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			
 			if (keys[KEY_INPUT_LEFT] == 1 && oldkeys[KEY_INPUT_LEFT] == 0)
 			{
+				ChangeVolumeSoundMem(120, soundHandle[3]);
 				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				selectStageX--;
 				//selectStage++;
@@ -251,6 +255,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			
 			if (keys[KEY_INPUT_DOWN] == 1 && oldkeys[KEY_INPUT_DOWN] == 0)
 			{
+				ChangeVolumeSoundMem(120, soundHandle[3]);
 				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				selectStageY++;
 				//selectStage +=4;
@@ -263,6 +268,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			
 			if (keys[KEY_INPUT_UP] == 1 && oldkeys[KEY_INPUT_UP] == 0)
 			{
+				ChangeVolumeSoundMem(120, soundHandle[3]);
 				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				selectStageY--;
 				//selectStage -= 4;
@@ -398,6 +404,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			isPlay = false;
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
+				ChangeVolumeSoundMem(120, soundHandle[3]);
 				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				next = title;
 				sceneTitle.flag = true;
@@ -515,7 +522,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		case title:
 			if (isbgm == 0)
 			{
-				ChangeVolumeSoundMem(100, soundHandle[0]);
+				ChangeVolumeSoundMem(80, soundHandle[0]);
 				PlaySoundMem(soundHandle[0], DX_PLAYTYPE_LOOP, true);
 				isbgm += 1;
 			}
@@ -529,7 +536,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			{
 				StopSoundMem(soundHandle[0]);
 				StopSoundMem(soundHandle[2]);
-				ChangeVolumeSoundMem(100, soundHandle[1]);
+				ChangeVolumeSoundMem(80, soundHandle[1]);
 				PlaySoundMem(soundHandle[1], DX_PLAYTYPE_LOOP, true);
 				isbgm += 1;
 			}
@@ -560,7 +567,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			if (isbgm == 2)
 			{
 				StopSoundMem(soundHandle[1]);
-				ChangeVolumeSoundMem(100, soundHandle[2]);
+				ChangeVolumeSoundMem(80, soundHandle[2]);
 				PlaySoundMem(soundHandle[2], DX_PLAYTYPE_LOOP, true);
 				isbgm -= 1;
 			}
