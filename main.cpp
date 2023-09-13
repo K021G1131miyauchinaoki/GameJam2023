@@ -279,7 +279,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			{
 				gameState = game;
 				player->Reset();
-				map->Reset();
 				count->Reset();
 				map->Reset(selectStage);
 			}
@@ -306,7 +305,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			if (keys[KEY_INPUT_R] == 1 && oldkeys[KEY_INPUT_R] == 0)
 			{
 				player->Reset();
-				map->Reset();
+				count->Reset();
+				map->Reset(selectStage);
+
 			}
 			isPlay = true;
 			if (1)//�����ɃN���A�t���O������
