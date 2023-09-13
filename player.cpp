@@ -19,7 +19,8 @@ void Player::Initialize()
 	}
 
 	LoadDivGraph("Resource/Player/player.png", 8, 4, 2, 60, 60, graphHandle);
-	soundHandle = LoadSoundMem("Resource/BGM/playerMove.mp3");
+	soundHandle[0] = LoadSoundMem("Resource/BGM/playerMove.mp3");
+	soundHandle[1] = LoadSoundMem("Resource/BGM/Kick.mp3");
 }
 
 void Player::Reset() {
@@ -106,6 +107,7 @@ void Player::Move(char* keys, char* oldkey)
 	int num = 0;
 	startX = pos.x;
 	startY = pos.y;
+	//StopSoundMem(soundHandle[1]);
 	//移動
 	if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT] && easingflag == false)
 	{
@@ -191,18 +193,18 @@ void Player::Move(char* keys, char* oldkey)
 
 	if (easingflag == 1)
 	{
-		StopSoundMem(soundHandle);
+		StopSoundMem(soundHandle[0]);
 		frame++;
 		x = frame / endframe;
 		y = frame / endframe;
 		if (isdir == 0 || isdir == 1)
 		{
-			PlaySoundMem(soundHandle, DX_PLAYTYPE_BACK, true);
+			PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
 			pos.x = startX + (endX - startX) * (EZ(x));
 		}
 		else
 		{
-			PlaySoundMem(soundHandle, DX_PLAYTYPE_BACK, true);
+			PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
 			pos.y = startY + (endX - startY) * (EZ(y));
 		}
 		if (frame > endframe)
@@ -214,6 +216,7 @@ void Player::Move(char* keys, char* oldkey)
 
 	if (isKick)
 	{
+		PlaySoundMem(soundHandle[1], DX_PLAYTYPE_BACK, true);
 		KickTimer = 10;
 	}
 	if (KickTimer != 0)
