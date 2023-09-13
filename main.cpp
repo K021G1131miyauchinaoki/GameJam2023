@@ -227,6 +227,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//���̃V�[����
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
+				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				next = select;
 				sceneTitle.flag = true;
 				
@@ -243,6 +244,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//���̃V�[���ցi����j
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
+				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				next = game;
 				sceneTitle.flag = true;
 				//gameState = game;
@@ -251,6 +253,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//�E�ɍs��
 			if (keys[KEY_INPUT_RIGHT] == 1 && oldkeys[KEY_INPUT_RIGHT] == 0)
 			{
+				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				selectStageX ++;
 				//selectStage++;
 				if (selectStageX >= STAGE_MAXX)
@@ -262,6 +265,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//���ɍs��
 			if (keys[KEY_INPUT_LEFT] == 1 && oldkeys[KEY_INPUT_LEFT] == 0)
 			{
+				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				selectStageX--;
 				//selectStage++;
 				if (selectStageX <= STAGE_MINX)
@@ -274,6 +278,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//��ɍs��
 			if (keys[KEY_INPUT_DOWN] == 1 && oldkeys[KEY_INPUT_DOWN] == 0)
 			{
+				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				selectStageY++;
 				//selectStage +=4;
 				if (selectStageY >= STAGE_MAXY)
@@ -285,6 +290,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//���ɍs��
 			if (keys[KEY_INPUT_UP] == 1 && oldkeys[KEY_INPUT_UP] == 0)
 			{
+				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				selectStageY--;
 				//selectStage -= 4;
 				if (selectStageY <= STAGE_MINY)
@@ -380,6 +386,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//pause用
 			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
 			{
+				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				pauseState = gameState;
 				gameState = pause;
 			}
@@ -448,7 +455,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//���̃V�[����
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
-
+				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				next = title;
 				sceneTitle.flag = true;
 				//gameState = title;
