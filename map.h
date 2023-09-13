@@ -1,21 +1,35 @@
 #pragma once
-#define WIDHT 10
+#define WIDHT 15
 #define HEIGHT 10
 
 class Map
 {
 public:
+	//リセット
 	void Reset();
+	//初期化
 	void Initialize();
+	//更新
 	void Update();
+	//描画
 	void Draw();
-	bool IsClear() { return isClear; }			
+	//クリア判定
+	bool IsClear() { return isClear; }
+	//次のマップ番号取得
+	int GetNextMap(int height, int widht) { return object[height][widht]; }
+	//次々のマップ
+	int GetAfterNextMap(int height, int widht) { return object[height][widht]; }
+	//次のマップに値をセット
+	int SetNextMap(int height, int widht, int num) { return object[height][widht] = num; }
+	//次々のマップに値をセット
+	int SetAfterNextMap(int height, int widht, int num) { return object[height][widht] = num; }
 private:
-	int answer[10][10];
-	int object[10][10];
-	int ground[10][10];
+	int answer[HEIGHT][WIDHT];
+	int object[HEIGHT][WIDHT];
+	int ground[HEIGHT][WIDHT];
 	int r;
 	int count;
 	int blockTex;
 	bool isClear;
+	const int space = 30;
 };
