@@ -371,7 +371,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				timeClear--;
 				if (timeClear <0)
 				{
-					gameState = clear;
+					next = clear;
+					sceneTitle.flag = true;
 					timeClear = timerClear;
 				}
 			}
@@ -420,7 +421,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			{
 				ChangeVolumeSoundMem(120, soundHandle[3]);
 				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
-				next = title;
+				next = select;
 				sceneTitle.flag = true;
 			}
 			
