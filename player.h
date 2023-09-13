@@ -50,7 +50,7 @@ private:
 	int KickTimer;
 //画像管理
 	int graphHandle[8];
-	int soundHandle;
+	int soundHandle[2];
 //イージング
 	bool easingflag;
 	int frame;

@@ -6,7 +6,7 @@
 #include "SceneChange.h"
 
 // ウィンドウのタイトルに表示する文字列
-const char TITLE[] = "GameJam2023";
+const char TITLE[] = "カイロボ";
 
 const int WIN_WIDTH = 1280;
 const int WIN_HEIGHT = 720;
@@ -60,12 +60,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	
 	// 画像などのリソースデータの変数宣言と読み込み
+	int soundHandle[4];
+	soundHandle[0] = LoadSoundMem("Resource/BGM/taitle.mp3");
+	soundHandle[1] = LoadSoundMem("Resource/BGM/gamePlay.mp3");
+	soundHandle[2] = LoadSoundMem("Resource/BGM/clear.mp3");
+	soundHandle[3] = LoadSoundMem("resource/BGM/select.mp3");
+
 
 	// ゲームループで使う変数の宣言
 	//マップ
 	Map* map = new Map();
 	map->Initialize();
-	map->Reset();
 	//プレイヤー
 	Player* player = new Player();
 	player->Initialize();
@@ -194,6 +199,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	taitle->setTex(sceneTex);
 	back->setTex(backTex);*/
+	
+	int isbgm = 0;
 
 	// ゲームループ
 	while (true)
@@ -366,9 +373,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			{
 				gameState = game;
 				player->Reset();
-				map->Reset();
 				count->Reset();
-
+				map->Reset(selectStage);
 			}
 			
 			//pause用
@@ -400,8 +406,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			if (keys[KEY_INPUT_R] == 1 && oldkeys[KEY_INPUT_R] == 0)
 			{
 				player->Reset();
-				map->Reset();
 				count->Reset();
+				map->Reset(selectStage);
+
 			}
 			isPlay = true;
 			if (1)//�����ɃN���A�t���O������
@@ -589,13 +596,29 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//描画---------------
 		switch (gameState)
 		{
-
+			
 		case title://�^�C�g��
+			if (isbgm == 0)
+			{
+				ChangeVolumeSoundMem(100, soundHandle[0]);
+				PlaySoundMem(soundHandle[0], DX_PLAYTYPE_LOOP, true);
+				isbgm += 1;
+			}
+
 			DrawGraph(0, 0, titleTex, TRUE);
 		
 			break;
 
 		case select://�X�e�[�W�I�����
+			if (isbgm == 1)
+			{
+				StopSoundMem(soundHandle[0]);
+				StopSoundMem(soundHandle[2]);
+				ChangeVolumeSoundMem(100, soundHandle[1]);
+				PlaySoundMem(soundHandle[1], DX_PLAYTYPE_LOOP, true);
+				isbgm += 1;
+			}
+
 			DrawGraph(0, 0, selectTex, TRUE);
 
 			for (int i = 0; i < 2; i++)//�X�e�[�W�\���̏c��
@@ -603,14 +626,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				for (int j = 0; j < 4; j++)//�X�e�[�W�\�L�̉���
 				{
 					DrawGraph(graphX+graphSize*j, graphY+graphSize*i, mapTex, TRUE);
-					if (i==0)
-					{
-						DrawRectGraph(graphX + graphSize * j, graphY + graphSize * i, 128*(i+j), 0, 128, 128, numTex, true, false);
-					}
-					else
-					{
-						DrawRectGraph(graphX + graphSize * j, graphY + graphSize * i, 128 * (i + j + 3), 0, 128, 128, numTex, true, false);
-					}
+					
+					DrawRectGraph(graphX + graphSize * j, graphY + graphSize * i, 128 * (i + j + 3 * i), 0, 128, 128, numTex, true, false);
 				}
 			}
 			//���I�����Ă�X�e�[�W�̘g
@@ -626,6 +643,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
         
 		case clear://�Q�[���N���A
+			if (isbgm == 2)
+			{
+				StopSoundMem(soundHandle[1]);
+				ChangeVolumeSoundMem(100, soundHandle[2]);
+				PlaySoundMem(soundHandle[2], DX_PLAYTYPE_LOOP, true);
+				isbgm -= 1;
+			}
+
 			DrawGraph(0, 0, clearTex, TRUE);
 			//�����Ń����N��\��
 
@@ -658,6 +683,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		default:
 			break;
 		};
+		DrawFormatString(0, 0, GetColor(255, 0, 0), "player : %d\n", selectStage);
+
 
 
 		DrawGraph(back.x, back.y, backTex, TRUE);
