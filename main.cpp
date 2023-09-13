@@ -138,7 +138,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	int selectStageX = STAGE_MINX;
 	int selectStageY = STAGE_MINY;
 	int selectStage = STAGE_MINX;
-
+	
 	int graphSize = 128*2;
 	int graphX = 176;
 	int graphY = 128;
