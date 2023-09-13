@@ -176,6 +176,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	back.time = 0;
 	back.flag = false;
 	back.change = false;
+
+	bool initFlag1 = false;
+	bool initFlag = false;
 	
 	
 
@@ -315,12 +318,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					oneTtwoMax = 3;
 					oneTtwoMin = 0;
 				}
-				selectStage += 4;
-				if(selectStage >= oneTtwoMax)
-					
+
+				if (initFlag1 == false) {
+					//1回だけ行う処理
+					initFlag1 = true;
+					selectStage += 4;
+					initFlag = false;
+				}
+				/*if(selectStage >= oneTtwoMax)
 				{
 					selectStage = oneTtwoMax;
-				}
+				}*/
 			}
 			if (keys[KEY_INPUT_UP] == 1 && oldkeys[KEY_INPUT_UP] == 0)
 			{
@@ -334,11 +342,18 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					oneTtwoMax = 3;
 					oneTtwoMin = 0;
 				}
-				selectStage -= 4;
-				if (selectStage <= oneTtwoMin)
+
+				if (initFlag == false) {
+					//1回だけ行う処理
+					initFlag = true;
+					selectStage -= 4;
+					initFlag1 = false;
+				}
+				
+				/*if (selectStage <= oneTtwoMin)
 				{
 					selectStage = oneTtwoMin;
-				}
+				}*/
 			}
 			
 			//pause用
@@ -606,7 +621,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		DrawGraph(back.x, back.y, backTex, TRUE);
 		DrawGraph(sceneTitle.x, sceneTitle.y, sceneTex, TRUE);
-		 
+
+
+		DrawFormatString(0, 0, GetColor(255, 0, 0), "player : %d\n", selectStage);
+		
+
+
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
