@@ -19,6 +19,7 @@ class Player
 {
 public:
 	void Initialize();
+	void Reset();
 	void Update(char* keys,char* oldkey);
 	void Draw();
 	void SetMap(Map* map_) { map = map_; }
@@ -33,7 +34,6 @@ private:
 	/// </summary>
 	void Smoke(char* keys, char* oldkey);//演出用関数
 
-	void Kick(char* keys, char* oldkey);//回路を動かす関数
 	Vector2 GetPlayerArray() { return playerArray; }
 
 private:
@@ -42,12 +42,15 @@ private:
 	Vector2	initialPos;
 	Vector2 playerArray;
 	int radius;
-	Vector2 speed;
 
 	int isdir;
+	int oldDir;
 	bool isMove;
-
-	int graphHandle;
+	bool isKick;
+	int KickTimer;
+//画像管理
+	int graphHandle[8];
+	int soundHandle;
 //イージング
 	bool easingflag;
 	int frame;

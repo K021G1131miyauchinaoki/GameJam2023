@@ -106,8 +106,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	int pauseTex = LoadGraph("Resource/GameStates/pause.png");
 	int mapTex = LoadGraph("Resource/Map/stage.png");
 	int mapSelectTex = LoadGraph("Resource/Map/select.png");
+
 	int sceneTex = LoadGraph("Resource/Scene/TitleName.png");
 	int backTex = LoadGraph("Resource/Scene/back.png");
+
+	int numTex= LoadGraph("Resource/Map/num.png");
+
 
 	//�X�e�[�W�I��v�ϐ�
 	const int STAGE_MINX = 0;
@@ -353,7 +357,18 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				/*if (selectStage <= oneTtwoMin)
 				{
 					selectStage = oneTtwoMin;
+
 				}*/
+
+				}
+			}
+			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
+			{
+				gameState = game;
+				player->Reset();
+				map->Reset();
+				count->Reset();
+
 			}
 			
 			//pause用
@@ -366,11 +381,27 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		case game:
 			//���̃V�[����
+
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
+
+			if (map->IsClear())
+
 			{
 				next = clear;
 				sceneTitle.flag = true;
 				//gameState = clear;
+			}
+			//selectに戻る用
+			if (keys[KEY_INPUT_T] == 1 && oldkeys[KEY_INPUT_T] == 0)
+			{
+				pauseState = gameState;
+				gameState = select;
+			}
+			if (keys[KEY_INPUT_R] == 1 && oldkeys[KEY_INPUT_R] == 0)
+			{
+				player->Reset();
+				map->Reset();
+				count->Reset();
 			}
 			isPlay = true;
 			if (1)//�����ɃN���A�t���O������
@@ -401,16 +432,22 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			}
 
 			//�����N�m�肳����
-
+			player->Update(keys, oldkeys);
+			count->Update(keys, oldkeys);
+			map->Update();
 			break;
 		case clear:
 			isPlay = false;
 			//���̃V�[����
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
+
 				next = title;
 				sceneTitle.flag = true;
 				//gameState = title;
+
+				//gameState = select;
+
 			}
 			//pause用
 			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
@@ -418,11 +455,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				pauseState = gameState;
 				gameState = pause;
 			}
-			player->Update(keys,oldkeys);
-
-			count->Update(keys, oldkeys);
-			map->Update();
-
+			
 			break;
 		case over:
 			isPlay = false;
@@ -570,6 +603,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				for (int j = 0; j < 4; j++)//�X�e�[�W�\�L�̉���
 				{
 					DrawGraph(graphX+graphSize*j, graphY+graphSize*i, mapTex, TRUE);
+					if (i==0)
+					{
+						DrawRectGraph(graphX + graphSize * j, graphY + graphSize * i, 128*(i+j), 0, 128, 128, numTex, true, false);
+					}
+					else
+					{
+						DrawRectGraph(graphX + graphSize * j, graphY + graphSize * i, 128 * (i + j + 3), 0, 128, 128, numTex, true, false);
+					}
 				}
 			}
 			//���I�����Ă�X�e�[�W�̘g
