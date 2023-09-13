@@ -92,9 +92,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		select,
 		game,
 		clear,
-		over,
-		pause,
-
 	};
 	
 
@@ -118,7 +115,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	int numTex= LoadGraph("Resource/Map/num.png");
 
 
-	//�X�e�[�W�I��v�ϐ�
 	const int STAGE_MINX = 0;
 	const int STAGE_MAXX = 3;
 	const int STAGE_MINY = 0;
@@ -126,7 +122,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	const int STAGE_MIN = 0;
 	const int STAGE_MAX = 7;
 
-	//�]���t�����邽�߂̃����N
 	const int RANK_A = 5;
 	const int RANK_B = 10;
 	const int RANK_C = 20;
@@ -134,12 +129,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	bool A = false;
 	bool B = false;
 	bool C = false;
-	//��r���邽�߂̍s���ϐ����ƂŕύX���邱��
+	
 	int movement = 0;
-
-
-
-	//�r���ōő�ƍŏ���ύX���邽�߂̕ϐ�
+	
 	int oneTtwoMin = 0;
 	int oneTtwoMax = 3;
 
@@ -188,18 +180,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	bool initFlag1 = false;
 	bool initFlag = false;
-	
-	
-
-	/*SceneChange* taitle{};
-	SceneChange* back{};
-
-	taitle->Reset(1270, 720);
-	back->Reset(1270, 720);
-
-	taitle->setTex(sceneTex);
-	back->setTex(backTex);*/
-	
 	int isbgm = 0;
 
 	// ゲームループ
@@ -224,7 +204,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		case title:
 			isPlay = false;
-			//���̃V�[����
+			
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
@@ -232,16 +212,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				sceneTitle.flag = true;
 				
 			}
-			//pause�p
-			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
-			{
-				pauseState = gameState;
-				gameState = pause;
-			}
 
 			break;
 		case select:
-			//���̃V�[���ցi����j
+			
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
@@ -249,8 +223,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				sceneTitle.flag = true;
 				//gameState = game;
 			}
-			//�X�e�[�W�I������
-			//�E�ɍs��
+			
 			if (keys[KEY_INPUT_RIGHT] == 1 && oldkeys[KEY_INPUT_RIGHT] == 0)
 			{
 				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
@@ -262,7 +235,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					//selectStage = STAGE_MAXX;
 				}
 			}
-			//���ɍs��
+			
 			if (keys[KEY_INPUT_LEFT] == 1 && oldkeys[KEY_INPUT_LEFT] == 0)
 			{
 				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
@@ -275,7 +248,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				}
 			}
 
-			//��ɍs��
+			
 			if (keys[KEY_INPUT_DOWN] == 1 && oldkeys[KEY_INPUT_DOWN] == 0)
 			{
 				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
@@ -287,7 +260,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					//selectStage = STAGE_MAXY;
 				}
 			}
-			//���ɍs��
+			
 			if (keys[KEY_INPUT_UP] == 1 && oldkeys[KEY_INPUT_UP] == 0)
 			{
 				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
@@ -300,9 +273,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 				}
 			}
-
-
-			//�X�e�[�W����
 			
 			if (keys[KEY_INPUT_RIGHT] == 1 && oldkeys[KEY_INPUT_RIGHT] == 0)
 			{
@@ -382,28 +352,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				count->Reset();
 				map->Reset(selectStage);
 			}
-			
-			//pause用
-			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
-			{
-				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
-				pauseState = gameState;
-				gameState = pause;
-			}
 
 			break;
 		case game:
-			//���̃V�[����
-
-			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
-
-			if (map->IsClear())
-
-			{
-				next = clear;
-				sceneTitle.flag = true;
-				//gameState = clear;
-			}
 			//selectに戻る用
 			if (keys[KEY_INPUT_T] == 1 && oldkeys[KEY_INPUT_T] == 0)
 			{
@@ -418,9 +369,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			}
 			isPlay = true;
-			if (1)//�����ɃN���A�t���O������
+			if (1)//ランキング
 			{
-				//�I�����ꂽ�X�e�[�W���v���C
 				if (movement < RANK_A)
 				{
 					A = TRUE;
@@ -438,63 +388,21 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					C = TRUE;
 				}
 			}
-			//pause�p
-			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
-			{
-				pauseState = gameState;
-				gameState = pause;
-			}
 
-			//�����N�m�肳����
+			//更新処理
 			player->Update(keys, oldkeys);
 			count->Update(keys, oldkeys);
 			map->Update();
 			break;
 		case clear:
 			isPlay = false;
-			//���̃V�[����
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				next = title;
 				sceneTitle.flag = true;
-				//gameState = title;
-
-				//gameState = select;
-
-			}
-			//pause用
-			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
-			{
-				pauseState = gameState;
-				gameState = pause;
 			}
 			
-			break;
-		case over:
-			isPlay = false;
-			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
-			{
-				next = over;
-				sceneTitle.flag = true;
-				//gameState = title;
-			}
-			//pause用
-			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
-			{
-				pauseState = gameState;
-				gameState = pause;
-			}
-
-			break;
-		case pause:
-			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
-			{
-				gameState = pauseState;
-			}
-
-			break;
-		default:
 			break;
 		};
 #pragma endregion �Q�[�����[�v����
@@ -502,7 +410,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 #pragma region
 		if (isPlay)
 		{
-			switch (selectStage)//�X�e�[�W
+			switch (selectStage)
 			{
 			case 0:
 				
@@ -604,7 +512,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		switch (gameState)
 		{
 			
-		case title://�^�C�g��
+		case title:
 			if (isbgm == 0)
 			{
 				ChangeVolumeSoundMem(100, soundHandle[0]);
@@ -616,7 +524,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		
 			break;
 
-		case select://�X�e�[�W�I�����
+		case select:
 			if (isbgm == 1)
 			{
 				StopSoundMem(soundHandle[0]);
@@ -628,28 +536,27 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			DrawGraph(0, 0, selectTex, TRUE);
 
-			for (int i = 0; i < 2; i++)//�X�e�[�W�\���̏c��
+			for (int i = 0; i < 2; i++)
 			{
-				for (int j = 0; j < 4; j++)//�X�e�[�W�\�L�̉���
+				for (int j = 0; j < 4; j++)
 				{
 					DrawGraph(graphX+graphSize*j, graphY+graphSize*i, mapTex, TRUE);
 					
 					DrawRectGraph(graphX + graphSize * j, graphY + graphSize * i, 128 * (i + j + 3 * i), 0, 128, 128, numTex, true, false);
 				}
 			}
-			//���I�����Ă�X�e�[�W�̘g
+			
 			DrawGraph(graphX + selectStageX * graphSize, graphY + selectStageY * graphSize, mapSelectTex, TRUE);
 			
 			break;
         
 		case game:
-			//DrawGraph(0, 0, gameTex, TRUE);
 			count->Draw();
 			map->Draw();
 			player->Draw();
 			break;
         
-		case clear://�Q�[���N���A
+		case clear:
 			if (isbgm == 2)
 			{
 				StopSoundMem(soundHandle[1]);
@@ -659,7 +566,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			}
 
 			DrawGraph(0, 0, clearTex, TRUE);
-			//�����Ń����N��\��
+			
 
 			if (A)
 			{
@@ -679,30 +586,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 
 			break;
-		case over://�Q�[���I�[�o�[
-			DrawGraph(0, 0, overTex, TRUE);
-
-			break;
-		case pause://�|�[�Y
-			DrawGraph(0, 0, pauseTex, TRUE);
-
-			break;
 		default:
 			break;
 		};
-		DrawFormatString(0, 0, GetColor(255, 0, 0), "player : %d\n", selectStage);
-
-
 
 		DrawGraph(back.x, back.y, backTex, TRUE);
 		DrawGraph(sceneTitle.x, sceneTitle.y, sceneTex, TRUE);
-
-
-		DrawFormatString(0, 0, GetColor(255, 0, 0), "player : %d\n", selectStage);
 		
-
-
-
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
 		ScreenFlip();

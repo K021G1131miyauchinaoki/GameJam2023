@@ -224,24 +224,24 @@ void Player::Move(char* keys, char* oldkey)
 
 void Player::Smoke(char* keys, char* oldkey)
 {
-	if (isMove == false) {
-			for (int i = 0; i < 5; i++) {
-				if (jumpParticle[i].isAlive == 0) {
-					jumpParticle[i].isAlive = 1;
-					jumpParticle[i].transform.x = pos.x + rand() % 30-30;
-					jumpParticle[i].transform.y = pos.y + rand() % 10;
-					jumpParticle[i].angle = rand() % 100;	// 角度をランダムで決める
-					jumpParticle[i].speed = rand() % 2;
-					jumpParticle[i].alpha = 250;			// 透明度をリセット
-					jumpParticle[i].color = GetColor(255, 255, 255);
-					break;
-				}
-			}
-			//生存フラグがオンなら
-			for (int i = 0; i < 5; i++) {
-				if (jumpParticle[i].isAlive == 1) {
-					jumpParticle[i].alpha -= 20;
-				}
-			}
-		}
+	//if (isMove == false) {
+	//		for (int i = 0; i < 5; i++) {
+	//			if (jumpParticle[i].isAlive == 0) {
+	//				jumpParticle[i].isAlive = 1;
+	//				jumpParticle[i].transform.x = pos.x + rand() % 30-30;
+	//				jumpParticle[i].transform.y = pos.y + rand() % 10;
+	//				jumpParticle[i].angle = rand() % 100;	// 角度をランダムで決める
+	//				jumpParticle[i].speed = rand() % 2;
+	//				jumpParticle[i].alpha = 250;			// 透明度をリセット
+	//				jumpParticle[i].color = GetColor(255, 255, 255);
+	//				break;
+	//			}
+	//		}
+	//		//生存フラグがオンなら
+	//		for (int i = 0; i < 5; i++) {
+	//			if (jumpParticle[i].isAlive == 1) {
+	//				jumpParticle[i].alpha -= 20;
+	//			}
+	//		}
+	//	}
 }
