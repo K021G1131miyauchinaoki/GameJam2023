@@ -4,7 +4,7 @@
 #include"Map.h"
 
 // ウィンドウのタイトルに表示する文字列
-const char TITLE[] = "GameJam2023";
+const char TITLE[] = "カイロボ";
 
 const int WIN_WIDTH = 1280;
 const int WIN_HEIGHT = 720;
@@ -42,9 +42,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	
 	// 画像などのリソースデータの変数宣言と読み込み
-	int soundHandle[2];
+	int soundHandle[3];
 	soundHandle[0] = LoadSoundMem("Resource/BGM/taitle.mp3");
-	soundHandle[1] = LoadSoundMem("Resource/BGm/gamePlay.mp3");
+	soundHandle[1] = LoadSoundMem("Resource/BGM/gamePlay.mp3");
+	soundHandle[2] = LoadSoundMem("Resource/BGM/clear.mp3");
 
 
 	// ゲームループで使う変数の宣言
@@ -445,6 +446,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			if (isbgm == 1)
 			{
 				StopSoundMem(soundHandle[0]);
+				StopSoundMem(soundHandle[2]);
 				ChangeVolumeSoundMem(100, soundHandle[1]);
 				PlaySoundMem(soundHandle[1], DX_PLAYTYPE_LOOP, true);
 				isbgm += 1;
@@ -477,7 +479,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			if (isbgm == 2)
 			{
 				StopSoundMem(soundHandle[1]);
-
+				ChangeVolumeSoundMem(100, soundHandle[2]);
+				PlaySoundMem(soundHandle[2], DX_PLAYTYPE_LOOP, true);
 				isbgm -= 1;
 			}
 
