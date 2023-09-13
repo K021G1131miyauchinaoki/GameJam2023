@@ -27,9 +27,9 @@ void Player::Reset(int num) {
 	switch (num)
 	{
 	case 0:
-		pos = { initialPos.x + 421,initialPos.y + 60 };
+		pos = { initialPos.x + 421,initialPos.y + 61 };
 	case 1:
-		pos = { initialPos.x + 541,initialPos.y +180 };
+		pos = { initialPos.x + 541,initialPos.y +181 };
 	default:
 		break;
 	}
