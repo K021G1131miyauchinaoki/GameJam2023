@@ -73,13 +73,6 @@ void Player::Draw()
 		}
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	DrawFormatString(0, 0, GetColor(255, 0, 0), "player : %f/%f\n", pos.x, pos.y);
-	DrawFormatString(0, 30, GetColor(255, 255, 255), "playerArray : %f\n", playerArray.y);
-	DrawFormatString(0, 45, GetColor(0, 0, 0), "EZ : %d\n", easingflag);
-	DrawFormatString(0, 60, GetColor(0, 0, 0), "EZframe : %d\n", frame);
-	DrawFormatString(0, 75, GetColor(0, 0, 0), "EZendframe : %d\n", endframe);
-	DrawFormatString(0, 90, GetColor(255, 255, 255), "isdir : %d\n", isdir);
-	DrawFormatString(0, 105, GetColor(255, 255, 255), "oldDir : %d\n", oldDir);
 }
 
 void Player::Move(char* keys, char* oldkey)

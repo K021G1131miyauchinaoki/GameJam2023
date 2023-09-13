@@ -6,7 +6,7 @@ class Map
 {
 public:
 	//リセット
-	void Reset();
+	void Reset(int num);
 	//初期化
 	void Initialize();
 	//更新

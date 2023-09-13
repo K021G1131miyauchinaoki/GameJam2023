@@ -47,7 +47,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	//マップ
 	Map* map = new Map();
 	map->Initialize();
-	map->Reset();
 	//プレイヤー
 	Player* player = new Player();
 	player->Initialize();
@@ -274,7 +273,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			{
 				gameState = game;
 				player->Reset();
-				map->Reset();
+				map->Reset(selectStage);
 			}
 			//pause用
 			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
@@ -299,7 +298,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			if (keys[KEY_INPUT_R] == 1 && oldkeys[KEY_INPUT_R] == 0)
 			{
 				player->Reset();
-				map->Reset();
+				map->Reset(selectStage);
 			}
 			isPlay = true;
 			if (1)//�����ɃN���A�t���O������
@@ -434,14 +433,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				for (int j = 0; j < 4; j++)//�X�e�[�W�\�L�̉���
 				{
 					DrawGraph(graphX+graphSize*j, graphY+graphSize*i, mapTex, TRUE);
-					if (i==0)
-					{
-						DrawRectGraph(graphX + graphSize * j, graphY + graphSize * i, 128*(i+j), 0, 128, 128, numTex, true, false);
-					}
-					else
-					{
-						DrawRectGraph(graphX + graphSize * j, graphY + graphSize * i, 128 * (i + j + 3), 0, 128, 128, numTex, true, false);
-					}
+					
+					DrawRectGraph(graphX + graphSize * j, graphY + graphSize * i, 128 * (i + j + 3 * i), 0, 128, 128, numTex, true, false);
 				}
 			}
 			//���I�����Ă�X�e�[�W�̘g
@@ -489,6 +482,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		default:
 			break;
 		};
+		DrawFormatString(0, 0, GetColor(255, 0, 0), "player : %d\n", selectStage);
+
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
