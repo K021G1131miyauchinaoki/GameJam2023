@@ -7,6 +7,7 @@ void Count::Initialize()
 	{
 		count[i] = 0;
 	}
+	addTimer = 0;
 	LoadDivGraph("Resource/number.png", 10, 10, 1, 80, 80, graphHandle);
 	backGround = LoadGraph("Resource/backGroung.png");
 }
@@ -15,28 +16,38 @@ void Count::Update(char* keys, char* oldkey)
 {
 	if (count[2] < 10)//999‚æ‚è‰º‚È‚ç
 	{
-		if (keys[KEY_INPUT_UP] && !oldkey[KEY_INPUT_UP])
+		//’P‘Ì‚Å‰Ÿ‚³‚ê‚Ä‚¢‚é‚È‚ç
+		if (keys[KEY_INPUT_UP] && !oldkey[KEY_INPUT_UP] && addTimer == 0)
 		{
-			AddCount();
+			addTimer = 10;
 		}
-		if (keys[KEY_INPUT_DOWN] && !oldkey[KEY_INPUT_DOWN])
+		if (keys[KEY_INPUT_DOWN] && !oldkey[KEY_INPUT_DOWN] && addTimer == 0)
 		{
-			AddCount();
+			addTimer = 10;
 		}
-		if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT])
+		if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT] && addTimer == 0)
 		{
-			AddCount();
+			addTimer = 10;
 		}
-		if (keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT])
+		if (keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT] && addTimer == 0)
 		{
-			AddCount();
+			addTimer = 10;
 		}
 	}
-	else//‚à‚µ999‚É‚È‚Á‚½Žž
+	else //‚à‚µ999‚É‚È‚Á‚½Žž
 	{
 		for (int i = 0; i < 3; i++)
 		{
 			count[i] = 9;//999‚ÉŒÅ’è‚·‚é
+		}
+	}
+
+	if (addTimer != 0)
+	{
+		addTimer--;
+		if (addTimer >= 9)
+		{
+			AddCount();
 		}
 	}
 }
@@ -48,7 +59,7 @@ void Count::Draw()
 	DrawGraph(1120, 570, graphHandle[count[0]], true);
 	DrawGraph(1080, 570, graphHandle[count[1]], true);
 	DrawGraph(1040, 570, graphHandle[count[2]], true);
-	
+
 	//DrawFormatString(900, 0, GetColor(255, 255, 255), "Count ; %d", count);
 
 }
