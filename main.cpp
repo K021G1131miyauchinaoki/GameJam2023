@@ -42,6 +42,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	
 	// 画像などのリソースデータの変数宣言と読み込み
+	int soundHandle[2];
+	soundHandle[0] = LoadSoundMem("Resource/BGM/taitle.mp3");
+	soundHandle[1] = LoadSoundMem("Resource/BGm/gamePlay.mp3");
+
 
 	// ゲームループで使う変数の宣言
 	//マップ
@@ -123,6 +127,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	int graphY = 128;
 
 	bool isPlay = false;
+	
+	int isbgm = 0;
 
 	// ゲームループ
 	while (true)
@@ -422,13 +428,28 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//描画---------------
 		switch (gameState)
 		{
-
+			
 		case title://�^�C�g��
+			if (isbgm == 0)
+			{
+				ChangeVolumeSoundMem(100, soundHandle[0]);
+				PlaySoundMem(soundHandle[0], DX_PLAYTYPE_LOOP, true);
+				isbgm += 1;
+			}
+
 			DrawGraph(0, 0, titleTex, TRUE);
 
 			break;
 
 		case select://�X�e�[�W�I�����
+			if (isbgm == 1)
+			{
+				StopSoundMem(soundHandle[0]);
+				ChangeVolumeSoundMem(100, soundHandle[1]);
+				PlaySoundMem(soundHandle[1], DX_PLAYTYPE_LOOP, true);
+				isbgm += 1;
+			}
+
 			DrawGraph(0, 0, selectTex, TRUE);
 
 			for (int i = 0; i < 2; i++)//�X�e�[�W�\���̏c��
@@ -459,6 +480,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
         
 		case clear://�Q�[���N���A
+			if (isbgm == 2)
+			{
+				StopSoundMem(soundHandle[1]);
+
+				isbgm -= 1;
+			}
+
 			DrawGraph(0, 0, clearTex, TRUE);
 			//�����Ń����N��\��
 
