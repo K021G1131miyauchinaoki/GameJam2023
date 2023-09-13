@@ -356,7 +356,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
-				gameState = game;
+				//gameState = game;
 				player->Reset(selectStage);
 				count->Reset();
 				map->Reset(selectStage);
@@ -428,51 +428,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		};
 #pragma endregion �Q�[�����[�v����
-
-#pragma region
-		if (isPlay)
-		{
-			switch (selectStage)
-			{
-			case 0:
-				
-
-				break;
-			case 1:
-				
-
-				break;
-			case 2:
-				
-
-				break;
-			case 3:
-				
-
-				break;
-			case 4:
-				
-
-				break;
-			case 5:
-				
-
-				break;
-			case 6:
-
-
-				break;
-			case 7:
-
-
-				break;
-			default:
-				break;
-			}
-		}
-#pragma endregion �X�e�[�W����
-
-
 
 
 		if (sceneTitle.flag)
