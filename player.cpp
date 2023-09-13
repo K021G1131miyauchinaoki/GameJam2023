@@ -170,15 +170,18 @@ void Player::Move(char* keys, char* oldkey)
 
 	if (easingflag == 1)
 	{
+		StopSoundMem(soundHandle);
 		frame++;
 		x = frame / endframe;
 		y = frame / endframe;
 		if (isdir == 0 || isdir == 1)
 		{
+			PlaySoundMem(soundHandle, DX_PLAYTYPE_BACK, true);
 			pos.x = startX + (endX - startX) * (EZ(x));
 		}
 		else
 		{
+			PlaySoundMem(soundHandle, DX_PLAYTYPE_BACK, true);
 			pos.y = startY + (endX - startY) * (EZ(y));
 		}
 		if (frame > endframe)
