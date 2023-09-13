@@ -30,6 +30,12 @@ void Player::Reset(int num) {
 		pos = { initialPos.x + 421,initialPos.y + 61 };
 	case 1:
 		pos = { initialPos.x + 541,initialPos.y +181 };
+	case 2:
+		pos = { initialPos.x + 541,initialPos.y + 181 };
+	case 3:
+		pos = { initialPos.x + 541,initialPos.y + 181 };
+	case 4:
+		pos = { initialPos.x + 541,initialPos.y + 181 };
 	default:
 		break;
 	}
