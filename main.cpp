@@ -368,8 +368,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//���̃V�[����
 			if (map->IsClear())
 			{
-				time--;
-				if (time<0)
+				timeClear--;
+				if (timeClear <0)
 				{
 					gameState = clear;
 					timeClear = timerClear;
