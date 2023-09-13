@@ -44,9 +44,10 @@ private:
 	int radius;
 
 	int isdir;
+	int oldDir;
 	bool isMove;
 
-	int graphHandle;
+	int graphHandle[8];
 //イージング
 	bool easingflag;
 	int frame;

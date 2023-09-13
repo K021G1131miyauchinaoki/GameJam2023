@@ -15,5 +15,7 @@ private:
 	int backGround;
 	char strNum[4];
 	int count[3];
+
+	int addTimer;
 };
 
