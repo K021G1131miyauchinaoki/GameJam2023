@@ -181,7 +181,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//DrawLine(1 * (i * 55.6), 0, 1 * (i * 55.6), WIN_HEIGHT, GetColor(255, 0, 0));
 		}
 		
-
+		 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
 		ScreenFlip();
