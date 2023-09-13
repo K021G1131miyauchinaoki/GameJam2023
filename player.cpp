@@ -112,7 +112,7 @@ void Player::Draw()
 		}
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	DrawFormatString(0, 0, GetColor(255, 0, 0), "player : %f/%f\n", playerArray.x, playerArray.y);
+	//DrawFormatString(0, 0, GetColor(255, 0, 0), "player : %f/%f\n", playerArray.x, playerArray.y);
 
 }
 
