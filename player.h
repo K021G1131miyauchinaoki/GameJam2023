@@ -19,7 +19,7 @@ class Player
 {
 public:
 	void Initialize();
-	void Reset();
+	void Reset(int num);
 	void Update(char* keys,char* oldkey);
 	void Draw();
 	void SetMap(Map* map_) { map = map_; }

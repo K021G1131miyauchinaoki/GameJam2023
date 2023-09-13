@@ -4,7 +4,7 @@
 #include"Map.h"
 
 // ウィンドウのタイトルに表示する文字列
-const char TITLE[] = "カイロボ";
+const char TITLE[] = "LC1C_25_ミヤウチナオキ ：タイトル";
 
 const int WIN_WIDTH = 1280;
 const int WIN_HEIGHT = 720;
@@ -129,6 +129,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	bool isPlay = false;
 	
 	int isbgm = 0;
+
+	const int timer = 30;
+	int time = timer;
 
 	// ゲームループ
 	while (true)
@@ -279,9 +282,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = game;
-				player->Reset();
+				player->Reset(selectStage);
 				count->Reset();
 				map->Reset(selectStage);
+				time = timer;
 			}
 			//pause用
 			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
@@ -295,7 +299,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//���̃V�[����
 			if (map->IsClear())
 			{
-				gameState = clear;
+				time--;
+				if (time<0)
+				{
+					gameState = clear;
+					time = timer;
+				}
 			}
 			//selectに戻る用
 			if (keys[KEY_INPUT_T] == 1 && oldkeys[KEY_INPUT_T] == 0)
@@ -305,7 +314,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			}
 			if (keys[KEY_INPUT_R] == 1 && oldkeys[KEY_INPUT_R] == 0)
 			{
-				player->Reset();
+				player->Reset(selectStage);
 				count->Reset();
 				map->Reset(selectStage);
 
@@ -516,7 +525,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		default:
 			break;
 		};
-		DrawFormatString(0, 0, GetColor(255, 0, 0), "player : %d\n", selectStage);
 
 
 		//---------  ここまでにプログラムを記述  ---------//

@@ -23,8 +23,15 @@ void Player::Initialize()
 	soundHandle[1] = LoadSoundMem("Resource/BGM/Kick.mp3");
 }
 
-void Player::Reset() {
-	pos = { initialPos.x + 60,initialPos.y + 60 };	// 中心座標
+void Player::Reset(int num) {
+	switch (num)
+	{
+	case 0:
+		pos = { initialPos.x + 421,initialPos.y + 60 };
+	default:
+		break;
+	}
+		// 中心座標
 	//イージング
 	easingflag = false;
 	frame = 0;
@@ -92,6 +99,8 @@ void Player::Draw()
 		}
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	DrawFormatString(0, 0, GetColor(255, 0, 0), "player : %f/%f\n", playerArray.x, playerArray.y);
+
 }
 
 void Player::Move(char* keys, char* oldkey)
@@ -102,146 +111,149 @@ void Player::Move(char* keys, char* oldkey)
 	startY = pos.y;
 	//StopSoundMem(soundHandle[1]);
 	//移動
-	if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT] && easingflag == false)
+	if (!map->IsClear())
 	{
-		if (map->GetNextMap(static_cast<int>(playerArray.y), static_cast<int>(playerArray.x) + 1) == 0)
+		if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT] && easingflag == false)
 		{
-			//イージング
-			easingflag = true;
-			endX = pos.x += 60;
+			if (map->GetNextMap(static_cast<int>(playerArray.y), static_cast<int>(playerArray.x) + 1) == 0)
+			{
+				//イージング
+				easingflag = true;
+				endX = pos.x += 60;
+			}
+			else if (map->GetNextMap(playerArray.y, playerArray.x + 1) >= 4
+				&& map->GetAfterNextMap(playerArray.y, playerArray.x + 2) == 0
+				&& map->GetNextMap(playerArray.y, playerArray.x + 1) < 10)
+			{
+				//コードが長くなるのでGetNextMapを変数に格納
+				num = map->GetNextMap(playerArray.y, playerArray.x + 1);
+				//次々マップチップに次のマップチップを代入
+				map->SetAfterNextMap(playerArray.y, playerArray.x + 2, num);
+				//次のマップチップに0を代入
+				map->SetNextMap(playerArray.y, playerArray.x + 1);
+				isKick = true;
+			}
+			isdir = 0;
 		}
-		else if (map->GetNextMap(playerArray.y, playerArray.x + 1) >= 2
-			&& map->GetAfterNextMap(playerArray.y, playerArray.x + 2) == 0
-			&& map->GetNextMap(playerArray.y, playerArray.x + 1) < 10)
+		else if (keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT] && easingflag == false)
 		{
-			//コードが長くなるのでGetNextMapを変数に格納
-			num = map->GetNextMap(playerArray.y, playerArray.x + 1);
-			//次々マップチップに次のマップチップを代入
-			map->SetAfterNextMap(playerArray.y, playerArray.x + 2, num);
-			//次のマップチップに0を代入
-			map->SetNextMap(playerArray.y, playerArray.x + 1);
-			isKick = true;
+			if (map->GetNextMap(static_cast<int>(playerArray.y), static_cast<int>(playerArray.x) - 1) == 0)
+			{
+				//イージング
+				easingflag = true;
+				endX = pos.x -= 60;
+			}
+			else if (map->GetNextMap(playerArray.y, playerArray.x - 1) >= 4
+				&& map->GetAfterNextMap(playerArray.y, playerArray.x - 2) == 0
+				&& map->GetNextMap(playerArray.y, playerArray.x - 1) < 10)
+			{
+				num = map->GetNextMap(playerArray.y, playerArray.x - 1);
+				map->SetAfterNextMap(playerArray.y, playerArray.x - 2, num);
+				map->SetNextMap(playerArray.y, playerArray.x - 1);
+				isKick = true;
+			}
+			isdir = 1;
 		}
-		isdir = 0;
-	}
-	else if (keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT] && easingflag == false)
-	{
-		if (map->GetNextMap(static_cast<int>(playerArray.y), static_cast<int>(playerArray.x) - 1) == 0)
+		else if (keys[KEY_INPUT_UP] && !oldkey[KEY_INPUT_UP] && easingflag == false)
 		{
-			//イージング
-			easingflag = true;
-			endX = pos.x -= 60;
+			if (map->GetNextMap(static_cast<int>(playerArray.y) - 1, static_cast<int>(playerArray.x)) == 0)
+			{
+				//イージング
+				easingflag = true;
+				endX = pos.y -= 60;
+			}
+			else if (map->GetNextMap(playerArray.y - 1, playerArray.x) >= 4
+				&& map->GetAfterNextMap(playerArray.y - 2, playerArray.x) == 0
+				&& map->GetNextMap(playerArray.y - 1, playerArray.x) < 10)
+			{
+				num = map->GetNextMap(playerArray.y - 1, playerArray.x);
+				map->SetAfterNextMap(playerArray.y - 2, playerArray.x, num);
+				map->SetNextMap(playerArray.y - 1, playerArray.x);
+				isKick = true;
+			}
+			isdir = 2;
 		}
-		else if (map->GetNextMap(playerArray.y, playerArray.x - 1) >= 2
-			&& map->GetAfterNextMap(playerArray.y, playerArray.x - 2) == 0
-			&&map->GetNextMap(playerArray.y, playerArray.x - 1)<10)
-		{
-			num = map->GetNextMap(playerArray.y, playerArray.x - 1);
-			map->SetAfterNextMap(playerArray.y, playerArray.x - 2, num);
-			map->SetNextMap(playerArray.y, playerArray.x - 1);
-			isKick = true;
-		}
-		isdir = 1;
-	}
-	else if (keys[KEY_INPUT_UP] && !oldkey[KEY_INPUT_UP] && easingflag == false)
-	{
-		if (map->GetNextMap(static_cast<int>(playerArray.y) - 1, static_cast<int>(playerArray.x)) == 0)
-		{
-			//イージング
-			easingflag = true;
-			endX = pos.y -= 60;
-		}
-		else if (map->GetNextMap(playerArray.y - 1, playerArray.x) >= 2
-			&& map->GetAfterNextMap(playerArray.y - 2, playerArray.x) == 0
-			&& map->GetNextMap(playerArray.y - 1, playerArray.x)<10)
-		{
-			num = map->GetNextMap(playerArray.y - 1, playerArray.x);
-			map->SetAfterNextMap(playerArray.y - 2, playerArray.x, num);
-			map->SetNextMap(playerArray.y - 1, playerArray.x);
-			isKick = true;
-		}
-		isdir = 2;
-	}
 
-	else if (keys[KEY_INPUT_DOWN] && !oldkey[KEY_INPUT_DOWN] && easingflag == false)
-	{
-		if (map->GetNextMap(static_cast<int>(playerArray.y) + 1, static_cast<int>(playerArray.x)) == 0)
+		else if (keys[KEY_INPUT_DOWN] && !oldkey[KEY_INPUT_DOWN] && easingflag == false)
 		{
-			//イージング
-			easingflag = true;
-			endX = pos.y += 60;
-		}
-		else if (map->GetNextMap(playerArray.y + 1, playerArray.x) >= 2
-			&& map->GetAfterNextMap(playerArray.y + 2, playerArray.x) == 0
-			&& map->GetNextMap(playerArray.y + 1, playerArray.x)<10)
-		{
-			num = map->GetNextMap(playerArray.y + 1, playerArray.x);
-			map->SetAfterNextMap(playerArray.y + 2, playerArray.x, num);
-			map->SetNextMap(playerArray.y + 1, playerArray.x);
-			isKick = true;
-		}
-	
-		isdir = 3;
-	}
+			if (map->GetNextMap(static_cast<int>(playerArray.y) + 1, static_cast<int>(playerArray.x)) == 0)
+			{
+				//イージング
+				easingflag = true;
+				endX = pos.y += 60;
+			}
+			else if (map->GetNextMap(playerArray.y + 1, playerArray.x) >= 4
+				&& map->GetAfterNextMap(playerArray.y + 2, playerArray.x) == 0
+				&& map->GetNextMap(playerArray.y + 1, playerArray.x) < 10)
+			{
+				num = map->GetNextMap(playerArray.y + 1, playerArray.x);
+				map->SetAfterNextMap(playerArray.y + 2, playerArray.x, num);
+				map->SetNextMap(playerArray.y + 1, playerArray.x);
+				isKick = true;
+			}
 
-	if (easingflag == 1)
-	{
-		StopSoundMem(soundHandle[0]);
-		frame++;
-		x = frame / endframe;
-		y = frame / endframe;
-		if (isdir == 0 || isdir == 1)
-		{
-			PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
-			pos.x = startX + (endX - startX) * (EZ(x));
+			isdir = 3;
 		}
-		else
-		{
-			PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
-			pos.y = startY + (endX - startY) * (EZ(y));
-		}
-		if (frame > endframe)
-		{
-			easingflag = 0;
-			frame = 0;
-		}
-	}
 
-	if (isKick)
-	{
-		PlaySoundMem(soundHandle[1], DX_PLAYTYPE_BACK, true);
-		KickTimer = 10;
-	}
-	if (KickTimer != 0)
-	{
-		KickTimer--;
-		if (KickTimer <= 0)
+		if (easingflag == 1)
 		{
-			KickTimer = 0;
+			StopSoundMem(soundHandle[0]);
+			frame++;
+			x = frame / endframe;
+			y = frame / endframe;
+			if (isdir == 0 || isdir == 1)
+			{
+				PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
+				pos.x = startX + (endX - startX) * (EZ(x));
+			}
+			else
+			{
+				PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
+				pos.y = startY + (endX - startY) * (EZ(y));
+			}
+			if (frame > endframe)
+			{
+				easingflag = 0;
+				frame = 0;
+			}
+		}
+
+		if (isKick)
+		{
+			PlaySoundMem(soundHandle[1], DX_PLAYTYPE_BACK, true);
+			KickTimer = 10;
+		}
+		if (KickTimer != 0)
+		{
+			KickTimer--;
+			if (KickTimer <= 0)
+			{
+				KickTimer = 0;
+			}
 		}
 	}
 }
 
 void Player::Smoke(char* keys, char* oldkey)
 {
-	if (isMove == false) {
-			for (int i = 0; i < 5; i++) {
-				if (jumpParticle[i].isAlive == 0) {
-					jumpParticle[i].isAlive = 1;
-					jumpParticle[i].transform.x = pos.x + rand() % 30-30;
-					jumpParticle[i].transform.y = pos.y + rand() % 10;
-					jumpParticle[i].angle = rand() % 100;	// 角度をランダムで決める
-					jumpParticle[i].speed = rand() % 2;
-					jumpParticle[i].alpha = 250;			// 透明度をリセット
-					jumpParticle[i].color = GetColor(255, 255, 255);
-					break;
-				}
-			}
-			//生存フラグがオンなら
-			for (int i = 0; i < 5; i++) {
-				if (jumpParticle[i].isAlive == 1) {
-					jumpParticle[i].alpha -= 20;
-				}
-			}
-		}
+	//if (isMove == false) {
+	//		for (int i = 0; i < 5; i++) {
+	//			if (jumpParticle[i].isAlive == 0) {
+	//				jumpParticle[i].isAlive = 1;
+	//				jumpParticle[i].transform.x = pos.x + rand() % 30-30;
+	//				jumpParticle[i].transform.y = pos.y + rand() % 10;
+	//				jumpParticle[i].angle = rand() % 100;	// 角度をランダムで決める
+	//				jumpParticle[i].speed = rand() % 2;
+	//				jumpParticle[i].alpha = 250;			// 透明度をリセット
+	//				jumpParticle[i].color = GetColor(255, 255, 255);
+	//				break;
+	//			}
+	//		}
+	//		//生存フラグがオンなら
+	//		for (int i = 0; i < 5; i++) {
+	//			if (jumpParticle[i].isAlive == 1) {
+	//				jumpParticle[i].alpha -= 20;
+	//			}
+	//		}
+	//	}
 }
