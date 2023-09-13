@@ -182,8 +182,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	bool initFlag = false;
 	int isbgm = 0;
 
-	const int timer = 30;
-	int time = timer;
+	const int timerClear = 30;
+	int timeClear = timerClear;
 
 	// ゲームループ
 	while (true)
@@ -360,7 +360,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				player->Reset(selectStage);
 				count->Reset();
 				map->Reset(selectStage);
-				time = timer;
+				timeClear = timerClear;
 			}
 
 			break;
@@ -372,7 +372,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				if (time<0)
 				{
 					gameState = clear;
-					time = timer;
+					timeClear = timerClear;
 				}
 			}
 			//selectに戻る用

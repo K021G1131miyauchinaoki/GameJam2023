@@ -194,43 +194,44 @@ void Player::Move(char* keys, char* oldkey)
 			isdir = 3;
 		}
 
-	if (easingflag == 1)
-	{
-		StopSoundMem(soundHandle[0]);
-		frame++;
-		x = frame / endframe;
-		y = frame / endframe;
-		if (isdir == 0 || isdir == 1)
+		if (easingflag == 1)
 		{
-			ChangeVolumeSoundMem(130, soundHandle[0]);
-			PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
-			pos.x = startX + (endX - startX) * (EZ(x));
+			StopSoundMem(soundHandle[0]);
+			frame++;
+			x = frame / endframe;
+			y = frame / endframe;
+			if (isdir == 0 || isdir == 1)
+			{
+				ChangeVolumeSoundMem(130, soundHandle[0]);
+				PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
+				pos.x = startX + (endX - startX) * (EZ(x));
+			}
+			else
+			{
+				ChangeVolumeSoundMem(130, soundHandle[0]);
+				PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
+				pos.y = startY + (endX - startY) * (EZ(y));
+			}
+			if (frame > endframe)
+			{
+				easingflag = 0;
+				frame = 0;
+			}
 		}
-		else
-		{
-			ChangeVolumeSoundMem(130, soundHandle[0]);
-			PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
-			pos.y = startY + (endX - startY) * (EZ(y));
-		}
-		if (frame > endframe)
-		{
-			easingflag = 0;
-			frame = 0;
-		}
-	}
 
-	if (isKick)
-	{
-		ChangeVolumeSoundMem(150, soundHandle[1]);
-		PlaySoundMem(soundHandle[1], DX_PLAYTYPE_BACK, true);
-		KickTimer = 10;
-	}
-	if (KickTimer != 0)
-	{
-		KickTimer--;
-		if (KickTimer <= 0)
+		if (isKick)
 		{
-			KickTimer = 0;
+			ChangeVolumeSoundMem(150, soundHandle[1]);
+			PlaySoundMem(soundHandle[1], DX_PLAYTYPE_BACK, true);
+			KickTimer = 10;
+		}
+		if (KickTimer != 0)
+		{
+			KickTimer--;
+			if (KickTimer <= 0)
+			{
+				KickTimer = 0;
+			}
 		}
 	}
 }
