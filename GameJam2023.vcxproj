@@ -139,6 +139,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="SceneChange.cpp" />
     <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Count.h" />
@@ -147,6 +148,7 @@
     <ClInclude Include="SceneChange.h" />
     <ClInclude Include="Vector2.h" />
     <ClCompile Include="Map.cpp" />
+    <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h" />

@@ -1,13 +1,19 @@
 #include "SceneChange.h"
 #include "Easing.h"
+
 void SceneChange::Initialize()
 {
-	Reset();
+	
+}
+void SceneChange::Updeta()
+{
+	
+
 }
 void SceneChange::Start()
 {
 
-	if (time <= timeMax)
+	if (time >= timeMax)
 	{
 		time = timeMax;
 	}
@@ -18,11 +24,16 @@ void SceneChange::Start()
 	x = Easing::In(x - sizeX, x, time, timeMax);
 	y = Easing::In(y - sizeY, y, time, timeMax);
 
+}
+
+void SceneChange::setTex(int Tex)
+{
+	tex = Tex;
 }
 
 void SceneChange::End()
 {
-	if (time <= timeMax)
+	if (time >= timeMax)
 	{
 		time = timeMax;
 	}
@@ -35,12 +46,17 @@ void SceneChange::End()
 
 }
 
-void SceneChange::Reset()
+void SceneChange::Reset(int texSizeX, int texSizeY)
 {
-	x = 0;
-	y = 0;
-	sizeX = 1270;
-	sizeY = 720;
-
+	x = 0.0;
+	y = 0.0;
+	sizeX = texSizeX;
+	sizeY = texSizeY;
+	timeMax = 180;
 	time = 0;
+}
+
+void SceneChange::Draw()
+{
+	DrawGraph(x, y, tex, true);
 }

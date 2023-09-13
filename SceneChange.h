@@ -1,19 +1,24 @@
 #pragma once
+#include "DxLib.h"
 class SceneChange
 {
 public:
-	int x;
-	int y;
+	double x = 0;
+	double y = 0;
 
-	int sizeX;
-	int sizeY;
+	int sizeX = 0;
+	int sizeY = 0;
 
-	int time;
-	int timeMax;
-
+	int time = 0;
+	int timeMax = 180;
+	int tex = 0;
+	void setTex(int Tex);
 	void Initialize();
+	void Updeta();
 	void Start();
 	void End();
-	void Reset();
+	void Reset(int texSizeX,int texSizeY);
+
+	void Draw();
 };
 

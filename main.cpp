@@ -3,6 +3,7 @@
 #include "Count.h"
 #include"Map.h"
 #include "Easing.h"
+#include "SceneChange.h"
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "GameJam2023";
@@ -11,7 +12,20 @@ const int WIN_WIDTH = 1280;
 const int WIN_HEIGHT = 720;
 
 
-bool In(int x, int y, int sizex, int sizey, int time, int maxtime, bool flag, bool secflag, bool nextflag);
+struct Tex
+{
+	double x;
+	double y;
+
+	int sizex;
+	int sizey;
+
+	int time;
+	int Maxtime;
+
+	bool change;
+	bool flag;
+};
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
                    _In_ int nCmdShow) {
@@ -82,6 +96,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	void GameReset();
 	GameState gameState = title;
 	GameState pauseState;
+	GameState next;
 
 	int titleTex = LoadGraph("Resource/GameStates/title.png");
 	int selectTex = LoadGraph("Resource/GameStates/select.png");
@@ -129,6 +144,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	bool isPlay = false;
 	//シーン移行用
+
+	int texX = 0;
+	int texY = 0;
+
+	bool endflag = false;
 	int time = 0;
 	int MaxTime = 60;
 	float TexX;
@@ -137,6 +157,36 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	int timeS = 0;
 	float TexXS;
 	float TexYS;
+
+	Tex sceneTitle;
+	sceneTitle.x = 0 - 1280;
+	sceneTitle.y = 0 ;
+	sceneTitle.sizex = 1280;
+	sceneTitle.sizey = 720;
+	sceneTitle.Maxtime = 120;
+	sceneTitle.time = 0;
+	sceneTitle.flag = false;
+
+	Tex back;
+	back.x = 0 - 1280;
+	back.y = 0;
+	back.sizex = 1280;
+	back.sizey = 720;
+	back.Maxtime = 120;
+	back.time = 0;
+	back.flag = false;
+	back.change = false;
+	
+	
+
+	/*SceneChange* taitle{};
+	SceneChange* back{};
+
+	taitle->Reset(1270, 720);
+	back->Reset(1270, 720);
+
+	taitle->setTex(sceneTex);
+	back->setTex(backTex);*/
 
 	// ゲームループ
 	while (true)
@@ -163,7 +213,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//���̃V�[����
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
-				gameState = select;
+				next = select;
+				sceneTitle.flag = true;
+				
 			}
 			//pause�p
 			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
@@ -177,7 +229,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//���̃V�[���ցi����j
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
-				gameState = game;
+				next = game;
+				sceneTitle.flag = true;
+				//gameState = game;
 			}
 			//�X�e�[�W�I������
 			//�E�ɍs��
@@ -286,10 +340,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					selectStage = oneTtwoMin;
 				}
 			}
-			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
-			{
-				gameState = game;
-			}
+			
 			//pause用
 			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
 			{
@@ -302,7 +353,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//���̃V�[����
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
-				gameState = clear;
+				next = clear;
+				sceneTitle.flag = true;
+				//gameState = clear;
 			}
 			isPlay = true;
 			if (1)//�����ɃN���A�t���O������
@@ -340,7 +393,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			//���̃V�[����
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
-				gameState = title;
+				next = title;
+				sceneTitle.flag = true;
+				//gameState = title;
 			}
 			//pause用
 			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
@@ -358,7 +413,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			isPlay = false;
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
-				gameState = title;
+				next = over;
+				sceneTitle.flag = true;
+				//gameState = title;
 			}
 			//pause用
 			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
@@ -378,7 +435,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		default:
 			break;
 		};
-#pragma endregion�Q�[�����[�v����
+#pragma endregion �Q�[�����[�v����
 
 #pragma region
 		if (isPlay)
@@ -421,14 +478,73 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				break;
 			}
 		}
-#pragma endregion�X�e�[�W����
+#pragma endregion �X�e�[�W����
+
+
+
+
+		if (sceneTitle.flag)
+		{
+			back.change = false;
+			if (sceneTitle.time >= sceneTitle.Maxtime)
+			{
+				sceneTitle.time = sceneTitle.Maxtime;
+				back.change = true;
+				
+			}
+			else
+			{
+				sceneTitle.time++;
+			}
+
+
+			sceneTitle.x = Easing::In(sceneTitle.x , 0, sceneTitle.time, sceneTitle.Maxtime);
+			back.x = Easing::In(back.x, 0, sceneTitle.time, sceneTitle.Maxtime);
+
+			
+		}
+		else
+		{
+			sceneTitle.time = 0;
+		}
+
+		if (back.change)
+		{
+			sceneTitle.flag = false;
+			gameState = next;
+			if (back.time >= back.Maxtime -40)
+			{
+				back.change = false;
+				back.time = back.Maxtime;
+				
+			}
+			else
+			{
+				back.time++;
+			}
+
+			sceneTitle.x = Easing::In(sceneTitle.x, sceneTitle.sizex * -1, back.time, sceneTitle.Maxtime);
+			back.x = Easing::In(back.x, back.sizex * -1, back.time, back.Maxtime);
+
+		}
+
+		if (sceneTitle.flag == false && back.change == false)
+		{
+			sceneTitle.time = 0;
+			back.time = 0;
+
+			sceneTitle.x = 0 - 1280;
+			sceneTitle.y = 0;
+
+		}
+
 		//描画---------------
 		switch (gameState)
 		{
 
 		case title://�^�C�g��
 			DrawGraph(0, 0, titleTex, TRUE);
-
+		
 			break;
 
 		case select://�X�e�[�W�I�����
@@ -487,6 +603,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		};
 
+		DrawGraph(back.x, back.y, backTex, TRUE);
+		DrawGraph(sceneTitle.x, sceneTitle.y, sceneTex, TRUE);
+
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
 		ScreenFlip();
@@ -515,47 +634,4 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	
 }
 
-
-bool In(int x, int y, int sizex,int sizey,int time, int maxtime, bool flag,bool secflag,bool nextflag)
-{
-	if (flag)
-	{
-		if (time <= maxtime)
-		{
-			time = maxtime;
-		}
-		else
-		{
-			time++;
-		}
-		x = Easing::In(x-sizex, x, time, maxtime);
-		y = Easing::In(y - sizey, y, time, maxtime);
-		secflag = true;
-		flag = false;
-	}
-	else
-	{
-		time = 0;
-	}
-
-	if (secflag)
-	{
-		if (time <= maxtime)
-		{
-			time = maxtime;
-		}
-		else
-		{
-			time++;
-		}
-		x = Easing::In(x , x +sizex, time, maxtime);
-		y = Easing::In(y , y + sizey, time, maxtime);
-		return nextflag = true;
-	}
-	else
-	{
-		time = 0;
-	}
-
-}
 
