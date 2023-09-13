@@ -380,7 +380,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			if (keys[KEY_INPUT_T] == 1 && oldkeys[KEY_INPUT_T] == 0)
 			{
 				pauseState = gameState;
-				gameState = select;
+				next = select;
+				sceneTitle.flag = true;
 			}
 			if (keys[KEY_INPUT_R] == 1 && oldkeys[KEY_INPUT_R] == 0)
 			{

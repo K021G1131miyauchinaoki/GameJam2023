@@ -27,21 +27,21 @@ void Player::Reset(int num) {
 	switch (num)
 	{
 	case 0:
-		pos = { initialPos.x + 421,initialPos.y + 61 };
+		pos = { initialPos.x + 421,initialPos.y + 61 }; break;
 	case 1:
-		pos = { initialPos.x + 541,initialPos.y +181 };
+		pos = { initialPos.x + 541,initialPos.y +181 }; break;
 	case 2:
-		pos = { initialPos.x + 541,initialPos.y + 181 };
+		pos = { initialPos.x + 541,initialPos.y + 181 }; break;
 	case 3:
-		pos = { initialPos.x + 541,initialPos.y + 181 };
+		pos = { initialPos.x + 541,initialPos.y + 181 }; break;
 	case 4:
 		pos = { initialPos.x + 541,initialPos.y + 241 }; break;
 	case 5:
-		pos = { initialPos.x + 541,initialPos.y + 181 };
+		pos = { initialPos.x + 541,initialPos.y + 181 }; break;
 	case 6:
-		pos = { initialPos.x + 541,initialPos.y + 181 };
+		pos = { initialPos.x + 541,initialPos.y + 181 }; break;
 	case 7:
-		pos = { initialPos.x + 541,initialPos.y + 181 };
+		pos = { initialPos.x + 541,initialPos.y + 181 }; break;
 	default:
 		break;
 	}
