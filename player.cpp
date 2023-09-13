@@ -78,7 +78,6 @@ void Player::Draw()
 		}
 	}
 	
-	DrawBox(pos.x - radius, pos.y - radius, pos.x + radius, pos.y + radius, GetColor(255, 255, 255), false);
 	for (int i = 0; i < 5; i++) {
 		if (jumpParticle[i].isAlive == 1) {
 			//各個体のアルファ値によってブレンドモードの値を変えている
