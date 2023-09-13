@@ -1,4 +1,4 @@
-#include "DxLib.h"
+﻿#include "DxLib.h"
 #include "player.h"
 #include "Count.h"
 #include"Map.h"
@@ -6,7 +6,7 @@
 #include "SceneChange.h"
 
 // ウィンドウのタイトルに表示する文字列
-const char TITLE[] = "カイロボ";
+const char TITLE[] = "3028_カイロボ";
 
 const int WIN_WIDTH = 1280;
 const int WIN_HEIGHT = 720;
@@ -141,7 +141,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	//�r���ōő�ƍŏ���ύX���邽�߂̕ϐ�
 	int oneTtwoMin = 0;
-	int oneTtwoMax = 0;
+	int oneTtwoMax = 3;
 
 	int selectStageX = STAGE_MINX;
 	int selectStageY = STAGE_MINY;
@@ -368,7 +368,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				}*/
 
 				}
-			}
+			
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = game;
