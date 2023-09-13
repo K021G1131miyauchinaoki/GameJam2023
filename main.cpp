@@ -603,8 +603,20 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		};
 
+
 		DrawGraph(back.x, back.y, backTex, TRUE);
 		DrawGraph(sceneTitle.x, sceneTitle.y, sceneTex, TRUE);
+
+
+		
+
+		for (int i = 0; i < 30; i++)
+		{
+			//DrawLine(0, 1 * (i * 55.3), WIN_WIDTH, 1 * (i * 55.3), GetColor(255, 0, 0));
+			//DrawLine(1 * (i * 55.6), 0, 1 * (i * 55.6), WIN_HEIGHT, GetColor(255, 0, 0));
+		}
+		
+		 
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
