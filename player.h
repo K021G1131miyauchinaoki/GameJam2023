@@ -46,8 +46,11 @@ private:
 	int isdir;
 	int oldDir;
 	bool isMove;
-
+	bool isKick;
+	int KickTimer;
+//画像管理
 	int graphHandle[8];
+	int soundHandle[2];
 //イージング
 	bool easingflag;
 	int frame;

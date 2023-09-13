@@ -19,6 +19,8 @@ void Player::Initialize()
 	}
 
 	LoadDivGraph("Resource/Player/player.png", 8, 4, 2, 60, 60, graphHandle);
+	soundHandle[0] = LoadSoundMem("Resource/BGM/playerMove.mp3");
+	soundHandle[1] = LoadSoundMem("Resource/BGM/Kick.mp3");
 }
 
 void Player::Reset() {
@@ -26,8 +28,9 @@ void Player::Reset() {
 	//イージング
 	easingflag = false;
 	frame = 0;
+	KickTimer = 0;
 	isdir = 0;		//方向管理フラグ  0 = 右　1 = 左　2 = 上　3 = 下
-	oldDir = isdir;		//前の方向を管理する
+	isKick = false;
 	isMove = false;		//移動管理フラグ
 }
 
@@ -45,18 +48,34 @@ void Player::Draw()
 	if (isdir == 0)//右
 	{
 		DrawGraph(pos.x - radius, pos.y - radius, graphHandle[2], true);
+		if (KickTimer != 0)
+		{
+			DrawGraph(pos.x - radius, pos.y - radius, graphHandle[6], true);
+		}
 	}
 	else if (isdir == 1)//左
 	{
 		DrawGraph(pos.x - radius, pos.y - radius, graphHandle[1], true);
+		if (KickTimer != 0)
+		{
+			DrawGraph(pos.x - radius, pos.y - radius, graphHandle[5], true);
+		}
 	}
 	else if (isdir == 2)//上
 	{
 		DrawGraph(pos.x - radius, pos.y - radius, graphHandle[3], true);
+		if (KickTimer != 0)
+		{
+			DrawGraph(pos.x - radius, pos.y - radius, graphHandle[7], true);
+		}
 	}
 	else//下
 	{
 		DrawGraph(pos.x - radius, pos.y - radius, graphHandle[0], true);
+		if (KickTimer != 0)
+		{
+			DrawGraph(pos.x - radius, pos.y - radius, graphHandle[4], true);
+		}
 	}
 	
 	DrawBox(pos.x - radius, pos.y - radius, pos.x + radius, pos.y + radius, GetColor(255, 255, 255), false);
@@ -77,10 +96,11 @@ void Player::Draw()
 
 void Player::Move(char* keys, char* oldkey)
 {
+	isKick = false;
 	int num = 0;
-	oldDir = isdir;
 	startX = pos.x;
 	startY = pos.y;
+	//StopSoundMem(soundHandle[1]);
 	//移動
 	if (keys[KEY_INPUT_RIGHT] && !oldkey[KEY_INPUT_RIGHT] && easingflag == false)
 	{
@@ -100,6 +120,7 @@ void Player::Move(char* keys, char* oldkey)
 			map->SetAfterNextMap(playerArray.y, playerArray.x + 2, num);
 			//次のマップチップに0を代入
 			map->SetNextMap(playerArray.y, playerArray.x + 1);
+			isKick = true;
 		}
 		isdir = 0;
 	}
@@ -118,6 +139,7 @@ void Player::Move(char* keys, char* oldkey)
 			num = map->GetNextMap(playerArray.y, playerArray.x - 1);
 			map->SetAfterNextMap(playerArray.y, playerArray.x - 2, num);
 			map->SetNextMap(playerArray.y, playerArray.x - 1);
+			isKick = true;
 		}
 		isdir = 1;
 	}
@@ -136,6 +158,7 @@ void Player::Move(char* keys, char* oldkey)
 			num = map->GetNextMap(playerArray.y - 1, playerArray.x);
 			map->SetAfterNextMap(playerArray.y - 2, playerArray.x, num);
 			map->SetNextMap(playerArray.y - 1, playerArray.x);
+			isKick = true;
 		}
 		isdir = 2;
 	}
@@ -155,6 +178,7 @@ void Player::Move(char* keys, char* oldkey)
 			num = map->GetNextMap(playerArray.y + 1, playerArray.x);
 			map->SetAfterNextMap(playerArray.y + 2, playerArray.x, num);
 			map->SetNextMap(playerArray.y + 1, playerArray.x);
+			isKick = true;
 		}
 	
 		isdir = 3;
@@ -162,15 +186,18 @@ void Player::Move(char* keys, char* oldkey)
 
 	if (easingflag == 1)
 	{
+		StopSoundMem(soundHandle[0]);
 		frame++;
 		x = frame / endframe;
 		y = frame / endframe;
 		if (isdir == 0 || isdir == 1)
 		{
+			PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
 			pos.x = startX + (endX - startX) * (EZ(x));
 		}
 		else
 		{
+			PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
 			pos.y = startY + (endX - startY) * (EZ(y));
 		}
 		if (frame > endframe)
@@ -180,7 +207,19 @@ void Player::Move(char* keys, char* oldkey)
 		}
 	}
 
-	
+	if (isKick)
+	{
+		PlaySoundMem(soundHandle[1], DX_PLAYTYPE_BACK, true);
+		KickTimer = 10;
+	}
+	if (KickTimer != 0)
+	{
+		KickTimer--;
+		if (KickTimer <= 0)
+		{
+			KickTimer = 0;
+		}
+	}
 }
 
 void Player::Smoke(char* keys, char* oldkey)
