@@ -274,6 +274,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				gameState = game;
 				player->Reset();
 				map->Reset();
+				count->Reset();
 			}
 			//pause用
 			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
@@ -299,6 +300,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			{
 				player->Reset();
 				map->Reset();
+				count->Reset();
 			}
 			isPlay = true;
 			if (1)//�����ɃN���A�t���O������
