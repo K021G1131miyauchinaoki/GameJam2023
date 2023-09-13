@@ -48,6 +48,7 @@ private:
 	bool isMove;
 
 	int graphHandle[8];
+	int soundHandle;
 //イージング
 	bool easingflag;
 	int frame;

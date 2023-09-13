@@ -19,6 +19,7 @@ void Player::Initialize()
 	}
 
 	LoadDivGraph("Resource/Player/player.png", 8, 4, 2, 60, 60, graphHandle);
+	soundHandle=LoadSoundMem("")
 }
 
 void Player::Reset() {
