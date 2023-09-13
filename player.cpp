@@ -18,7 +18,7 @@ void Player::Initialize()
 		particle[i].color = GetColor(255, 255, 255);
 	}
 
-	graphHandle = LoadGraph("Resource/jamtest.png");
+	LoadDivGraph("Resource/Player/player.png", 8, 4, 2, 60, 60, graphHandle);
 }
 
 void Player::Reset() {
@@ -27,6 +27,7 @@ void Player::Reset() {
 	easingflag = false;
 	frame = 0;
 	isdir = 0;		//方向管理フラグ  0 = 右　1 = 左　2 = 上　3 = 下
+	oldDir = isdir;		//前の方向を管理する
 	isMove = false;		//移動管理フラグ
 }
 
@@ -41,7 +42,23 @@ void Player::Update(char* keys, char* oldkey)
 
 void Player::Draw()
 {
-	DrawGraph(pos.x - radius, pos.y - radius, graphHandle, true);
+	if (isdir == 0)//右
+	{
+		DrawGraph(pos.x - radius, pos.y - radius, graphHandle[2], true);
+	}
+	else if (isdir == 1)//左
+	{
+		DrawGraph(pos.x - radius, pos.y - radius, graphHandle[1], true);
+	}
+	else if (isdir == 2)//上
+	{
+		DrawGraph(pos.x - radius, pos.y - radius, graphHandle[3], true);
+	}
+	else//下
+	{
+		DrawGraph(pos.x - radius, pos.y - radius, graphHandle[0], true);
+	}
+	
 	DrawBox(pos.x - radius, pos.y - radius, pos.x + radius, pos.y + radius, GetColor(255, 255, 255), false);
 	for (int i = 0; i < 5; i++) {
 		if (jumpParticle[i].isAlive == 1) {
@@ -50,7 +67,7 @@ void Player::Draw()
 			DrawGraph(
 				jumpParticle[i].transform.x,
 				jumpParticle[i].transform.y,
-				graphHandle,
+				graphHandle[0],
 				TRUE
 			);
 		}
@@ -61,11 +78,14 @@ void Player::Draw()
 	DrawFormatString(0, 45, GetColor(0, 0, 0), "EZ : %d\n", easingflag);
 	DrawFormatString(0, 60, GetColor(0, 0, 0), "EZframe : %d\n", frame);
 	DrawFormatString(0, 75, GetColor(0, 0, 0), "EZendframe : %d\n", endframe);
+	DrawFormatString(0, 90, GetColor(255, 255, 255), "isdir : %d\n", isdir);
+	DrawFormatString(0, 105, GetColor(255, 255, 255), "oldDir : %d\n", oldDir);
 }
 
 void Player::Move(char* keys, char* oldkey)
 {
 	int num = 0;
+	oldDir = isdir;
 	startX = pos.x;
 	startY = pos.y;
 	//移動
@@ -89,7 +109,6 @@ void Player::Move(char* keys, char* oldkey)
 			map->SetNextMap(playerArray.y, playerArray.x + 1);
 		}
 		isdir = 0;
-		
 	}
 	else if (keys[KEY_INPUT_LEFT] && !oldkey[KEY_INPUT_LEFT] && easingflag == false)
 	{
@@ -108,7 +127,6 @@ void Player::Move(char* keys, char* oldkey)
 			map->SetNextMap(playerArray.y, playerArray.x - 1);
 		}
 		isdir = 1;
-		
 	}
 	else if (keys[KEY_INPUT_UP] && !oldkey[KEY_INPUT_UP] && easingflag == false)
 	{
@@ -127,7 +145,6 @@ void Player::Move(char* keys, char* oldkey)
 			map->SetNextMap(playerArray.y - 1, playerArray.x);
 		}
 		isdir = 2;
-		
 	}
 
 	else if (keys[KEY_INPUT_DOWN] && !oldkey[KEY_INPUT_DOWN] && easingflag == false)
@@ -146,8 +163,8 @@ void Player::Move(char* keys, char* oldkey)
 			map->SetAfterNextMap(playerArray.y + 2, playerArray.x, num);
 			map->SetNextMap(playerArray.y + 1, playerArray.x);
 		}
+	
 		isdir = 3;
-		
 	}
 
 	if (easingflag == 1)
@@ -169,6 +186,8 @@ void Player::Move(char* keys, char* oldkey)
 			frame = 0;
 		}
 	}
+
+	
 }
 
 void Player::Smoke(char* keys, char* oldkey)
