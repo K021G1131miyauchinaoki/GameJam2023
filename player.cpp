@@ -85,7 +85,6 @@ void Player::Draw()
 		}
 	}
 	
-	DrawBox(pos.x - radius, pos.y - radius, pos.x + radius, pos.y + radius, GetColor(255, 255, 255), false);
 	for (int i = 0; i < 5; i++) {
 		if (jumpParticle[i].isAlive == 1) {
 			//各個体のアルファ値によってブレンドモードの値を変えている
@@ -195,41 +194,43 @@ void Player::Move(char* keys, char* oldkey)
 			isdir = 3;
 		}
 
-		if (easingflag == 1)
+	if (easingflag == 1)
+	{
+		StopSoundMem(soundHandle[0]);
+		frame++;
+		x = frame / endframe;
+		y = frame / endframe;
+		if (isdir == 0 || isdir == 1)
 		{
-			StopSoundMem(soundHandle[0]);
-			frame++;
-			x = frame / endframe;
-			y = frame / endframe;
-			if (isdir == 0 || isdir == 1)
-			{
-				PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
-				pos.x = startX + (endX - startX) * (EZ(x));
-			}
-			else
-			{
-				PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
-				pos.y = startY + (endX - startY) * (EZ(y));
-			}
-			if (frame > endframe)
-			{
-				easingflag = 0;
-				frame = 0;
-			}
+			ChangeVolumeSoundMem(130, soundHandle[0]);
+			PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
+			pos.x = startX + (endX - startX) * (EZ(x));
 		}
+		else
+		{
+			ChangeVolumeSoundMem(130, soundHandle[0]);
+			PlaySoundMem(soundHandle[0], DX_PLAYTYPE_BACK, true);
+			pos.y = startY + (endX - startY) * (EZ(y));
+		}
+		if (frame > endframe)
+		{
+			easingflag = 0;
+			frame = 0;
+		}
+	}
 
-		if (isKick)
+	if (isKick)
+	{
+		ChangeVolumeSoundMem(150, soundHandle[1]);
+		PlaySoundMem(soundHandle[1], DX_PLAYTYPE_BACK, true);
+		KickTimer = 10;
+	}
+	if (KickTimer != 0)
+	{
+		KickTimer--;
+		if (KickTimer <= 0)
 		{
-			PlaySoundMem(soundHandle[1], DX_PLAYTYPE_BACK, true);
-			KickTimer = 10;
-		}
-		if (KickTimer != 0)
-		{
-			KickTimer--;
-			if (KickTimer <= 0)
-			{
-				KickTimer = 0;
-			}
+			KickTimer = 0;
 		}
 	}
 }

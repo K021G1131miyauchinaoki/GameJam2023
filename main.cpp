@@ -1,13 +1,31 @@
-#include "DxLib.h"
+﻿#include "DxLib.h"
 #include "player.h"
 #include "Count.h"
 #include"Map.h"
+#include "Easing.h"
+#include "SceneChange.h"
 
 // ウィンドウのタイトルに表示する文字列
-const char TITLE[] = "LC1C_25_ミヤウチナオキ ：タイトル";
+const char TITLE[] = "3028_カイロボ";
 
 const int WIN_WIDTH = 1280;
 const int WIN_HEIGHT = 720;
+
+
+struct Tex
+{
+	double x;
+	double y;
+
+	int sizex;
+	int sizey;
+
+	int time;
+	int Maxtime;
+
+	bool change;
+	bool flag;
+};
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
                    _In_ int nCmdShow) {
@@ -42,10 +60,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	
 	// 画像などのリソースデータの変数宣言と読み込み
-	int soundHandle[3];
+	int soundHandle[4];
 	soundHandle[0] = LoadSoundMem("Resource/BGM/taitle.mp3");
 	soundHandle[1] = LoadSoundMem("Resource/BGM/gamePlay.mp3");
 	soundHandle[2] = LoadSoundMem("Resource/BGM/clear.mp3");
+	soundHandle[3] = LoadSoundMem("resource/BGM/select.mp3");
 
 
 	// ゲームループで使う変数の宣言
@@ -73,15 +92,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		select,
 		game,
 		clear,
-		over,
-		pause,
-
 	};
 	
 
 	void GameReset();
 	GameState gameState = title;
 	GameState pauseState;
+	GameState next;
 
 	int titleTex = LoadGraph("Resource/GameStates/title.png");
 	int selectTex = LoadGraph("Resource/GameStates/select.png");
@@ -91,9 +108,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	int pauseTex = LoadGraph("Resource/GameStates/pause.png");
 	int mapTex = LoadGraph("Resource/Map/stage.png");
 	int mapSelectTex = LoadGraph("Resource/Map/select.png");
+
+	int sceneTex = LoadGraph("Resource/Scene/TitleName.png");
+	int backTex = LoadGraph("Resource/Scene/back.png");
+
 	int numTex= LoadGraph("Resource/Map/num.png");
 
-	//�X�e�[�W�I��v�ϐ�
+
 	const int STAGE_MINX = 0;
 	const int STAGE_MAXX = 3;
 	const int STAGE_MINY = 0;
@@ -101,7 +122,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	const int STAGE_MIN = 0;
 	const int STAGE_MAX = 7;
 
-	//�]���t�����邽�߂̃����N
 	const int RANK_A = 5;
 	const int RANK_B = 10;
 	const int RANK_C = 20;
@@ -109,14 +129,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	bool A = false;
 	bool B = false;
 	bool C = false;
-	//��r���邽�߂̍s���ϐ����ƂŕύX���邱��
+	
 	int movement = 0;
-
-
-
-	//�r���ōő�ƍŏ���ύX���邽�߂̕ϐ�
+	
 	int oneTtwoMin = 0;
-	int oneTtwoMax = 0;
+	int oneTtwoMax = 3;
 
 	int selectStageX = STAGE_MINX;
 	int selectStageY = STAGE_MINY;
@@ -127,7 +144,42 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	int graphY = 128;
 
 	bool isPlay = false;
+	//シーン移行用
+
+	int texX = 0;
+	int texY = 0;
+
+	bool endflag = false;
+	int time = 0;
+	int MaxTime = 60;
+	float TexX;
+	float TexY;
 	
+	int timeS = 0;
+	float TexXS;
+	float TexYS;
+
+	Tex sceneTitle;
+	sceneTitle.x = 0 - 1280;
+	sceneTitle.y = 0 ;
+	sceneTitle.sizex = 1280;
+	sceneTitle.sizey = 720;
+	sceneTitle.Maxtime = 120;
+	sceneTitle.time = 0;
+	sceneTitle.flag = false;
+
+	Tex back;
+	back.x = 0 - 1280;
+	back.y = 0;
+	back.sizex = 1280;
+	back.sizey = 720;
+	back.Maxtime = 120;
+	back.time = 0;
+	back.flag = false;
+	back.change = false;
+
+	bool initFlag1 = false;
+	bool initFlag = false;
 	int isbgm = 0;
 
 	const int timer = 30;
@@ -145,6 +197,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		// 最新のキーボード情報を取得
 		GetHitKeyStateAll(keys);
 		//---------  ここからにプログラムを記述  ---------//
+		//シーン移行用
+
 
 #pragma region
 		//更新
@@ -153,29 +207,32 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		case title:
 			isPlay = false;
-			//���̃V�[����
+			
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
-				gameState = select;
-			}
-			//pause�p
-			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
-			{
-				pauseState = gameState;
-				gameState = pause;
+				ChangeVolumeSoundMem(120, soundHandle[3]);
+				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
+				next = select;
+				sceneTitle.flag = true;
+				
 			}
 
 			break;
 		case select:
-			//���̃V�[���ցi����j
+			
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
-				gameState = game;
+				ChangeVolumeSoundMem(120, soundHandle[3]);
+				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
+				next = game;
+				sceneTitle.flag = true;
+				//gameState = game;
 			}
-			//�X�e�[�W�I������
-			//�E�ɍs��
+			
 			if (keys[KEY_INPUT_RIGHT] == 1 && oldkeys[KEY_INPUT_RIGHT] == 0)
 			{
+				ChangeVolumeSoundMem(120, soundHandle[3]);
+				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				selectStageX ++;
 				//selectStage++;
 				if (selectStageX >= STAGE_MAXX)
@@ -184,9 +241,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					//selectStage = STAGE_MAXX;
 				}
 			}
-			//���ɍs��
+			
 			if (keys[KEY_INPUT_LEFT] == 1 && oldkeys[KEY_INPUT_LEFT] == 0)
 			{
+				ChangeVolumeSoundMem(120, soundHandle[3]);
+				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				selectStageX--;
 				//selectStage++;
 				if (selectStageX <= STAGE_MINX)
@@ -196,9 +255,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				}
 			}
 
-			//��ɍs��
+			
 			if (keys[KEY_INPUT_DOWN] == 1 && oldkeys[KEY_INPUT_DOWN] == 0)
 			{
+				ChangeVolumeSoundMem(120, soundHandle[3]);
+				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				selectStageY++;
 				//selectStage +=4;
 				if (selectStageY >= STAGE_MAXY)
@@ -207,9 +268,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					//selectStage = STAGE_MAXY;
 				}
 			}
-			//���ɍs��
+			
 			if (keys[KEY_INPUT_UP] == 1 && oldkeys[KEY_INPUT_UP] == 0)
 			{
+				ChangeVolumeSoundMem(120, soundHandle[3]);
+				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
 				selectStageY--;
 				//selectStage -= 4;
 				if (selectStageY <= STAGE_MINY)
@@ -219,9 +282,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 				}
 			}
-
-
-			//�X�e�[�W����
 			
 			if (keys[KEY_INPUT_RIGHT] == 1 && oldkeys[KEY_INPUT_RIGHT] == 0)
 			{
@@ -254,12 +314,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					oneTtwoMax = 3;
 					oneTtwoMin = 0;
 				}
-				selectStage += 4;
-				if(selectStage >= oneTtwoMax)
-					
+
+				if (initFlag1 == false) {
+					//1回だけ行う処理
+					initFlag1 = true;
+					selectStage += 4;
+					initFlag = false;
+				}
+				/*if(selectStage >= oneTtwoMax)
 				{
 					selectStage = oneTtwoMax;
-				}
+				}*/
 			}
 			if (keys[KEY_INPUT_UP] == 1 && oldkeys[KEY_INPUT_UP] == 0)
 			{
@@ -273,12 +338,22 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					oneTtwoMax = 3;
 					oneTtwoMin = 0;
 				}
-				selectStage -= 4;
-				if (selectStage <= oneTtwoMin)
+
+				if (initFlag == false) {
+					//1回だけ行う処理
+					initFlag = true;
+					selectStage -= 4;
+					initFlag1 = false;
+				}
+				
+				/*if (selectStage <= oneTtwoMin)
 				{
 					selectStage = oneTtwoMin;
+
+				}*/
+
 				}
-			}
+			
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
 				gameState = game;
@@ -286,12 +361,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				count->Reset();
 				map->Reset(selectStage);
 				time = timer;
-			}
-			//pause用
-			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
-			{
-				pauseState = gameState;
-				gameState = pause;
 			}
 
 			break;
@@ -320,9 +389,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 			}
 			isPlay = true;
-			if (1)//�����ɃN���A�t���O������
+			if (1)//ランキング
 			{
-				//�I�����ꂽ�X�e�[�W���v���C
 				if (movement < RANK_A)
 				{
 					A = TRUE;
@@ -340,63 +408,30 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					C = TRUE;
 				}
 			}
-			//pause�p
-			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
-			{
-				pauseState = gameState;
-				gameState = pause;
-			}
 
-			//�����N�m�肳����
+			//更新処理
 			player->Update(keys, oldkeys);
 			count->Update(keys, oldkeys);
 			map->Update();
 			break;
 		case clear:
 			isPlay = false;
-			//���̃V�[����
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
-				gameState = select;
-			}
-			//pause用
-			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
-			{
-				pauseState = gameState;
-				gameState = pause;
+				ChangeVolumeSoundMem(120, soundHandle[3]);
+				PlaySoundMem(soundHandle[3], DX_PLAYTYPE_BACK, true);
+				next = title;
+				sceneTitle.flag = true;
 			}
 			
 			break;
-		case over:
-			isPlay = false;
-			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
-			{
-				gameState = title;
-			}
-			//pause用
-			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
-			{
-				pauseState = gameState;
-				gameState = pause;
-			}
-
-			break;
-		case pause:
-			if (keys[KEY_INPUT_P] == 1 && oldkeys[KEY_INPUT_P] == 0)
-			{
-				gameState = pauseState;
-			}
-
-			break;
-		default:
-			break;
 		};
-#pragma endregion�Q�[�����[�v����
+#pragma endregion �Q�[�����[�v����
 
 #pragma region
 		if (isPlay)
 		{
-			switch (selectStage)//�X�e�[�W
+			switch (selectStage)
 			{
 			case 0:
 				
@@ -434,67 +469,125 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				break;
 			}
 		}
-#pragma endregion�X�e�[�W����
+#pragma endregion �X�e�[�W����
+
+
+
+
+		if (sceneTitle.flag)
+		{
+			back.change = false;
+			if (sceneTitle.time >= sceneTitle.Maxtime)
+			{
+				sceneTitle.time = sceneTitle.Maxtime;
+				back.change = true;
+				
+			}
+			else
+			{
+				sceneTitle.time++;
+			}
+
+
+			sceneTitle.x = Easing::In(sceneTitle.x , 0, sceneTitle.time, sceneTitle.Maxtime);
+			back.x = Easing::In(back.x, 0, sceneTitle.time, sceneTitle.Maxtime);
+
+			
+		}
+		else
+		{
+			sceneTitle.time = 0;
+		}
+
+		if (back.change)
+		{
+			sceneTitle.flag = false;
+			gameState = next;
+			if (back.time >= back.Maxtime -40)
+			{
+				back.change = false;
+				back.time = back.Maxtime;
+				
+			}
+			else
+			{
+				back.time++;
+			}
+
+			sceneTitle.x = Easing::In(sceneTitle.x, sceneTitle.sizex * -1, back.time, sceneTitle.Maxtime);
+			back.x = Easing::In(back.x, back.sizex * -1, back.time, back.Maxtime);
+
+		}
+
+		if (sceneTitle.flag == false && back.change == false)
+		{
+			sceneTitle.time = 0;
+			back.time = 0;
+
+			sceneTitle.x = 0 - 1280;
+			sceneTitle.y = 0;
+
+		}
+
 		//描画---------------
 		switch (gameState)
 		{
 			
-		case title://�^�C�g��
+		case title:
 			if (isbgm == 0)
 			{
-				ChangeVolumeSoundMem(100, soundHandle[0]);
+				ChangeVolumeSoundMem(80, soundHandle[0]);
 				PlaySoundMem(soundHandle[0], DX_PLAYTYPE_LOOP, true);
 				isbgm += 1;
 			}
 
 			DrawGraph(0, 0, titleTex, TRUE);
-
+		
 			break;
 
-		case select://�X�e�[�W�I�����
+		case select:
 			if (isbgm == 1)
 			{
 				StopSoundMem(soundHandle[0]);
 				StopSoundMem(soundHandle[2]);
-				ChangeVolumeSoundMem(100, soundHandle[1]);
+				ChangeVolumeSoundMem(80, soundHandle[1]);
 				PlaySoundMem(soundHandle[1], DX_PLAYTYPE_LOOP, true);
 				isbgm += 1;
 			}
 
 			DrawGraph(0, 0, selectTex, TRUE);
 
-			for (int i = 0; i < 2; i++)//�X�e�[�W�\���̏c��
+			for (int i = 0; i < 2; i++)
 			{
-				for (int j = 0; j < 4; j++)//�X�e�[�W�\�L�̉���
+				for (int j = 0; j < 4; j++)
 				{
 					DrawGraph(graphX+graphSize*j, graphY+graphSize*i, mapTex, TRUE);
 					
 					DrawRectGraph(graphX + graphSize * j, graphY + graphSize * i, 128 * (i + j + 3 * i), 0, 128, 128, numTex, true, false);
 				}
 			}
-			//���I�����Ă�X�e�[�W�̘g
+			
 			DrawGraph(graphX + selectStageX * graphSize, graphY + selectStageY * graphSize, mapSelectTex, TRUE);
 			
 			break;
         
 		case game:
-			//DrawGraph(0, 0, gameTex, TRUE);
 			count->Draw();
 			map->Draw();
 			player->Draw();
 			break;
         
-		case clear://�Q�[���N���A
+		case clear:
 			if (isbgm == 2)
 			{
 				StopSoundMem(soundHandle[1]);
-				ChangeVolumeSoundMem(100, soundHandle[2]);
+				ChangeVolumeSoundMem(80, soundHandle[2]);
 				PlaySoundMem(soundHandle[2], DX_PLAYTYPE_LOOP, true);
 				isbgm -= 1;
 			}
 
 			DrawGraph(0, 0, clearTex, TRUE);
-			//�����Ń����N��\��
+			
 
 			if (A)
 			{
@@ -514,19 +607,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 
 			break;
-		case over://�Q�[���I�[�o�[
-			DrawGraph(0, 0, overTex, TRUE);
-
-			break;
-		case pause://�|�[�Y
-			DrawGraph(0, 0, pauseTex, TRUE);
-
-			break;
 		default:
 			break;
 		};
 
-
+		DrawGraph(back.x, back.y, backTex, TRUE);
+		DrawGraph(sceneTitle.x, sceneTitle.y, sceneTex, TRUE);
+		
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
 		ScreenFlip();
