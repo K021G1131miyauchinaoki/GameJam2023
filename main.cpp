@@ -87,6 +87,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	int pauseTex = LoadGraph("Resource/GameStates/pause.png");
 	int mapTex = LoadGraph("Resource/Map/stage.png");
 	int mapSelectTex = LoadGraph("Resource/Map/select.png");
+	int numTex= LoadGraph("Resource/Map/num.png");
 
 	//�X�e�[�W�I��v�ϐ�
 	const int STAGE_MINX = 0;
@@ -433,6 +434,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				for (int j = 0; j < 4; j++)//�X�e�[�W�\�L�̉���
 				{
 					DrawGraph(graphX+graphSize*j, graphY+graphSize*i, mapTex, TRUE);
+					if (i==0)
+					{
+						DrawRectGraph(graphX + graphSize * j, graphY + graphSize * i, 128*(i+j), 0, 128, 128, numTex, true, false);
+					}
+					else
+					{
+						DrawRectGraph(graphX + graphSize * j, graphY + graphSize * i, 128 * (i + j + 3), 0, 128, 128, numTex, true, false);
+					}
 				}
 			}
 			//���I�����Ă�X�e�[�W�̘g
