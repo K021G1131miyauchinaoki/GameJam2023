@@ -46,7 +46,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 
 	// 画面の背景色を設定する
-	SetBackgroundColor(0x00, 0xFF, 0x00);
+	SetBackgroundColor(0x00, 0x00, 0x00);
 
 	// DXlibの初期化
 	if (DxLib_Init() == -1)
@@ -109,7 +109,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	int sceneTex = LoadGraph("Resource/Scene/TitleName.png");
 	int backTex = LoadGraph("Resource/Scene/back.png");
-
 	int numTex= LoadGraph("Resource/Map/num.png");
 
 
@@ -136,11 +135,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	//�r���ōő�ƍŏ���ύX���邽�߂̕ϐ�
 	int oneTtwoMin = 0;
-	int oneTtwoMax = 0;
+	int oneTtwoMax = 3;
 
 	int selectStageX = STAGE_MINX;
 	int selectStageY = STAGE_MINY;
-	int selectStage = STAGE_MINX;
+	int selectStage = 0;
 
 	int graphSize = 128*2;
 	int graphX = 176;
@@ -182,7 +181,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	back.change = false;
 
 	bool initFlag1 = false;
-	bool initFlag = false;
+	bool initFlag = true;
 	
 	
 
@@ -298,6 +297,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				{
 					selectStage = oneTtwoMax;
 				}
+
 			}
 
 			if (keys[KEY_INPUT_LEFT] == 1 && oldkeys[KEY_INPUT_LEFT] == 0)
@@ -310,6 +310,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					selectStage = oneTtwoMin;
 				}
 			}
+
 			if (keys[KEY_INPUT_DOWN] == 1 && oldkeys[KEY_INPUT_DOWN] == 0)
 			{
 				if (selectStageY)
@@ -329,10 +330,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					selectStage += 4;
 					initFlag = false;
 				}
-				/*if(selectStage >= oneTtwoMax)
-				{
-					selectStage = oneTtwoMax;
-				}*/
+				
 			}
 			if (keys[KEY_INPUT_UP] == 1 && oldkeys[KEY_INPUT_UP] == 0)
 			{
@@ -353,18 +351,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 					selectStage -= 4;
 					initFlag1 = false;
 				}
+
 				
-				/*if (selectStage <= oneTtwoMin)
-				{
-					selectStage = oneTtwoMin;
-
-				}*/
-
-				}
 			}
 			if (keys[KEY_INPUT_RETURN] == 1 && oldkeys[KEY_INPUT_RETURN] == 0)
 			{
-				gameState = game;
+				//gameState = game;
+				next = game;
 				player->Reset();
 				map->Reset();
 				count->Reset();
